@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- Text input -->
+     <h3>Text input</h3>
+     <form action="" method="GET">  
+        Họ và tên: <input type="text" name="ho_ten" size="100" maxlength="30" placeholder="Nhập họ tên" value=""/>  
+    </form><br>
+    <hr>
+
+    <!-- Password input -->
+    <h3>Password input</h3>
+    <form action="" method="GET">  
+        Mật khẩu: <input type="password" name="mat_khau" size="50" maxlength="100" placeholder="Nhập vào mật khẩu" value="" />  
+    </form><br>
+    <hr>
+
+    <!-- Text Area -->
+    <h3>Text Area</h3>
+    <form action="" method="GET">
+        <textarea name="introduce" id="intro" cols="10" rows="4" placeholder="Introduce for you"></textarea>
+    </form> 
+
+    <!-- Radio button -->
+    <h3>Radio button</h3>
+    Đáp án đúng:   
+        <input type="radio" name="ket_qua" value="a" /> Đáp án A  
+        <input type="radio" name="ket_qua" value="b" checked="checked"/> Đáp án B  
+        <input type="radio" name="ket_qua" value="c" /> Đáp án C
+    <hr>
+
+    <!-- Checkbox -->
+    <h3>Checkbox</h3>
+    Sở thích của bạn:   
+    <input type="checkbox" name="so_thich" value="nghe_nhac" checked="checked" /> Nghe nhạc  
+    <input type="checkbox" name="so_thich " value="xem_phim" /> Xem phim  
+    <input type="checkbox" name="so_thich " value="doc_sach" /> Đọc sách  
+    <hr>
+
+    <!-- Dropdown List Box -->
+    <h3>Dropdown List Box</h3>
+    Chọn nơi bạn đang sống   
+    <select name="thanh_pho" required>  
+        <option value="">--Chọn thành phố---</option>  
+        <option value="hanoi" selected>Hà Nội</option>  
+        <option value="hochiminh">TP Hồ Chí Minh</option>  
+    </select> 
+    <hr>
+
+    <!-- Multiple Selection Box -->
+    <h3>Multiple Selection Box</h3>
+    Chọn nơi bạn đã từng sinh sống <br>  
+    <select name="thanh_pho" size="4" multiple="multiple">  
+        <option value="hanoi" selected="selected"> Hà Nội</option>  
+        <option value="hochiminh">TP Hồ Chí Minh</option>  
+        <option value="danang" selected="selected">Đà Nẵng</option>  
+        <option value="dalat">Đà Lạt</option>  
+        <option value="sapa">Sapa</option>  
+    </select> 
+    <hr>
+
+    <!-- Submit Button -->
+    <h3>Submit Button</h3>
+    <p>Nhận bài viết mới nhất</p>  
+    <input type="text" name="email" required placeholder="Nhập email của bạn" />  
+    <input type="submit" name="dangky" value="Đăng ký"  > 
+    <hr>
+
+    <!-- File Input -->
+    <h3>File Input</h3>
+    File đính kèm  
+        <input type="file" name="avatar" accept="pdf/*"/> <br/> 
+    <hr>
+
+    <!-- Hidden Controls -->
+    <h3>Hidden Controls</h3>
+    <input type="hidden" name="an_so" value="demo" />  
+    <hr>
+
+    <!-- Required fields -->
+    <h3>Required fields</h3>
+    Họ tên: <input type="text" name="name" required/> <br/>
+    Password: <input type="password" name="password" required/> <br/>  
+
+    <!-- Date input -->
+    <h3>Date input</h3>
+    <input type="date" name="date_of_birth" id="date_of_birth"/> <br/> 
+
+    <!-- Email Input -->
+    <h3>Email Input</h3>
+    <input type="email" name="email" id="email" placeholder="Email"/> <br/>
+
+    <!-- URL Input -->
+    <h3>URL Input</h3>
+    <input type="url" name="website" id="website"/> <br/> 
+
+</body>
+</html>
