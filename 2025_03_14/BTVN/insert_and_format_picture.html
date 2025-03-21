@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Tag</title>
+    <style>
+        .content {
+            width: 25%;
+        }
+    </style>
+</head>
+<body>
+    <h3>Demo thẻ image</h3>
+    <img src="https://file.vnua.edu.vn/data/0/images/2023/02/14/host/331c2079-1783-4dc8-a698-9cd5cbc45273.jpeg?dpi=150&quality=100&w=319">
+    <hr>
+
+    <h3>Thuộc tính src</h3>
+    <p>- Dùng đường dẫn tuyệt đối</p>
+    <img class="content" src="https://cdn.pixabay.com/photo/2019/08/19/07/45/corgi-4415649_1280.jpg"><br>
+    <p>- Dùng đường dẫn tương đối</p>
+    <img class="content" src="corgi.jpg"><br>
+    <hr>
+
+    <h3>Thuộc tính alt</h3>
+    <p>- Trường hợp hình ảnh tồn tại </p>
+    <img class="content" src="https://cdn.haitrieu.com/wp-content/uploads/2021/10/Logo-Hoc-Vien-Cong-Nghe-Buu-Chinh-Vien-Thong-PTIT.png" alt="Hình ảnh không tồn tại"><br>
+    <p>- Trường hợp hình ảnh không tồn tại nhưng không có thuộc tính alt </p>
+    <img src="ptit.png"><br>
+    <p>- Trường hợp hình ảnh không tồn tại nhưng có thuộc tính alt </p>
+    <img src="ptit.png" alt="Hình ảnh không tồn tại"><br>
+    <hr>
+
+    <h3>Thuộc tính title</h3>
+    <img class="content" src="https://cdn.haitrieu.com/wp-content/uploads/2021/10/Logo-Hoc-Vien-Cong-Nghe-Buu-Chinh-Vien-Thong-PTIT.png" title="Học Viện Công Nghệ Bưu Chính Viễn Thông"><br>
+    <hr>
+
+    <h3>Thuộc tính border</h3>
+    <img class="content" src="https://cdn.haitrieu.com/wp-content/uploads/2021/10/Logo-Hoc-Vien-Cong-Nghe-Buu-Chinh-Vien-Thong-PTIT.png" border="10"><br>
+    <hr>
+
+    <h3>Thuộc tính width và height</h3>
+    <p>- Hình ảnh bên dưới sẽ có chiều rộng và chiều cao bằng 200 pixel</p>  
+    <img src="https://cdn.haitrieu.com/wp-content/uploads/2021/10/Logo-Hoc-Vien-Cong-Nghe-Buu-Chinh-Vien-Thong-PTIT.png" width="200px" height="200px"><br>  
+    <p>- Hình ảnh bên dưới sẽ có chiều rộng bằng 10% chiều rộng phần nội dung của phần tử cha của nó (tức là phần tử body)</p>  
+    <img src="https://cdn.haitrieu.com/wp-content/uploads/2021/10/Logo-Hoc-Vien-Cong-Nghe-Buu-Chinh-Vien-Thong-PTIT.png" width="10%"><br>
+    <hr>
+    
+    <h3>Hình ảnh xuất hiện như 1 link</h3>
+    <p>Click vào ảnh để đọc bài viết</p>
+    <a href="https://tuyensinh.ptit.edu.vn/">
+    <img src="https://tuyensinh.ptit.edu.vn/wp-content/uploads/sites/4/2024/08/image-banner-3-1.png" alt="Tuyển sinh" height="200px">
+    </a><br>
+</body>
+</html>
