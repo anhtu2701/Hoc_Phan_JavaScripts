@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thiết kế form</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f1f1f1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .header {
+            background-color: #facc15;
+            padding: 12px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        td {
+            padding: 10px 8px;
+        }
+
+        td:first-child {
+            text-align: left;
+            font-weight: bold;
+            width: 35%;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 6px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type="radio"],
+        input[type="checkbox"] {
+            width: auto;
+            margin-right: 5px;
+        }
+
+        .radio-group,
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .button-group {
+            background-color: #facc15;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        button {
+            width: 70px;
+            border: none;
+            border-radius: 5px;
+            padding: 5px;
+            font-weight: bold;
+            margin: 0 10px;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">PT Ứng dụng Web - THIẾT KẾ FORM ĐƠN GIẢN</div>
+
+        <form action="" method="get">
+            <table>
+                <tr>
+                    <td><label for="name">Họ và tên</label></td>
+                    <td><input type="text" id="name"></td>
+                </tr>
+
+                <tr>
+                    <td><label for="email">Email</label></td>
+                    <td><input type="email" id="email"></td>
+                </tr>
+
+                <tr>
+                    <td><label for="phone">Số điện thoại</label></td>
+                    <td><input type="tel" id="phone"></td>
+                </tr>
+
+                <tr>
+                    <td><label for="city">Quê quán</label></td>
+                    <td>
+                        <select id="city">
+                            <option value="">--Chọn thành phố--</option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><label>Giới tính</label></td>
+                    <td class="radio-group">
+                        <input type="radio" name="gioi_tinh" value="nam">Nam
+                        <input type="radio" name="gioi_tinh" value="nu">Nữ
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><label>Kỹ năng</label></td>
+                    <td class="checkbox-group">
+                        <input type="checkbox" name="ky_nang" value="html">HTML
+                        <input type="checkbox" name="ky_nang" value="css">CSS
+                        <input type="checkbox" name="ky_nang" value="js">JS
+                        <input type="checkbox" name="ky_nang" value="bootstrap">BOOTSTRAP
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><label for="dob">Ngày sinh</label></td>
+                    <td><input type="date" id="dob"></td>
+                </tr>
+
+                <tr>
+                    <td><label for="about">Giới thiệu bản thân</label></td>
+                    <td><textarea id="about" rows="4"></textarea></td>
+                </tr>
+            </table>
+            <div class="button-group">
+                <button type="submit">Submit</button>
+                <button type="reset">Reset</button>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

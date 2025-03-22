@@ -17,7 +17,7 @@
         }
 
         .container {
-            width: 500px;
+            width: 450px;
             background-color: #fff;
             padding: 20px;
             border-radius: 10px;
@@ -30,9 +30,11 @@
             font-size: 20px;
             font-weight: bold;
             margin-bottom: 20px;
+            border-radius: 5px; 
         }
 
         .form-group {
+            width: 100%;
             margin-bottom: 20px;
             font-size: 16px;
             display: flex;
@@ -47,15 +49,31 @@
             padding: 8px;
             border: 1px solid #ccc;
             border-radius: 4px;
-            text-align: left;
         }
 
         .form-group label {
             width: 120px; 
-            text-align: left;
+            font-weight: bold;
+            white-space: nowrap; /* Giữ chữ trên cùng một dòng */
+        }
+
+        .btn {
+            text-align: center;
+            padding: 10px;
+            background-color: #facc15;
+            border-radius: 5px; 
+        }
+
+        .btn button {
+            width: 60px;
+            margin: 0 10px;
+            padding: 5px;
+            border-radius: 5px;
+            border: none;
             font-weight: bold;
         }
 
+        
     </style>
 </head>
 <body>
@@ -87,16 +105,16 @@
 
             <div class="form-group">
                 <label>Giới tính</label>
-                <input type="radio" name="gioi_tinh" value="nam">Nam
-                <input type="radio" name="gioi_tinh" value="nu">Nữ
+                <input class="radio-group" type="radio" name="gioi_tinh" value="nam">Nam
+                <input class="radio-group" type="radio" name="gioi_tinh" value="nu">Nữ
             </div>
 
             <div class="form-group">
                 <label>Kỹ năng</label>
-                <input type="checkbox" name="ky_nang" value="html">HTML
-                <input type="checkbox" name="ky_nang" value="css">CSS
-                <input type="checkbox" name="ky_nang" value="js">JS
-                <input type="checkbox" name="ky_nang" value="bootstrap">BOOTSTRAP
+                <input class="checkbox-group" type="checkbox" name="ky_nang" value="html">HTML
+                <input class="checkbox-group" type="checkbox" name="ky_nang" value="css">CSS
+                <input class="checkbox-group" type="checkbox" name="ky_nang" value="js">JS
+                <input class="checkbox-group" type="checkbox" name="ky_nang" value="bootstrap">BOOTSTRAP
             </div>
 
             <div class="form-group">
