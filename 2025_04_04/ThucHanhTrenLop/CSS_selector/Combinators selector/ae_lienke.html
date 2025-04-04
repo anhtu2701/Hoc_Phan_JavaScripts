@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    div + p + .special {
+      background-color: yellow;
+    }
+  </style>
+</head>
+<body>
+
+<div>
+  <p>Thẻ p1 trong thẻ div</p>
+  <p>Thẻ p2 trong thẻ div</p>
+</div>
+<!--- Thẻ p3 sau thẻ div bị tác động bởi background màu vàng. 
+Do thẻ p3 là thẻ anh em liền kề sau với thẻ div <--->
+<p>Thẻ p3 sau thẻ div</p>
+<p class="special">Thẻ p4 sau thẻ div</p>
+
+</body>
+</html>
