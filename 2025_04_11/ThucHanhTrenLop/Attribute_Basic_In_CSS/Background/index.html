@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Background</title>
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #bgC {
+            background-color: #ff0000;
+            padding: 20px;
+            text-align: center;
+        }
+
+        #Opacity {
+            background-color: rgba(0, 255, 0, 0.5);
+            /* Màu xanh lá cây với độ trong suốt 50% */
+            padding: 20px;
+            text-align: center;
+        }
+
+        #bgI {
+            background-image: url('https://xaydungnhatrongoi.vn/wp-content/uploads/2023/09/chung-c%C6%B0-mini-2.jpg');
+            padding: 200px;
+            text-align: center;
+        }
+
+        #repeat-x {
+            width: 100%;
+            height: 300px;
+            background-image: url('https://images.unsplash.com/photo-1581650107963-3e8c1f48241b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80');
+            background-repeat: repeat-x;
+        }
+
+        #repeat-y {
+            width: 100%;
+            height: 500px;
+            background-image: url('https://images.unsplash.com/photo-1547744152-14d985cb937f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80');
+            background-repeat: repeat-y;
+        }
+
+        #no-repeat {
+            width: 100%;
+            height: 500px;
+            background-image: url('https://images.unsplash.com/photo-1603553329474-99f95f35394f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80');
+            background-repeat: no-repeat;
+        }
+
+        #bgp-no-repeat{
+            width: 100%;
+            height: 500px;
+            background-image: url('https://images.unsplash.com/photo-1567284575269-d4be568f1072?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80');
+            background-repeat: no-repeat;
+            background-position: right top;
+        }
+
+        #bga-no-repeat{
+            width: 100%;
+            background-image: url('https://images.unsplash.com/photo-1591920689160-ee83654e464a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Thuộc tính background-color -->
+    <h3 id="bgC">Đây là thuộc tính background-color</h3>
+
+    <!-- Thuộc tính Opacity/Transparency (Độ mờ đục/trong suốt) -->
+    <h3 id="Opacity">Thuộc tính Opacity</h3>
+
+    <!-- Thuộc tính background-image -->
+    <h3 id="bgI">Thuộc tính background-image</h3>
+
+    <!-- Thuộc tính background-repeat -->
+    <div id="repeat-x">
+        <h3>Ảnh nền lặp theo chiều ngang (trục x)</h3>
+    </div>
+    <div id="repeat-y">
+        <h3>Ảnh nền lặp theo chiều dọc (trục y) </h3>
+    </div>
+    <div id="no-repeat">
+        <h3>Ảnh nền chỉ hiển thị duy nhất 1 lần</h3>
+    </div>
+
+    <!-- Thuộc tính background-position -->
+    <div id="bgp-no-repeat">
+        <h3>Ảnh nền hiển thị vào góc trên phía bên phải do thuộc tính background-position: right top</h3>
+    </div>
+
+    <!-- Thuộc tính background-attachment -->
+    <div id="bga-no-repeat">
+        <h3>Học lập trình web tại Zent</h3>
+        <p>Học lập trình thật dễ</p>
+        <p>Học lập trình thật dễ</p>
+        <p>Học lập trình thật dễ</p>
+        <p>Học lập trình thật dễ</p>
+        <p>Học lập trình thật dễ</p>
+        <p>Học lập trình thật dễ</p>
+        <p>Học lập trình thật dễ</p>
+        <p>Học lập trình thật dễ</p>
+        <p>Học lập trình thật dễ</p>
+        <p>Học lập trình thật dễ</p>
+        <p>Học lập trình thật dễ</p>
+        <p>Học lập trình thật dễ</p>
+        <p>Học lập trình thật dễ</p>
+        <p>Học lập trình thật dễ</p>
+        <p>Học lập trình thật dễ</p>
+        <p>Học lập trình thật dễ</p>
+        <p>Học lập trình thật dễ</p>
+        <p>Học lập trình thật dễ</p>
+        <p>Học lập trình thật dễ</p>
+        <p>Học lập trình thật dễ</p>
+        <p>Học lập trình thật dễ</p>
+    </div>
+
+</body>
+
+</html>
