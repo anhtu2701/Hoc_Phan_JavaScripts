@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PTIT</title>
+    <style>
+        #loai1 ul {
+            list-style: square;
+        }
+
+        #loai1 ol {
+            list-style: upper-roman;
+        }
+
+        #loai2 ul {
+            list-style: square;
+            list-style: square inside url("https://icons.iconarchive.com/icons/custom-icon-design/flatastic-9/48/Accept-icon.png");
+            ;
+        }
+
+        #loai3 ul {
+            padding: 0;
+            list-style: none;
+            background: #f2f2f2;
+        }
+
+        #loai3 ul li {
+            display: inline-block;
+        }
+
+        #loai3 ul li a {
+            display: block;
+            padding: 10px 25px;
+            color: #333;
+            text-decoration: none;
+
+        }
+
+        #loai3 ul li a:hover {
+            color: #fff;
+            background: #939393;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Thay đổi loại danh sách đánh dấu -->
+    <div id="loai1">
+        <ul>
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+        </ul>
+        <ol>
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+        </ol>
+    </div>
+
+    <!-- Sử dụng hình ảnh làm điểm đánh dấu danh sách -->
+    <div id="loai2">
+        <ul>
+            <li>Lorem ipsum dolor sit amet.</li>
+            <li>Lorem ipsum dolor sit amet.</li>
+            <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus, ut!</li>
+        </ul>
+    </div>
+
+    Tao menu bang danh sach
+    <div id="loai3">
+        <ul>
+            <li><a href="">Trang chủ</a></li>
+            <li><a href="">Giới thiệu</a></li>
+            <li><a href="">Tuyển dụng</a></li>
+            <li><a href="">Tin tức</a></li>
+        </ul>
+    </div>
+</body>
+
+</html>
