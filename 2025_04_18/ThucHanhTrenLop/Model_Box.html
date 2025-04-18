@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Box Model</title>
+    <style>
+        #mg h3 {
+            border: 1px solid red;
+            /* margin-top: 10px;
+			margin-left: 10px;
+			margin-right: 20px;
+			margin-bottom: 40px; */
+            margin: 10px 20px 40px 10px;
+        }
+
+        #pd h3 {
+            border: 1px solid red;
+            /* padding-top: 10px;
+			padding-left: 10px;
+			padding-right: 20px;
+			padding-bottom: 40px; */
+            padding: 10px 20px 40px 10px;
+        }
+
+        #bs {
+            background-color: red;
+			width: 500px;
+			height: 500px;
+			padding: 10px;
+			box-sizing: border-box;
+        }
+
+    </style>
+</head>
+
+<body>
+    <!-- Thuộc tính margin -->
+    <div id="mg">
+        <p>Nội dung trước thẻ h3</p>
+        <h3>Nội dung thẻ h3</h3>
+        <p>Nội dung sau thẻ h3</p>
+    </div>
+
+    <!-- Thuộc tính padding -->
+    <div id="pd">
+        <p>Nội dung trước thẻ h3</p>
+        <h3>Nội dung thẻ h3</h3>
+        <p>Nội dung sau thẻ h3</p>
+    </div>
+
+    <!-- Thuộc tính box-sizing -->
+    <div id="bs"></div>
+</body>
+
+</html> 
