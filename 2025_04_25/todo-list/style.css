@@ -60,7 +60,7 @@ h1 {
 }
 
 .important {
-    background-color: #f5cba7;
+    background-color: #f5cba7 !important;
     font-weight: bold;
 }
 
