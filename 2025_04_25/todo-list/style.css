@@ -1,0 +1,96 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Poppins", sans-serif;
+    background-color: #fcf8e8;
+    display: flex;
+    align-items: center;
+    height: 100vh;
+}
+
+.todo-list {
+    margin: auto;
+    max-width: 600px;
+}
+
+h1 {
+    text-align: center;
+    color: #000;
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+#main-title {
+    background-color: #fffdf6;
+    list-style: none;
+    padding: 20px;
+    border: 2px dashed #e67e22;
+    border-radius: 15px;
+}
+
+#main-title li {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    min-width: 500px;
+}
+
+#main-title li input[type="checkbox"] {
+    margin-right: 20px;
+}
+
+#main-title span {
+    font-size: 18px;
+}
+
+.morning {
+    background-color: #f9e79f;
+}
+
+.afternoon {
+    background-color: #f5b7b1;
+}
+
+[class~="evening"] {
+    background-color: #cdf4f1;
+}
+
+.important {
+    background-color: #f5cba7;
+    font-weight: bold;
+}
+
+li:first-child {
+    border-top: 2px solid #e67e22;
+}
+
+li:last-child {
+    border-bottom: 2px solid #e67e22;
+}
+
+li:nth-child(odd) {
+    background-color: #e5ffe3;
+}
+
+li:hover::after {
+    content: "✅";
+    opacity: 0.8;
+}
+
+input[type="checkbox"]:checked+span {
+    text-decoration: line-through;
+    color: gray;
+    opacity: 0.8;
+}
+
+[data-type="reminder"] {
+    font-size: 14px;
+    color: #01b6b0;
+    margin-top: 20px;
+    text-align: center;
+    font-style: italic;
+}
