@@ -1,3 +1,8 @@
+:root {
+    --default-color: #000072;
+    --yellow-color: #FDB813;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -13,6 +18,7 @@ html, body {
 #container {
     min-width: 1200px;
     margin: 0 auto;
+    height: 100vh;
 }
 
 header {
@@ -20,7 +26,7 @@ header {
     width: 100%;
     display: flex;
     padding: 16px 20px;
-    justify-content: space-between;
+    justify-content: space-evenly;
 }
 
 /* Navigation */
@@ -42,6 +48,27 @@ header {
     font-size: 1rem;
 }
 
+.nav-link {
+    position: relative;
+}
+
+.nav-link a::after {
+    content: "";
+    display: block;
+    width: 0;
+    height: 1.5px;
+    background: var(--default-color);
+    margin-top: 2px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.nav-link a:hover::after {
+    width: 100%;
+    transition: width 0.5s;
+}
+
 .header-right {
     display: flex;
     align-items: center;
@@ -59,6 +86,11 @@ header {
     border-radius: 30px;
     background-color: #f1f5f9;
     padding: 5px 16px;
+}
+
+.search-box:hover {
+    border: 1px solid var(--default-color);
+    transition: 0.8s ease;
 }
 
 .search-box input {
@@ -79,20 +111,26 @@ header {
     text-align: center;
 }
 
+.search-box button:hover .search-icon {
+    color: var(--yellow-color);
+    transition: 0.5s ease;
+}
+
 .search-icon {
     position: absolute;
     top: 50%;
     right: 15px;
     transform: translateY(-50%);
-    color: #333;
+    color: var(--default-color);
     font-size: 30px;
   }
 
 /* Language Options */
-.nation-options {
+.nation-options > ul {
     border: 1px solid #E2E8F0;
-    padding: 5px 10px;
+    /* border-radius: 20px 20px 0 0; */
     border-radius: 30px;
+    min-width: 70px;
 }
 
 .nation-options ul {
@@ -100,23 +138,27 @@ header {
 }
 
 .nation-options > ul > li {
+    padding: 15px 10px;
     position: relative;
+    text-align: center;
 }
 
 .nation-list {
     /* display: none; */
     position: absolute;
-    top: 100%;
+    top: 103%;
     left: 0;
     background-color: #fff;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-    width: 100px;
+    width: 100%;
     list-style: none;
     padding: 10px 15px;
 }
 
 .nation-list li {
     padding: 5px 0;
+    display: block;
+    text-align: center;
 }
 
 .nation-list li:hover {
@@ -126,6 +168,22 @@ header {
     text-decoration: none;
     color: #000;
     
+}
+
+/* Contacts Button */
+.contact-btn {
+    padding: 16px 32px;
+    border: 1px solid #E2E8F0;
+    border-radius: 30px;
+    background-color: var(--default-color);
+    color: #fff;
+}
+
+
+
+.contact-btn:hover {
+    background-color: var(--yellow-color);
+    transition: 0.5s ease all;
 }
 
 
