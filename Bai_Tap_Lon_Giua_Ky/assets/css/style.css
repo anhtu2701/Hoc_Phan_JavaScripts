@@ -132,7 +132,9 @@ header {
     text-align: center;
 }
 
-.search-box button:hover .search-icon {
+
+.search-box button:hover .search-icon,
+#search-filter button:hover i {
     background-color: var(--yellow-color);
     transition: 0.5s ease;
 }
@@ -271,25 +273,74 @@ header {
 
 /* Main */
 main {
-min-width: 1300px;
-
+    margin-top: 40px;
+    padding: 0 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-/* Search Filter */
+/* Main Content */
+#main-content {
+    mix-width: 1200px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Search Filter */     
 #search-filter {
-
+    min-width: 600px;
+    display: flex;
+    gap: 70px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    border-radius: 40px;
+    padding: 15px 40px;
 }
 
-#search-filter #city-filter {
-
+#search-filter .search-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-left: rgba(0, 0, 0, 0.4) 1.3px solid;
+    padding-left: 20px;
 }
 
-#search-filter #district-filter {
-    
+#search-filter .search-group:first-child {
+    border-left: none;
 }
 
-#search-filter #price-filter {
-    
+#search-filter .search-group label {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+#search-filter .dropdown {
+    font-size: 14px;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    appearance: none;
+    opacity: 0.6;
+    cursor: pointer;
+}
+
+#search-filter button {
+    border: none;
+    outline: none;
+    background-color: transparent;
+}
+
+#search-filter button i {
+    padding: 15px 15px;
+    border: none;
+    outline: none;
+    background-color: var(--default-color);
+    color: #fff;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+#search-filter select:focus {
 }
 
 /* House */
