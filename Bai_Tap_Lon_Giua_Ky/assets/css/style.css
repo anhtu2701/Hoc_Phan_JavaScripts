@@ -166,7 +166,7 @@ header {
 .nation-list {
     display: none;
     position: absolute;
-    top: 103%;
+    top: 196%;
     left: 0;
     background-color: #fff;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
@@ -211,8 +211,54 @@ header {
 
 /* Slider-container */
 #slider-container {
-    padding-top: 36.6459%;
-    margin-top: 80px;
-    background: url('') top center / cover no-repeat;
+    width: 100%;
     position: relative;
+    overflow: hidden;
+    margin-top: 80px;
 }
+
+#slider-container input[type="radio"] {
+    display: none;
+}
+
+#slider-container .slides {
+    display: flex;   
+    transition: transform 1s ease-in-out;
+}
+
+#slider-container .slide {
+    width: 100%;
+}
+
+#slider-container .slide img {
+    width: 100vw;
+    height: 43.0420vw;
+}
+
+#slide1:checked ~ .slides {
+    transform: translateX(0);
+}
+
+#slide2:checked ~ .slides {
+    transform: translateX(-100%);
+}
+#slide3:checked ~ .slides {
+    transform: translateX(-200%);
+}
+
+#slider-container .controls-btn {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    display: flex;
+    justify-content: space-between;
+    transform: translateX(-50%);
+    color: #ccc;
+}
+
+#slider-container .controls-btn label {
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+

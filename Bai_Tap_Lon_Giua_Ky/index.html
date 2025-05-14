@@ -56,22 +56,45 @@
 
         <!-- Slider Container -->
         <div id="slider-container">
-            
+            <!-- Control Function -->
+            <input type="radio" name="slider" id="slide1" checked>
+            <input type="radio" name="slider" id="slide2">
+            <input type="radio" name="slider" id="slide3">
+
+            <!-- Slide -->
+            <div class="slides">
+                <div class="slide slide1">
+                    <img src="./assets/img/banner-1.png" alt="Slide 1">
+                </div>
+                <div class="slide slide2">
+                    <img src="./assets/img/banner-2.png" alt="Slide 2">
+                </div>
+                <div class="slide slide3">
+                    <img src="./assets/img/banner-3.jpg" alt="Slide 3">
+                </div>
+            </div>
+
+            <!-- Control button -->
+            <div class="controls-btn">
+                <label for="slide1"><i class="fa-solid fa-circle-dot"></i></label>
+                <label for="slide2"><i class="fa-solid fa-circle-dot"></i></label>
+                <label for="slide3"><i class="fa-solid fa-circle-dot"></i></label>
+            </div>
         </div>
 
         <!-- Main-->
         <main>
             <!-- Search Filter -->
-             <div class="search-filter">
+            <div class="search-filter">
                 <div class="city-filter"></div>
 
                 <div class="district-filter"></div>
 
                 <div class="price-filter"></div>
-             </div>
+            </div>
 
             <!-- Houses -->
-             <div class="houses">
+            <div class="houses">
                 <article class="house">
                     <img class="house-img" src="" alt="">
                     <h3 class="house-district"></h3>
@@ -80,7 +103,7 @@
                     <p class="house-status"><span></span></p>
 
                 </article>
-             </div>
+            </div>
 
         </main>
     </div>
