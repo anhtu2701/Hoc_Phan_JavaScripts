@@ -259,6 +259,62 @@ header {
 #slider-container .controls-btn label {
     margin: 0 5px;
     cursor: pointer;
+    line-height: 20px;
+    font-size: 10px;
+}
+
+.controls-btn label:hover i {
+    font-size: 20px;
+    transition: 0.3s ease;
+}
+
+
+/* Main */
+main {
+min-width: 1300px;
+
+}
+
+/* Search Filter */
+#search-filter {
+
+}
+
+#search-filter #city-filter {
+
+}
+
+#search-filter #district-filter {
+    
+}
+
+#search-filter #price-filter {
+    
+}
+
+/* House */
+#houses-container {
+
+}
+
+#houses-container .house-lists {
+    list-style-type: none;
+}
+
+#houses-container .house-items {
+
+}
+
+#houses-container .house-item {
+    
+}
+
+#houses-container .house-img {
+
+}
+
+#houses-container .house-content {
+    
 }
 
 
