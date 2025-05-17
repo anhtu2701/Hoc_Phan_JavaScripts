@@ -13,15 +13,4 @@ for (let i = 0; i < N - 1; i++) {
 }
 console.log("Sorted array: " + numbers.join(", "));
 
-const numberss = [4, 5,10, -2, 23]
-const X = numberss.length;
-
-for (let i = 0; i < N - 1; i++) {
-    let min = i;
-    for (let j = i + 1; j < N; j++) {
-        if (numberss[j] < numberss[min]) {
-            
-        }
-    }
-}
 
