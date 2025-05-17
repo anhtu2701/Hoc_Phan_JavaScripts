@@ -1,8 +1,10 @@
 :root {
     --default-color: #000072;
     --yellow-color: #FDB813;
+    --transition-speed: 0.3s;
 }
 
+/* Reset CSS */
 * {
     margin: 0;
     padding: 0;
@@ -16,12 +18,14 @@ body {
 }
 
 #container {
-    min-width: 1200px;
+    width: 100%;
+    max-width: 100%;
     margin: 0 auto;
-    height: 100vh;
     position: relative;
+    overflow-x: hidden;
 }
 
+/* Header */
 header {
     background-color: #fff;
     width: 100%;
@@ -68,6 +72,7 @@ header {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
+    transition: width var(--transition-speed) ease;
 }
 
 .nav-link a:hover::after {
@@ -92,11 +97,11 @@ header {
     border-radius: 30px;
     background-color: #f1f5f9;
     padding: 5px 16px;
+    transition: border var(--transition-speed) ease;
 }
 
 .search-box:hover {
     border: 1px solid var(--default-color);
-    transition: 0.8s ease;
 }
 
 .search-box input {
@@ -130,25 +135,26 @@ header {
     border: 1px solid transparent;
     padding: 8px;
     text-align: center;
+    transition: background-color var(--transition-speed) ease;
 }
 
 
 .search-box button:hover .search-icon,
 #search-filter button:hover i {
     background-color: var(--yellow-color);
-    transition: 0.5s ease;
+    transition: all 0.5s ease;
 }
 /* Language Options */
 .nation-options>ul {
     border: 1px solid transparent;
     border-radius: 30px;
     min-width: 70px;
+    transition: border var(--transition-speed) ease, border-radius var(--transition-speed) ease;
 }
 
 .nation-options>ul:hover {
     border: 1px solid var(--default-color);
     border-radius: 20px 20px 0 0;
-    transition: 0.7s ease;
 }
 
 .nation-options ul {
@@ -189,6 +195,7 @@ header {
     text-decoration: none;
     color: #000;
     line-height: 50px;
+    transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
 }
 
 .nation-list li:hover a {
@@ -198,18 +205,149 @@ header {
 
 /* Contacts Button */
 .contact-btn {
-    padding: 16px 32px;
-    border: 1px solid #E2E8F0;
+    position: relative;
+    min-width: 100px;
+    line-height: 36px;
+    white-space: nowrap;
+    text-align: center;
     border-radius: 30px;
     background-color: var(--default-color);
     color: #fff;
+    z-index: 0;
+    padding: 6px;
+    flex-shrink: 0;
 }
 
-.contact-btn:hover {
+.contact-btn::before {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 100%;
+    border-radius: 30px;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
     background-color: var(--yellow-color);
-    transition: all 0.5s ease;
+    z-index: -1;
 }
 
+.contact-btn:hover::before {
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+/* Sidebar */
+.sidebar-checkbox {
+    display: none;
+}
+
+.sidebar-toggle {
+    display: none;
+    padding: 10px;
+    color: var(--default-color);
+    font-size: 22px;
+    flex-shrink: 0; cursor: pointer;
+
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    left: -300px;
+    width: 300px;
+    height: 100vh;
+    background-color: #fff;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1500;
+    transition: left var(--transition-speed) ease;
+    overflow-y: auto;
+}
+
+#sidebar-toggle-checkbox:checked ~ .sidebar {
+    left: 0;
+}
+
+#sidebar-toggle-checkbox:checked ~ .sidebar-overlay {
+    display: block;
+}
+
+.sidebar .sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.sidebar .sidebar-logo img {
+    height: 40px;
+    width: auto;
+}
+
+.sidebar .sidebar-close {
+    cursor: pointer;
+    font-size: 22px;
+    color: #666;
+}
+
+.sidebar .sidebar-content {
+    padding: 20px;
+}
+
+.sidebar .sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    list-style: none;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 20px;
+}
+
+.sidebar .sidebar-menu-item {
+    cursor: pointer;
+}
+
+.sidebar .sidebar-menu-item a {
+    text-decoration: none; 
+    color: #333;
+    font-size: 16px;
+    font-weight: 500;
+    display: block;
+    transition: color 0.2s ease;
+}
+
+.sidebar .sidebar-menu-item a:hover {
+    color: var(--default-color);
+}
+
+.sidebar .sidebar-language {
+    padding-top: 20px;
+}
+
+.sidebar .sidebar-language .lang-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    cursor: pointer;
+}
+
+.lang-option.active {
+    color: var(--default-color);
+    font-weight: 600;
+}
+
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1400;
+}
 
 /* Slider-container */
 #slider-container {
@@ -274,29 +412,31 @@ header {
 /* Main */
 main {
     margin-top: 40px;
-    padding: 0 40px;
+    padding: 0 20px;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
 }
 
 /* Main Content */
 #main-content {
-    max-width: 800px;
+    width: 100%;
+    max-width: 1200px;
     display: flex;
     flex-direction: column;
-    gap: 40px;
 }
 
 /* Search Filter */     
 #search-filter {
-    max-width: 600px;
-    margin: 0 auto;
     display: flex;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    border-radius: 40px;
-    padding: 15px 40px;
+    max-width: 600px;
     justify-content: space-between;
+    align-items: center;
+    border-radius: 40px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+    padding: 8px 8px 8px 30px;
+    gap: 15px;
 }
 
 #search-filter .search-group {
@@ -305,12 +445,11 @@ main {
     gap: 10px;
     border-left: rgba(0, 0, 0, 0.4) 1.3px solid;
     padding-left: 20px;
+    min-width: 120px;
 }
 
 #search-filter .search-group:first-child {
     border-left: none;
-    max-width: 300px;
-    overflow: hidden;
 }
 
 #search-filter .search-group label {
@@ -330,7 +469,6 @@ main {
 
 #search-filter button {
     border: none;
-    outline: none;
     background-color: transparent;
 }
 
@@ -344,28 +482,26 @@ main {
     cursor: pointer;
 }
 
-#search-filter select:focus {
-}
-
 /* House */
 #houses-container {
     max-width: 1300px;
-    display: flex;
-    flex-direction: column;
-    margin-top: 40px;
-
+    margin: 40px auto 0 auto;
+    padding: 0 20px;
 }
 
 #houses-container .house-lists {
-    list-style-type: none;
     display: flex;
     flex-wrap: wrap;
-    gap: 40px;
+    list-style: none;
+    gap: 30px;
+    padding: 0;
+    justify-content: center;
 }
 
 #houses-container .house-items {
-    width: calc(calc(100% - 120px) /4);
-
+    flex: 0 0 calc(25% - 25px);
+    min-width: 280px;
+    margin-bottom: 20px;
 }
 
 #houses-container .house-item {
@@ -374,17 +510,25 @@ main {
     flex-wrap: wrap;
     flex-direction: column;
     gap: 20px;
-    
+    border: none;
 }
 
 #houses-container .house-img {
     width: 100%;
+    height: 200px;
+    overflow: hidden;
+    border-radius: 20px;
 }
 
 #houses-container .house-img img {
     width: 100%;
-    height: 200px;
-    border-radius: 20px;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-speed) ease;
+}
+
+#houses-container .house-img:hover img {
+    transform: scale(1.1);
 }
 
 #houses-container .house-content {
@@ -396,11 +540,12 @@ main {
 
 #houses-container .house-content .house-district {
     font-size: 18px;
+    margin-bottom: 5px;
+    transition: color var(--transition-speed);
 }
 
 #houses-container .house-content .house-district:hover {
     color: var(--yellow-color);
-    transition: 0.5s ease;
 }
 
 #houses-container .house-content .house-district,
@@ -409,4 +554,50 @@ main {
     font-weight: bold;
 }
 
+/* Responsive */
+@media (max-width: 1200px) {
+    .header-left .nav-links {
+        display: none;
+    }
 
+    .sidebar-toggle {
+        display: block;
+    }
+
+    .header-left {
+        gap: 0;
+    }
+
+    .header-right {
+        gap: 1rem;
+    }
+
+    .search-box {
+        width: 220px;
+    }
+}
+
+@media (max-width: 768px) {
+    header {
+        padding: 10px 15px;
+    }
+    
+    .search-box {
+        width: 180px;
+    }
+}
+
+@media (max-width: 576px) {
+    .header-right {
+        justify-content: flex-end;
+        gap: 10px;
+    }
+    
+    .search-box {
+        width: 150px;
+    }
+    
+    .nation-options {
+        display: none; /* Ẩn language dropdown ở header */
+    }
+}

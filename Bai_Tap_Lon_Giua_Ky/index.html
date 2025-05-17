@@ -14,6 +14,9 @@
 
 <body>
     <div id="container">
+        <!-- Checkbox hidden để toggle sidebar -->
+         <input type="checkbox" id="sidebar-toggle-checkbox" class="sidebar-checkbox">
+
         <!-- Header -->
         <header>
             <div class="header-left">
@@ -54,8 +57,46 @@
                 </div>
 
                 <div class="contact-btn">Liên hệ</div>
+
+                <!-- Sidebar Toggle Button -->
+                <label for="sidebar-toggle-checkbox" class="sidebar-toggle">
+                    <i class="fa-solid fa-bars"></i>
+                </label>
             </div>
         </header>
+
+        <!-- Sidebar -->
+         <aside class="sidebar">
+            <!-- Sidebar-header -->
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <img src="./assets/img/logo/logo-tingtong.png" alt="TingTong">
+                </div>
+
+                <label for="sidebar-toggle-checkbox"class="sidebar-close">
+                    <i class="fa-solid fa-xmark"></i>
+                </label>
+            </div>
+            
+            <!-- Sidebar-content -->
+            <div class="sidebar-content">
+                <ul class="sidebar-menu">
+                    <li class="sidebar-menu-item"><a href="#">Giới thiệu</a></li>
+                    <li class="sidebar-menu-item"><a href="#">Tin tức & sự kiện</a></li>
+                    <li class="sidebar-menu-item"><a href="#">Hợp tác</a></li>
+                    <li class="sidebar-menu-item"><a href="#">Liên hệ</a></li>
+                    <li class="sidebar-menu-item"><a href="#">Tuyển dụng</a></li>
+                </ul>
+
+                <div class="sidebar-language">
+                    <div class="lang-option active"><span>Tiếng Việt</span></div>
+                    <div class="lang-option"><span>English</span></div>
+                </div>
+            </div>
+         </aside>
+
+        <!-- Sidebar Overlay -->
+         <label for="sidebar-toggle-checkbox"  class="sidebar-overlay"></label>
 
         <!-- Slider Container -->
         <div id="slider-container">
