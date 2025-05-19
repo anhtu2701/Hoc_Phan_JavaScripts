@@ -204,7 +204,8 @@ header {
 }
 
 /* Contacts Button */
-.contact-btn {
+.contact-btn,
+.continue-btn {
     position: relative;
     min-width: 100px;
     line-height: 36px;
@@ -218,7 +219,8 @@ header {
     flex-shrink: 0;
 }
 
-.contact-btn::before {
+.contact-btn::before,
+.continue-btn::before {
     content: "";
     position: absolute;
     width: 0;
@@ -231,7 +233,8 @@ header {
     z-index: -1;
 }
 
-.contact-btn:hover::before {
+.contact-btn:hover::before,
+.continue-btn:hover::before {
     width: 100%;
     transition: all 0.3s ease;
 }
@@ -619,4 +622,19 @@ main {
     .nation-options {
         display: none;
     }
+}
+
+/* Continue House */
+.houses-continue {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.houses-continue span {
+    font-size: 18px;
+    color: #1E293B;
+    font-weight: 600;
 }
