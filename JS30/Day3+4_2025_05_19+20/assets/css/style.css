@@ -114,3 +114,26 @@ button {
     color: red;
 }
 
+/* Social Media */
+.social-media {
+    width: 100%;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.social-media ul {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+}
+
+.social-media ul li {
+    margin: 25px 15px;
+    cursor: pointer;
+}
+
+.social-media li img {
+    width: 40px;
+    height: 40px;
+}
