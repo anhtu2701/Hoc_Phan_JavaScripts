@@ -46,7 +46,7 @@ input, button {
     width: 640px;
     height: 100%;
     padding: 50px 30px;
-    transition: tranform var(--transition-speed) ease-in-out;
+    transition: transform var(--transition-speed) ease-in-out;
 }
 
 h2 {
@@ -149,7 +149,7 @@ button {
     height: 100%;
     padding-left: 260px;
     background: #fff;
-    transition: tranform var(--transition-speed) ease-in-out;
+    transition: transform var(--transition-speed) ease-in-out;
 }
 
 #container.s-signup .sub-container {
@@ -278,15 +278,15 @@ button {
     transition: transform var(--transition-speed) ease-in-out;
 }
 
-.img-btn .m-in {
+.img-btn span.m-in {
     transform: translateY(-72px);
 }
 
-#container.s-signup .img-btn .m-in {
+#container.s-signup .img-btn span.m-in {
     transform: translateY(0);
 }
 
-#container.s-signup .img-btn .m-up {
+#container.s-signup .img-btn span.m-up {
     transform: translateY(72px);
 }
 
