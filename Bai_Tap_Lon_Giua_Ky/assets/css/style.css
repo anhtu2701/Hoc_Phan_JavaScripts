@@ -217,6 +217,7 @@ header {
     z-index: 0;
     padding: 6px;
     flex-shrink: 0;
+    cursor: pointer;
 }
 
 .contact-btn::before,
@@ -375,7 +376,7 @@ header {
 
 #slider-container .slide img {
     width: 100vw;
-    height: 43.0420vw;
+    height: 43.025676613vw;
 }
 
 #slide1:checked ~ .slides {
@@ -638,3 +639,5 @@ main {
     color: #1E293B;
     font-weight: 600;
 }
+
+/*  */
