@@ -139,6 +139,12 @@ header .bot-header .sale-btn {
     content: none;
 }
 
+.search-btn {
+    padding: 10px 20px;
+    border-left: 1px solid rgba(0, 0, 0, 0.2);
+    border-right: 1px solid rgba(0, 0, 0, 0.2);
+}
+
 main {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -209,5 +215,4 @@ main .article-title {
     display: block;
     font-size: var(--title-font-size);
     margin-bottom: 10px;
-    text-align:
 }
