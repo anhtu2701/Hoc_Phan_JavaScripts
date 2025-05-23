@@ -58,9 +58,21 @@ button {
 
 .numbers {
     color: #000;
+    transform: all 0.3s ease;
+}
+
+.numbers:focus:hover {
+    background-color: #a6a6a8;
+    color: #fff;
 }
 
 .operator {
     background: rgb(255, 170, 33);
     color: #fff;
+    transform: all 0.3s ease;
+}
+
+.operator:focus:hover {
+    background-color: #ff8c00;
+    color: #000;
 }
