@@ -1,0 +1,66 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Nunito", sans-serif;
+    margin: 0 auto;
+}
+
+ul {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+#container {
+    display: grid;
+    position: relative;
+    grid-template-areas: 
+    "header header header header"
+    "nav-bar nav-bar nav-bar nav-bar"
+    "sidebar main main main"
+    "footer footer footer footer";
+}
+
+header {
+    grid-area: header;
+    width: 100%;
+    padding-top: 600px;
+    background: url("https://www.dignexus.com/assets/images/news-portal-banner.png") top center / cover no-repeat;
+}
+
+.nav-bar {
+    grid-area: nav-bar;
+    font-size: 18px;
+    background-color: #ffffff;
+    padding: 1rem 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    position: sticky;
+}
+
+.nav-bar ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav-bar li a {
+    padding: 10px 30px;
+    text-align: center;
+    color: #000;
+}
+
+.side-bar {
+    grid-area: sidebar;
+    
+}
+
+footer {
+    grid-area: footer;
+}
+
