@@ -366,7 +366,7 @@ header {
 }
 
 /* Slider-container */
-#slider-container {
+/* #slider-container {
     width: 100%;
     position: relative;
     overflow: hidden;
@@ -422,7 +422,7 @@ header {
 .controls-btn label:hover i {
     font-size: 20px;
     transition: 0.3s ease;
-}
+} */
 
 
 /* Main */
