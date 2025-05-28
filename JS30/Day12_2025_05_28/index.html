@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tingtong</title>
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div id="container">
+        <!-- Checkbox hidden để toggle sidebar -->
+         <input type="checkbox" id="sidebar-toggle-checkbox" class="sidebar-checkbox">
+
+        <!-- Header -->
+        <header>
+            <div class="header-left">
+                <div class="logo">
+                    <a href="#"><img style="width: 102px; height: 44px;" src="./assets/img/logo/logo-tingtong.png"
+                            alt="TingTong"></a>
+                </div>
+
+                <nav>
+                    <ul class="nav-links">
+                        <li class="nav-link"><a href="#">Giới thiệu</a></li>
+                        <li class="nav-link"><a href="#news-container">Tin tức & sự kiện</a></li>
+                        <li class="nav-link"><a href="#">Hợp tác</a></li>
+                        <li class="nav-link"><a href="https://tingtong.vn/lien-he/">Liên hệ</a></li>
+                        <li class="nav-link"><a href="#">Tuyển dụng</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="header-right">
+                <div class="search-box">
+                    <input type="search" name="search" id="search" placeholder="Nơi bạn muốn ở">
+
+                    <button type="submit" class="search-btn">
+                        <i class="search-icon fa-solid fa-magnifying-glass"></i>
+                </div>
+
+                <div class="nation-options">
+                    <ul>
+                        <li>VN
+                            <i class="fa-solid fa-chevron-down"></i>
+                            <ul class="nation-list">
+                                <li style="border-bottom: 0.3px solid #ddd;"><a href="#">VN</a></li>
+                                <li><a href="#">EN</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="contact-btn"><a style="color: #fff;" href="https://tingtong.vn/lien-he/">Liên hệ</a></div>
+
+                <!-- Sidebar Toggle Button -->
+                <label for="sidebar-toggle-checkbox" class="sidebar-toggle">
+                    <i class="fa-solid fa-bars"></i>
+                </label>
+            </div>
+        </header>
+
+        <!-- Sidebar -->
+         <aside class="sidebar">
+            <!-- Sidebar-header -->
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <img src="./assets/img/logo/logo-tingtong.png" alt="TingTong">
+                </div>
+
+                <label for="sidebar-toggle-checkbox"class="sidebar-close">
+                    <i class="fa-solid fa-xmark"></i>
+                </label>
+            </div>
+            
+            <!-- Sidebar-content -->
+            <div class="sidebar-content">
+                <ul class="sidebar-menu">
+                    <li class="sidebar-menu-item"><a href="#">Giới thiệu</a></li>
+                    <li class="sidebar-menu-item"><a href="#">Tin tức & sự kiện</a></li>
+                    <li class="sidebar-menu-item"><a href="#">Hợp tác</a></li>
+                    <li class="sidebar-menu-item"><a href="#">Liên hệ</a></li>
+                    <li class="sidebar-menu-item"><a href="#">Tuyển dụng</a></li>
+                </ul>
+
+                <div class="sidebar-language">
+                    <div class="lang-option active"><span>Tiếng Việt</span></div>
+                    <div class="lang-option"><span>English</span></div>
+                </div>
+            </div>
+         </aside>
+
+        <!-- Sidebar Overlay -->
+         <label for="sidebar-toggle-checkbox"  class="sidebar-overlay"></label>
+
+        <!-- Slider Container -->
+        <!-- <div id="slider-container">
+            Control Function
+            <input type="radio" name="slider" id="slide1" checked>
+            <input type="radio" name="slider" id="slide2">
+            <input type="radio" name="slider" id="slide3">
+
+            Slide
+            <div class="slides">
+                <div class="slide slide1">
+                    <img src="./assets/img/banner/banner-1.png" alt="Slide 1">
+                </div>
+                <div class="slide slide2">
+                    <img src="./assets/img/banner/banner-2.png" alt="Slide 2">
+                </div>
+                <div class="slide slide3">
+                    <img src="./assets/img/banner/banner-3.jpg" alt="Slide 3">
+                </div>
+            </div>
+
+            Control button
+            <div class="controls-btn">
+                <label for="slide1"><i class="fa-solid fa-circle-dot"></i></label>
+                <label for="slide2"><i class="fa-solid fa-circle-dot"></i></label>
+                <label for="slide3"><i class="fa-solid fa-circle-dot"></i></label>
+            </div>
+        </div> -->
+
+        <div class="slider">
+            <div class="slider-track">
+                <img src="./assets/img/banner/banner-1.png" alt="Slide 1" class="slider-item">
+                <img src="./assets/img/banner/banner-2.png" alt="Slide 2" class="slider-item">
+                <img src="./assets/img/banner/banner-3.jpg" alt="Slide 3" class="slider-item">
+            </div>
+
+            <div class="slider-dots">
+                <div class="slider-dot"></div>
+                <div class="slider-dot"></div>
+                <div class="slider-dot"></div>
+            </div>
+
+            <div class="slider-btn prev-btn"><i class="fa-solid fa-circle-chevron-left"></i></div>
+            <div class="slider-btn next-btn"><i class="fa-solid fa-circle-chevron-right"></i></div>
+        </div>
+
+        <!-- Main-->
+        <main>
+            <!-- Main-content -->
+            <div class="main-content">
+
+                <!-- Search Filter -->
+                <div id="search-filter">
+                    <div class="search-group city-filter">
+                        <label>Thành phố</label>
+                        <select class="dropdown" id="city">
+                            <option value="all">Tất cả</option>
+                            <option value="hanoi">Hà Nội</option>
+                        </select>
+                    </div>
+
+                    <div class="search-group district-filter">
+                        <label>Quận/Huyện</label>
+                        <select class="dropdown" id="district">
+                            <option value="all">Tất cả</option>
+                            <option value="thanhtri">Huyện Hoài Đức</option>
+                            <option value="phuctho">Huyện Phúc Thọ</option>
+                            <option value="badinh">Quận Ba Đình</option>
+                            <option value="bactuliem">Quận Bắc Từ Liêm</option>
+                            <option value="caugiay">Quận Cầu Giấy</option>
+                            <option value="dongda">Quận Đống Đa</option>
+                            <option value="hadong">Quận Hà Đông</option>
+                            <option value="hoangmai">Quận Hoàng Mai</option>
+                            <option value="namtuliem">Quận Nam Từ Liêm</option>
+                            <option value="tayho">Quận Tây Hồ</option>
+                            <option value="thanhxuan">Quận Thanh Xuân</option>
+                        </select>
+                    </div>
+
+                    <div class="search-group price-filter">
+                        <label>Thành phố</label>
+                        <select class="dropdown" id="price">
+                            <option value="all">Tất cả</option>
+                            <option value="1-3">1 - 3 Triệu</option>
+                            <option value="3-5">3 - 5 Triệu</option>
+                            <option value="5-10">5 - 10 Triệu</option>
+                            <option value="10-40">10 - 40 Triệu</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </div>
+
+                <!-- Houses -->
+                <div id="houses-container">
+
+                    <ul class="house-lists">
+                        <li class="house-items">
+                            <div class="house-item">
+                                <div class="house-img">
+                                    <img src="./assets/img/houses/ct0151.jpg" alt="CT0151">
+                                </div>
+                                <div class="house-content">
+                                    <div class="house-district">Huyện Hoài Đức</div>
+                                    <div class="house-address">Di Ái, Xã Di Trạch, Huyện Hoài Đức, Hà Nội</div>
+                                    <div class="house-id">CT0151</div>
+                                    <div class="house-price">4.050.000đ
+                                        -
+                                        4.650.000đ</div>
+                                    <div class="house-status">Số phòng còn trống:
+                                        <span>13</span></div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="house-items">
+                            <div class="house-item">
+                                <div class="house-img">
+                                    <img src="./assets/img/houses/ct0145.jpg" alt="CT0145">
+                                </div>
+                                <div class="house-content">
+                                    <div class="house-district">Quận Bắc Từ Liêm
+                                    </div>
+                                    <div class="house-address">12 đường Cầu Diễn, Phường Minh Khai, Quận Bắc Từ Liêm, Hà Nội</div>
+                                    <div class="house-id">CT0145</div>
+                                    <div class="house-price">4.150.000đ
+                                        -
+                                        4.450.000đ</div>
+                                    <div class="house-status">Số phòng còn trống:
+                                        <span>11</span></div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="house-items">
+                            <div class="house-item">
+                                <div class="house-img">
+                                    <img src="./assets/img/houses/ct0083.jpg" alt="CT0083">
+                                </div>
+                                <div class="house-content">
+                                    <div class="house-district">Quận Nam Từ Liêm
+                                    </div>
+                                    <div class="house-address">Đình Thôn, Phường Mỹ Đình 1, Quận Nam Từ Liêm, Hà Nội</div>
+                                    <div class="house-id">CT0083</div>
+                                    <div class="house-price">4.950.000đ
+                                        -
+                                        5.750.000đ</div>
+                                    <div class="house-status">Số phòng còn trống:
+                                        <span>9</span></div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="house-items">
+                            <div class="house-item">
+                                <div class="house-img">
+                                    <img src="./assets/img/houses/ct0125.jpg" alt="CT0125">
+                                </div>
+                                <div class="house-content">
+                                    <div class="house-district">Quận Bắc Từ Liêm
+                                    </div>
+                                    <div class="house-address">Cầu Diễn, Phường Minh Khai, Quận Bắc Từ Liêm, Hà Nội</div>
+                                    <div class="house-id">CT0125</div>
+                                    <div class="house-price">4.650.000đ
+                                        -
+                                        4.750.000đ</div>
+                                    <div class="house-status">Số phòng còn trống:
+                                        <span>9</span></div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="house-items">
+                            <div class="house-item">
+                                <div class="house-img">
+                                    <img src="./assets/img/houses/ct0093.jpg" alt="CT0093">
+                                </div>
+                                <div class="house-content">
+                                    <div class="house-district">Quận Bắc Từ Liêm</div>
+                                    <div class="house-address">Cầu Diễn, Phường Phúc Diễn, Quận Bắc Từ Liêm, Hà Nội</div>
+                                    <div class="house-id">CT0093</div>
+                                    <div class="house-price">3.550.000đ
+                                        -
+                                        4.050.000đ</div>
+                                    <div class="house-status">Số phòng còn trống:
+                                        <span>8</span></div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="house-items">
+                            <div class="house-item">
+                                <div class="house-img">
+                                    <img src="./assets/img/houses/ct0149.png" alt="CT0149">
+                                </div>
+                                <div class="house-content">
+                                    <div class="house-district">Quận Thanh Xuân</div>
+                                    <div class="house-address">111 Nguyễn Xiển, Phường Hạ Đình, Quận Thanh Xuân, Hà Nội</div>
+                                    <div class="house-id">CT0149</div>
+                                    <div class="house-price">4.050.000đ
+                                        -
+                                        7.650.000đ</div>
+                                    <div class="house-status">Số phòng còn trống:
+                                        <span>8</span></div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="house-items">
+                            <div class="house-item">
+                                <div class="house-img">
+                                    <img src="./assets/img/houses/ct0072.jpg" alt="CT0072">
+                                </div>
+                                <div class="house-content">
+                                    <div class="house-district">Quận Bắc Từ Liêm</div>
+                                    <div class="house-address">Cầu Diễn, Phường Phúc Diễn, Quận Bắc Từ Liêm, Hà Nội</div>
+                                    <div class="house-id">CT0072</div>
+                                    <div class="house-price">3.750.000đ
+                                        -
+                                        4.150.000đ</div>
+                                    <div class="house-status">Số phòng còn trống:
+                                        <span>8</span></div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="house-items">
+                            <div class="house-item">
+                                <div class="house-img">
+                                    <img src="./assets/img/houses/ct0095.jpg" alt="CT0095">
+                                </div>
+                                <div class="house-content">
+                                    <div class="house-district">Huyện Thanh Trì</div>
+                                    <div class="house-address">Tân Triều, Xã Tân Triều, Huyện Thanh Trì, Hà Nội</div>
+                                    <div class="house-id">CT0095</div>
+                                    <div class="house-price">3.950.000đ
+                                        -
+                                        4.950.000đ</div>
+                                    <div class="house-status">Số phòng còn trống:
+                                        <span>7</span></div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="house-items">
+                            <div class="house-item">
+                                <div class="house-img">
+                                    <img src="./assets/img/houses/ct0113.jpg" alt="CT0113">
+                                </div>
+                                <div class="house-content">
+                                    <div class="house-district">Quận Tây Hồ</div>
+                                    <div class="house-address">Phường Nhật Tân, Quận Tây Hồ, Hà Nội</div>
+                                    <div class="house-id">CT0113</div>
+                                    <div class="house-price">5.950.000đ
+                                        -
+                                        6.650.000đ</div>
+                                    <div class="house-status">Số phòng còn trống:
+                                        <span>6</span></div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="house-items">
+                            <div class="house-item">
+                                <div class="house-img">
+                                    <img src="./assets/img/houses/ct0126.jpg" alt="CT0126">
+                                </div>
+                                <div class="house-content">
+                                    <div class="house-district">Huyện Hoài Đức</div>
+                                    <div class="house-address">Lai Xá, Xã Di Trạch, Huyện Hoài Đức, Hà Nội</div>
+                                    <div class="house-id">CT0126</div>
+                                    <div class="house-price">3.050.000đ
+                                        -
+                                        3.450.000đ</div>
+                                    <div class="house-status">Số phòng còn trống:
+                                        <span>6</span></div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="house-items">
+                            <div class="house-item">
+                                <div class="house-img">
+                                    <img src="./assets/img/houses/ct0085.jpg" alt="CT0085">
+                                </div>
+                                <div class="house-content">
+                                    <div class="house-district">Huyện Thanh Trì</div>
+                                    <div class="house-address">Yên Xá, Xã Tân Triều, Huyện Thanh Trì, Hà Nội</div>
+                                    <div class="house-id">CT0085</div>
+                                    <div class="house-price">4.850.000đ
+                                        -
+                                        5.150.000đ</div>
+                                    <div class="house-status">Số phòng còn trống:
+                                        <span>5</span></div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="house-items">
+                            <div class="house-item">
+                                <div class="house-img">
+                                    <img src="./assets/img/houses/ct0129.jpg" alt="CT0129">
+                                </div>
+                                <div class="house-content">
+                                    <div class="house-district">Quận Nam Từ Liêm</div>
+                                    <div class="house-address">Miếu Đầm, Phường Mễ Trì, Quận Nam Từ Liêm, Hà Nội</div>
+                                    <div class="house-id">CT0129</div>
+                                    <div class="house-price">4.950.000đ
+                                        -
+                                        5.450.000đ</div>
+                                    <div class="house-status">Số phòng còn trống:
+                                        <span>5</span></div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="house-items">
+                            <div class="house-item">
+                                <div class="house-img">
+                                    <img src="./assets/img/houses/ct0130.png" alt="CT0130">
+                                </div>
+                                <div class="house-content">
+                                    <div class="house-district">Quận Nam Từ Liêm</div>
+                                    <div class="house-address">Miếu Đầm, Phường Mễ Trì, Quận Nam Từ Liêm, Hà Nội</div>
+                                    <div class="house-id">CT0130</div>
+                                    <div class="house-price">4.850.000đ
+                                        -
+                                        5.350.000đ</div>
+                                    <div class="house-status">Số phòng còn trống:
+                                        <span>5</span></div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="house-items">
+                            <div class="house-item">
+                                <div class="house-img">
+                                    <img src="./assets/img/houses/ct0068.jpg" alt="CT0068">
+                                </div>
+                                <div class="house-content">
+                                    <div class="house-district">Quận Bắc Từ Liêm</div>
+                                    <div class="house-address">Phú Diễn, Phường Phú Diễn, Quận Bắc Từ Liêm, Hà Nội</div>
+                                    <div class="house-id">CT0068</div>
+                                    <div class="house-price">4.250.000đ
+                                        -
+                                        4.750.000đ</div>
+                                    <div class="house-status">Số phòng còn trống:
+                                        <span>5</span></div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="house-items">
+                            <div class="house-item">
+                                <div class="house-img">
+                                    <img src="./assets/img/houses/ct0144.jpg" alt="CT0144">
+                                </div>
+                                <div class="house-content">
+                                    <div class="house-district">Quận Hà Đông</div>
+                                    <div class="house-address">35 Ngô Thì Sĩ, Phường Vạn Phúc, Quận Hà Đông, Hà Nội</div>
+                                    <div class="house-id">CT0144
+                                    </div>
+                                    <div class="house-price">3.450.000đ
+                                        -
+                                        3.550.000đ</div>
+                                    <div class="house-status">Số phòng còn trống:
+                                        <span>5</span></div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="house-items">
+                            <div class="house-item">
+                                <div class="house-img">
+                                    <img src="./assets/img/houses/ct0100.jpg" alt="CT0100">
+                                </div>
+                                <div class="house-content">
+                                    <div class="house-district">Quận Hoàng Mai</div>
+                                    <div class="house-address">Tam Trinh tổ 17, Phường Yên Sở, Quận Hoàng Mai, Hà Nội</div>
+                                    <div class="house-id">CT0100</div>
+                                    <div class="house-price">3.850.000đ
+                                        -
+                                        4.150.000đ</div>
+                                    <div class="house-status">Số phòng còn trống:
+                                        <span>5</span></div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="house-items">
+                            <div class="house-item">
+                                <div class="house-img">
+                                    <img src="./assets/img/houses/ct0139.jpg" alt="CT0139">
+                                </div>
+                                <div class="house-content">
+                                    <div class="house-district">Quận Nam Từ Liêm</div>
+                                    <div class="house-address">Phú Đô, Phường Mễ Trì, Quận Nam Từ Liêm, Hà Nội</div>
+                                    <div class="house-id">CT0139</div>
+                                    <div class="house-price">4.750.000đ
+                                        -
+                                        5.050.000đ</div>
+                                    <div class="house-status">Số phòng còn trống:
+                                        <span>5</span></div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="house-items">
+                            <div class="house-item">
+                                <div class="house-img">
+                                    <img src="./assets/img/houses/ct0079.jpeg" alt="CT0079">
+                                </div>
+                                <div class="house-content">
+                                    <div class="house-district">Quận Bắc Từ Liêm</div>
+                                    <div class="house-address">59 Văn Tiến Dũng, Phường Phúc Diễn, Quận Bắc Từ Liêm, Hà Nội</div>
+                                    <div class="house-id">CT0079</div>
+                                    <div class="house-price">5.550.000đ
+                                        -
+                                        6.550.000đ</div>
+                                    <div class="house-status">Số phòng còn trống:
+                                        <span>5</span></div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="house-items">
+                            <div class="house-item">
+                                <div class="house-img">
+                                    <img src="./assets/img/houses/ct0052.jpg" alt="CT0052">
+                                </div>
+                                <div class="house-content">
+                                    <div class="house-district">Huyện Thanh Trì</div>
+                                    <div class="house-address">Đường Kim Giang, Thôn Nội, Xã Thanh Liệt, Huyện Thanh Trì, Hà Nội</div>
+                                    <div class="house-id">CT0052</div>
+                                    <div class="house-price">3.950.000đ
+                                        -
+                                        4.450.000đ</div>
+                                    <div class="house-status">Số phòng còn trống:
+                                        <span>4</span></div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="house-items">
+                            <div class="house-item">
+                                <div class="house-img">
+                                    <img src="./assets/img/houses/ct0121.jpg" alt="CT0121">
+                                </div>
+                                <div class="house-content">
+                                    <div class="house-district">Huyện Thanh Trì</div>
+                                    <div class="house-address">Khu Đấu Giá Yên Xá, Xã Tân Triều, Huyện Thanh Trì, Hà Nội</div>
+                                    <div class="house-id">CT0121</div>
+                                    <div class="house-price">4.150.000đ
+                                        -
+                                        4.650.000đ</div>
+                                    <div class="house-status">Số phòng còn trống:
+                                        <span>4</span></div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+
+                </div>
+
+                <div class="houses-continue">
+                    <span>Tiếp tục khám phá danh mục toà nhà</span>
+                    <div class="continue-btn" style="min-width: 130px; line-height: 30px;">Xem thêm</div>
+                </div>
+            </div>
+        </main>
+
+        <div class="news-container" id="news-container">
+            <div class="news-box">   
+                <div class="news-header">
+                    <div class="news-title">Tin tức & sự kiện</div>
+                    <div class="news-nav">
+                        <ul>
+                            <li class="news-nav-link"><a href="#">Dự án</a></li>
+                            <li class="news-nav-link"><a href="#">Hoạt động công đoàn</a></li>
+                            <li class="news-nav-link"><a href="#">Kiến thức</a></li>
+                            <li class="news-nav-link"><a href="#">Tin nổi bật</a></li>
+                            <li class="news-nav-link active"><a href="#">Tất cả</a></li>
+                        </ul>
+                    </div>
+                </div>
+    
+                <div class="news-posts">
+                    <section class="news-item">
+                        <div class="img-item news-big-img">
+                            <img src="./assets/img/news/news-big-1.jpg" alt="">
+                        </div>
+                        <article class="news-content-big">
+                            <div class="content-info big-content-info">
+                                <ul>
+                                    <li class="article-info">Tin nổi bật</li>
+                                    <li class="article-info">16/05/2025</li>
+                                </ul>
+                            </div>
+                            <div class="content-title big-content-title">Căn hộ CCMN TingTong 131: Lựa chọn lý tưởng cho sinh viên Bắc Từ Liêm</div>
+                            <div class="content-describe big-content-describe">Rất nhiều bạn sinh viên mong muốn có một nơi sống tiện nghi, thoải mái và thuận tiện di chuyển đến trường học. Căn hộ CCMN TingTong 131 tại Phương</div>
+                        </article>
+                    </section>
+    
+                    <section class="news-item">
+                        <div class="img-item news-big-img">
+                            <img src="./assets/img/news/news-big-2.jpg" alt="">
+                        </div>
+                        <article class="news-content-big">
+                            <div class="content-info big-content-info">
+                                <ul>
+                                    <li class="article-info">Kiến thức</li>
+                                    <li class="article-info">12/05/2025</li>
+                                </ul>
+                            </div>
+                            <div class="content-title big-content-title">Hệ thống camera an ninh tại TingTong: Đảm bảo an toàn cho cư dân 24/7</div>
+                            <div class="content-describe big-content-describe">An toàn luôn là một yếu tố quan trọng đối với bất kỳ khu dân cư nào, và TingTong không phải là ngoại lệ. Với hơn 150 tòa nhà và</div>
+                        </article>
+                    </section>
+    
+                    <section class="news-item">
+                        <div class="img-item news-small-img">
+                            <img src="./assets/img/news/news-small-1.jpg" alt="">
+                        </div>
+                        <article class="news-content-small">
+                            <div class="content-info small-content-info">
+                                <ul>
+                                    <li class="article-info">Kiến thức</li>
+                                    <li class="article-info">08/05/2025</li>
+                                </ul>
+                            </div>
+                            <div class="content-title small-content-title">Quy định về an toàn PCCC tại nhà để xe TingTong</div>
+                        </article>
+                    </section>
+    
+                    <section class="news-item">
+                        <div class="img-item news-small-img">
+                            <img src="./assets/img/news/news-small-2.jpg" alt="">
+                        </div>
+                        <article class="news-content-small">
+                            <div class="content-info small-content-info">
+                                <ul>
+                                    <li class="article-info">Dự án</li>
+                                    <li class="article-info">06/05/2025</li>
+                                </ul>
+                            </div>
+                            <div class="content-title small-content-title">Căn hộ TingTong 130 Miếu Đầm: Không gian sống hiện đại, tiện nghi và an toàn</div>
+                        </article>
+                    </section>
+    
+                    <section class="news-item">
+                        <div class="img-item news-small-img">
+                            <img src="./assets/img/news/news-small-3.jpg" alt="">
+                        </div>
+                        <article class="news-content-small">
+                            <div class="content-info small-content-info">
+                                <ul>
+                                    <li class="article-info">Kiến thức</li>
+                                    <li class="article-info">02/05/2025</li>
+                                </ul>
+                            </div>
+                            <div class="content-title small-content-title">Cổng khóa vân tay tại TingTong: Giải pháp an ninh vượt trội cho cư dân</div>
+                        </article>
+                    </section>
+    
+                    <section class="news-item">
+                        <div class="img-item news-small-img">
+                            <img src="./assets/img/news/news-small-4.jpg" alt="">
+                        </div>
+                        <article class="news-content-small">
+                            <div class="content-info small-content-info">
+                                <ul>
+                                    <li class="article-info">Dự án</li>
+                                    <li class="article-info">29/04/2025</li>
+                                </ul>
+                            </div>
+                            <div class="content-title small-content-title">Giới thiệu tòa nhà TingTong 125 Cầu Diễn dành cho sinh viên Bắc Từ Liêm</div>
+                        </article>
+                    </section>
+    
+                    <section class="news-item">
+                        <div class="img-item news-small-img">
+                            <img src="./assets/img/news/news-small-5.jpg" alt="">
+                        </div>
+                        <article class="news-content-small">
+                            <div class="content-info small-content-info">
+                                <ul>
+                                    <li class="article-info">Kiến thức</li>
+                                    <li class="article-info">25/04/2025</li>
+                                </ul>
+                            </div>
+                            <div class="content-title small-content-title">5 Quy Trình Quản Lý Vận Hành Tòa Nhà Chung Cư Không Thể Thiếu</div>
+                        </article>
+                    </section>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="footer-logo">
+                <img width="200px" src="./assets/img/logo/logo-tingtong.png" alt="Tingtong">
+                <div class="sub-logo">TingTong cung cấp đa dạng loại phòng, bao gồm phòng trọ, chung cư mini và căn hộ dịch vụ.</div>
+            </div>
+            <div class="footer-information footer-about">
+                <span>Khám phá</span>
+                <ul>
+                    <li class="footer-nav"><a href="#">Giới thiệu</a></li>
+                    <li class="footer-nav"><a href="#">Dịch vụ</a></li>
+                    <li class="footer-nav"><a href="#">Tuyển dụng</a></li>
+                    <li class="footer-nav"><a href="#">Liên hệ</a></li>
+                </ul>
+            </div>
+            <div class="footer-information footer-service">
+                <span>Cảm hứng</span>
+                <ul>
+                    <li class="footer-nav"><a href="#">Kiến trúc
+                    </a></li>
+                    <li class="footer-nav"><a href="#">Phong cách</a></li>
+                    <li class="footer-nav"><a href="#">Tin tức</a></li>
+                    <li class="footer-nav"><a href="#">Dự án</a></li>
+                </ul>
+            </div>
+            <div class="footer-information footer-contact">
+                <span>Liên hệ</span>
+                <ul>
+                    <li class="footer-contact"><span>Trụ sở chính: </span><a href="#">Số 5, ngõ 59 Lê Đức Thọ, Nam Từ Liêm, Hà Nội</a></li>
+                    <li class="footer-contact"><span>Hotline: </span><a href="#">1900 888 622</a></li>
+                    <li class="footer-contact"><span>Email: </span><a href="#">tapdoantingtong@gmail.com</a></li>
+                </ul>
+            </div>
+        </footer>
+    </div>
+
+    <script lang="javascripts" src="./assets/js/main.js"></script>
+</body>
+
+</html>
