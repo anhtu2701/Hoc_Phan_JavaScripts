@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thêm sinh viên vào danh sách</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="form-section">
+            <h2 class="form-title">Thêm sinh viên vào danh sách</h2>
+            <div class="success-message" id="successMessage">Thêm sinh viên thành công!</div>
+            <form id="studentForm">
+                <div class="form-group">
+                    <label for="maSinhVien">Mã sinh viên</label>
+                    <input type="text" id="maSinhVien" placeholder="Nhập mã sinh viên (VD: UDU001)">
+                    <div class="error" id="errorMaSV">Vui lòng nhập mã sinh viên</div>
+                </div>
+                <div class="form-group">
+                    <label for="hoTen">Họ tên</label>
+                    <input type="text" id="hoTen" placeholder="Nhập họ tên">
+                    <div class="error" id="errorHoTen">Vui lòng nhập họ tện</div>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="Nhập địa chỉ Email">
+                    <div class="error" id="errorEmail">Vui lòng nhập email hợp lệ!</div>
+                </div>
+                <div class="form-group">
+                    <label for="soDienThoai">Số điện thoại</label>
+                    <input type="tel" id="soDienThoai" placeholder="Nhập số điện thoại">
+                    <div class="error" id="errorSDT">Vui lòng nhập số điện thoại</div>
+                </div>
+                <button type="button" class="btn-add" id="actionButton" onclick="handleFormSubmit()">Thêm</button>
+            </form>
+        </div>
+    </div>
+    
+    <div class="table-section">
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Mã SV</th>
+                        <th>Họ tên</th>
+                        <th>Email</th>
+                        <th>SĐT</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody id="danhSachSinhVien">
+                    <!-- Pass -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <script lang="javascripts" src="main.js"></script>
+</body>
+</html>
