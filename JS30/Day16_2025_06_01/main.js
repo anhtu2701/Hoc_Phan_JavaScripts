@@ -19,7 +19,7 @@ const products = [
 let editIndex = -1;
 
 function formatCurrency(value) {
-    return value.toLocale('vi-VN') + 'VNĐ';
+    return value.toLocaleString('vi-VN') + 'VNĐ';
 }
 
 function renderTable() {
@@ -36,13 +36,15 @@ function renderTable() {
                 <td>${product.quantity}</td>
                 <td>${formatCurrency(product.totalValue())}</td>
                 <td>
-                <button id="btnEdit" onclick="starEdit(${index})">Sửa</button>
-                <button id="btnDelete" onclick="deleteProduct(${index})">Thêm</button>
+                <button id="btnEdit" onclick="startEdit(${index})">Sửa</button>
+                <button id="btnDelete" onclick="deleteProduct(${index})">Xóa</button>
                 </td>
             </tr>
         `;
-        productTable += tr;
+        productTable.innerHTML += tr;
     });
+
+    updateSummary()
 }
 
 function updateSummary() {
@@ -58,3 +60,83 @@ function updateSummary() {
     document.getElementById('mostExpensiveProduct').textContent = `${maxPriceProduct.name} (${formatCurrency(maxPriceProduct.price)})`;
 }
 
+
+// Function of BtnAdd
+document.getElementById('btnAdd').addEventListener('click', ()=> {
+    const id = Number(document.getElementById('inputID').value.trim());
+    const name = document.getElementById('inputName').value.trim();
+    const price = Number(document.getElementById('inputPrice').value.trim());
+    const quantity = Number(document.getElementById('inputQuantity').value.trim());
+
+    // Try except error
+    const error = validateInputs(id, name, price, quantity);
+    if (error) {
+        document.getElementById('errorMessage').textContent = error;
+        return;
+    }
+
+    // if you are editing 
+    if (editIndex !== -1) {
+        if (products.some((product, index) => product.id === id && index !== editIndex)) {
+            alert('ID đã tồn tại. Vui lòng chọn ID khác.')
+            return;
+        }
+        products[editIndex].id = id;
+        products[editIndex].name = name;
+        products[editIndex].price = price;
+        products[editIndex].quantity = quantity;
+
+        clearInputs();
+        renderTable();
+    }
+
+    // Add Product
+    if (products.some(product => product.id === id)) {
+        alert('ID đã tồn tại. Vui lòng chọn ID khác.')
+        return;
+    }
+    products.push(new Product(id, name, price, quantity));
+    clearInputs();
+    renderTable();
+});
+
+function startEdit(index) {
+    const product = products[index];
+    document.getElementById('inputID').value = product.id;
+    document.getElementById('inputName').value = product.name;
+    document.getElementById('inputPrice').value = product.price;
+    document.getElementById('inputQuantity').value = product.quantity;
+    editIndex = index;
+    document.getElementById('btnAdd').textContent = 'Cập nhật';
+    document.getElementById('errorMessage').textContent = '';
+}
+
+function deleteProduct(index) {
+    if (confirm('Bạn có chắc muốn xóa sản phẩm này?')) {
+        products.splice(index, 1);
+        clearInputs();
+        renderTable();
+    }
+}
+
+function validateInputs(id, name, price, quantity) {
+    if (!id || !name || !price || !quantity) {
+        return "Vui lòng nhập đầy đủ thông tin."
+    }
+    if (price <= 0 || quantity <= 0) {
+        return 'Giá và số lượng phải là 1 số lớn hơn 0.'
+    }
+    return '';
+}
+
+function clearInputs() {
+    editIndex = -1;
+    document.getElementById('inputID').value = '';
+    document.getElementById('inputName').value = '';
+    document.getElementById('inputPrice').value = '';
+    document.getElementById('inputQuantity').value = '';
+    document.getElementById('btnAdd').textContent = 'Thêm';
+    document.getElementById('errorMessage').textContent = '';
+}
+
+renderTable();
