@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Sản Phẩm</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Quản Lý Sản Phẩm</h1>
+
+    <div class="search-form">
+        <input id='searchID' type="number" placeholder="Nhập mã sản phẩm">
+        <button id="btnSearch">Tìm kiếm</button>
+    </div>
+    
+    <div class="input-section">
+        <input id="inputID" type="number" placeholder="ID">
+        <input id="inputName" type="text" placeholder="Tên sản phẩm">
+        <input id="inputPrice" type="number" placeholder="Giá (VNĐ)">
+        <input id="inputQuantity" type="number" placeholder="Số lượng">
+        <button id="btnAdd">Thêm</button>
+    </div>
+
+    <div class="error-message" id="errorMessage"></div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tên</th>
+                <th>Giá</th>
+                <th>Số lượng</th>
+                <th>Tổng giá trị</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody id="productTable">
+            <!-- Pass -->
+        </tbody>
+    </table>
+
+    <p><b>Tổng giá trị tồn kho: <span id="totalValue">0 VNĐ</span></b></p>
+    <p><b>Sản phẩm đắt nhất: <span id="mostExpensiveProduct">Không có</span></b></p>
+
+
+    <script lang="javascript" src="main.js"></script>
+</body>
+</html>

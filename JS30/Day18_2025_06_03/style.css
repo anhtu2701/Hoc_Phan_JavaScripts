@@ -1,0 +1,90 @@
+* {
+    padding: 0;
+    margin: 0;  
+    box-sizing: border-box;
+}
+
+body {
+    height: 100vh;
+    padding: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.input-section {
+    margin-top: 20px;
+    display: flex;
+    gap: 15px;
+}
+
+input, button {
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 20px;
+    outline: none;
+    transition: transform 0.3s ease;
+}
+
+input:hover, 
+button:hover {
+    transform: translateY(-2px);
+}
+
+.search-form {
+    margin-top: 20px;
+    display: flex;
+    gap: 15px;
+}
+
+#btnSearch {
+    border: none;
+    background-color: rgb(38, 140, 249);
+    color: #fff;
+}
+
+.error-message {
+    color: red;
+    margin-top: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
+th {
+    background-color: #4e83ffc0;
+}
+
+table tbody tr:nth-child(odd) {
+    background-color: #f2f2f2;
+}
+
+#btnAdd {
+    color: #fff;
+    background-color: rgb(83, 211, 83);
+    border: none;
+}
+
+#btnEdit {
+    color: #000;
+    background-color: orange;
+    border: none;
+}
+
+#btnDelete {
+    color: #fff;
+    background-color: red;
+    border: none;
+    margin-left: 10px;
+}
+
+p {
+    margin-top: 10px;
+}
