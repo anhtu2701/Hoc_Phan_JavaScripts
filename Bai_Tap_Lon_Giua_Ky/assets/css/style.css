@@ -84,12 +84,11 @@ header {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    transition: width var(--transition-speed) ease;
+    transition: width 0.5s ease;
 }
 
 .nav-link a:hover::after {
     width: 100%;
-    transition: width 0.5s;
 }
 
 .header-right {
@@ -366,64 +365,6 @@ header {
 }
 
 /* Slider-container */
-/* #slider-container {
-    width: 100%;
-    position: relative;
-    overflow: hidden;
-    margin-top: 80px;
-}
-
-#slider-container input[type="radio"] {
-    display: none;
-}
-
-#slider-container .slides {
-    display: flex;   
-    transition: transform 1s ease-in-out;
-}
-
-#slider-container .slide {
-    width: 100%;
-}
-
-#slider-container .slide img {
-    width: 100vw;
-    height: 43.025676613vw;
-}
-
-#slide1:checked ~ .slides {
-    transform: translateX(0);
-}
-
-#slide2:checked ~ .slides {
-    transform: translateX(-100%);
-}
-#slide3:checked ~ .slides {
-    transform: translateX(-200%);
-}
-
-#slider-container .controls-btn {
-    position: absolute;
-    bottom: 10px;
-    left: 50%;
-    display: flex;
-    justify-content: space-between;
-    transform: translateX(-50%);
-    color: #ccc;
-}
-
-#slider-container .controls-btn label {
-    margin: 0 5px;
-    cursor: pointer;
-    line-height: 20px;
-    font-size: 10px;
-}
-
-.controls-btn label:hover i {
-    font-size: 20px;
-    transition: 0.3s ease;
-} */
-
 .slider {
     width: 100%;
     position: relative;
@@ -982,6 +923,61 @@ footer {
 .footer-contact a:hover {
     color: var(--yellow-color);
 }
+
+.footer-nav a {
+    position: relative;
+    color: #000;
+}
+
+.footer-nav a::after {
+    content: '';
+    display: block;
+    position: absolute;
+    margin-top: 2px;
+    width: 0;
+    height: 1.5px;
+    background-color: var(--default-color);
+    left: 50%;
+    transform: translateX(-50%);
+    transition: width 0.5s ease ;
+}
+
+.footer-nav a:hover::after {
+    width: 100%;
+}
+
+/* Back to top */
+.back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: var(--default-color);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 1000;
+    transition: all var(--transition-speed) ease;
+}
+
+.back-to-top.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.back-to-top:hover {
+    background-color: var(--yellow-color);
+    transform: scale(1.2);
+}
+
+
 
 /* Responsive */
 @media (max-width: 1340px) {
