@@ -216,23 +216,26 @@ header {
 
 /* Contacts Button */
 .contact-btn,
-.continue-btn {
+.continue-btn,
+.login-btn {
     position: relative;
     min-width: 100px;
     line-height: 36px;
     white-space: nowrap;
     text-align: center;
     border-radius: 30px;
-    background-color: var(--default-color);
+    background: var(--default-color);
     color: #fff;
     z-index: 0;
     padding: 6px;
     flex-shrink: 0;
     cursor: pointer;
+    border: none;
 }
 
 .contact-btn::before,
-.continue-btn::before {
+.continue-btn::before,
+.login-btn::before {
     content: "";
     position: absolute;
     width: 0;
@@ -241,14 +244,16 @@ header {
     top: 0;
     left: 50%;
     transform: translateX(-50%);
-    background-color: var(--yellow-color);
+    background: var(--yellow-color);
     z-index: -1;
+    border: none;
+    transition: background 0.3s ease, width 0.3s ease;
 }
 
 .contact-btn:hover::before,
-.continue-btn:hover::before {
+.continue-btn:hover::before,
+.login-btn:hover::before {
     width: 100%;
-    transition: all 0.3s ease;
 }
 
 /* Sidebar */
