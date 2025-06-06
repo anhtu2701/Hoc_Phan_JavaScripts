@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Set Cookie Example</title>
+</head>
+<body>
+    <button onclick="setUserCookie()">Lưu cookie</button>
+    <button onclick="showCookies()">Hiển thị cookies</button>
+
+    <script type="text/javascript">
+        // Hàm setCookie
+        function setCookie(cname, cvalue, cmin) {
+            const d = new Date();
+            d.setTime(d.getTime() + (cmin * 60 * 1000));  // Tính thời gian hết hạn
+            let expires = "expires=" + d.toUTCString();  // Định dạng thời gian hết hạn
+            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";  // Lưu cookie
+        }
+
+        // Hàm lưu tên người dùng vào cookie
+        function setUserCookie() {
+            const username = "JohnDoe";  // Giá trị cookie (tên người dùng)
+            setCookie("username", username, 5);  // Lưu cookie "username" với giá trị "JohnDoe", hết hạn sau 5 phút
+            alert("Cookie đã được lưu!");  // Thông báo
+        }
+
+        // Hàm hiển thị tất cả cookies
+        function showCookies() {
+            console.log("Cookies hiện tại: " + document.cookie);  // In tất cả cookies ra console
+            alert("Kiểm tra console để xem cookie!");
+        }
+    </script>
+</body>
+</html>

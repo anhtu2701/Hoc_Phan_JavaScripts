@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>UDU</title>
+</head>
+<body>
+    <p id="result">0</p>
+    <script type="text/javascript">
+        var result = document.getElementById('result');
+        var i = 1;
+        var t = setInterval(function(){
+            result.innerText = i;
+            i++; 
+        },500);
+        clearInterval(t);
+    </script>
+</body>
+</html>
+
+
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>UDU</title>
+</head>
+<body>
+    <div>Đợi 3 giây để xem kết quả</div>
+    <script type="text/javascript">   
+        // setTimeout(function(){
+        //    alert('Xin chào, mình là UDU');
+        // },3000);
+
+        var t= setTimeout(function(){
+        alert('Xin chào, mình là UDU');
+        },3000);
+        clearTimeout(t);
+
+// Bạn sẽ không thấy alert được chạy
+    </script>
+</body>
+</html> -->

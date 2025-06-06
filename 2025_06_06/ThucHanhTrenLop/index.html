@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<body>
+	<p id="demo"></p>
+
+    <div>Click vào button để xem kết quả</div>
+    <button type="button" onclick="openW()">Mở cửa sổ</button>
+
+    <div>Click vào button để xem kết quả</div>
+    <button type="button" onclick="openW1()">Mở cửa sổ PTIT</button>
+    <button type="button" onclick="openW2()">Mở cửa sổ DANTRI</button>
+    <button type="button" onclick="closeW1()">Đóng cửa sổ PTIT</button>
+    <button type="button" onclick="closeW2()">Đóng cửa sổ DANTRI</button>
+
+
+    <div>Click vào button để xem kết quả</div>
+    <button type="button" onclick="openW()">Mở cửa sổ PTIT</button>
+    <button type="button" onclick="moveW()">Di chuyển</button>
+
+
+    <div>Click vào button để xem kết quả</div>
+    <button type="button" onclick="openW()">Mở cửa sổ PTIT</button>
+    <button type="button" onclick="resizeW()">Di chuyển</button>
+	<script>
+        // Lấy thông số của cử sổ trình duyệt
+		// var width = window.innerWidth
+		// || document.documentElement.clientWidth
+		// || document.body.clientWidth;
+
+		// var height = window.innerHeight
+		// || document.documentElement.clientHeight
+		// || document.body.clientHeight;
+
+		// var x = document.getElementById("demo");
+		// x.innerHTML = "Chiều cao rộng trình duyệt: " + width + ", Chiều cao của trình duyệt: " + height + ".";
+
+        // Mở một cửa sổ mới
+    //     function openW() {
+    //     window.open('https://portal.ptit.edu.vn/', 'ptit', 'width=500,height=600');
+    //     return false;
+    // }
+
+    // Đóng một của sổ
+        function openW1() {
+            ptit = window.open('https://portal.ptit.edu.vn/', 'ptit', 'width=500,height=600,left=100px,top=20px',false);
+            return false;
+        }
+
+        function openW2() {
+            dantri = window.open('https://dantri.com.vn/', 'dantri', 'width=500,height=600,left=100px,top=20px',false);
+            return false;
+        }
+
+        function closeW2() {
+            dantri.close();
+        }
+
+        function closeW1() {
+            ptit.close();
+        }
+
+        // Di chuyen trinh duyet
+    //     function openW() {
+    //     ptit = window.open('', '', 'width=300,height=200');
+    // }
+
+    //     function moveW() {
+    //             ptit.moveTo(100,200);
+    //             ptit.focus();
+    // }
+
+    // Thay đổi kích thước trình duyệt
+    function openW() {
+        ptit = window.open('', '', 'width=300,height=200');
+    }
+
+    function resizeW() {
+            ptit.resizeTo(500,700);
+            ptit.focus();
+		}
+
+
+	</script>
+
+</body>
+</html>
