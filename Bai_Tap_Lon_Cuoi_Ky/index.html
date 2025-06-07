@@ -4,20 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tingtong</title>
+    <title>Trang chủ TingTong</title>
     <link rel="stylesheet" href="./assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link rel="icon" type="img/png" sizes="144x144" href="./assets/img/logo/logo-tingtong.png">
+    <link rel="icon" href="https://tingtong.vn/wp-content/uploads/2024/08/cropped-logo-hoang-nguyen-1-1-1-32x32.png" sizes="32x32">
+    <link rel="icon" href="https://tingtong.vn/wp-content/uploads/2024/08/cropped-logo-hoang-nguyen-1-1-1-192x192.png" sizes="192x192">
 </head>
 
 <body>
     <div id="container">
-        <!-- Checkbox hidden để toggle sidebar -->
-         <input type="checkbox" id="sidebar-toggle-checkbox" class="sidebar-checkbox">
-
         <!-- Back to top button -->
         <div class="back-to-top">
             <i class="fa-solid fa-arrow-up"></i>
@@ -67,9 +65,9 @@
                 <div class="login-btn"><a style="color: #fff;" href="login.html">Đăng nhập</a></div>
 
                 <!-- Sidebar Toggle Button -->
-                <label for="sidebar-toggle-checkbox" class="sidebar-toggle">
+                <button class="sidebar-toggle" id="sidebarShow">
                     <i class="fa-solid fa-bars"></i>
-                </label>
+                </button>
             </div>
         </header>
 
@@ -81,9 +79,9 @@
                     <img src="./assets/img/logo/logo-tingtong.png" alt="TingTong">
                 </div>
 
-                <label for="sidebar-toggle-checkbox"class="sidebar-close">
+                <button class="sidebar-close" id="sidebarHidden">
                     <i class="fa-solid fa-xmark"></i>
-                </label>
+                </button>
             </div>
             
             <!-- Sidebar-content -->
@@ -96,6 +94,10 @@
                     <li class="sidebar-menu-item"><a href="#">Tuyển dụng</a></li>
                 </ul>
 
+                <div class="sidebar-login">
+                    <a href="./login.html">Đăng nhập</a>
+                </div>
+
                 <div class="sidebar-language">
                     <div class="lang-option active"><span>Tiếng Việt</span></div>
                     <div class="lang-option"><span>English</span></div>
@@ -104,8 +106,9 @@
          </aside>
 
         <!-- Sidebar Overlay -->
-         <label for="sidebar-toggle-checkbox"  class="sidebar-overlay"></label>
+         <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
+        <!-- Slider -->
         <div class="slider">
             <div class="slider-track">
                 <img src="./assets/img/banner/banner-1.png" alt="Slide 1" class="slider-item">
