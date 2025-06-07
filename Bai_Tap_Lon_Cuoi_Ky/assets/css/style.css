@@ -233,6 +233,7 @@ header {
     flex-shrink: 0;
     cursor: pointer;
     border: none;
+    overflow: hidden;
 }
 
 .contact-btn::before,
@@ -241,21 +242,23 @@ header {
     content: "";
     position: absolute;
     width: 0;
-    height: 100%;
-    border-radius: 30px;
-    top: 0;
+    height: 0;
+    border-radius: 50%;
+    background: var(--default-color);
+    top: 50%;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translate(-50%, -50%);
     background: var(--yellow-color);
     z-index: -1;
     border: none;
-    transition: background 0.3s ease, width 0.3s ease;
+    transition: width 0.7s ease; height: 0.7s ease;
 }
 
 .contact-btn:hover::before,
 .continue-btn:hover::before,
 .login-btn:hover::before {
-    width: 100%;
+    width: 200px;
+    height: 200px;
 }
 
 /* Sidebar */
@@ -1001,9 +1004,16 @@ footer {
 
 .contacts-method {
     transition: all var(--transition-speed) ease;
+    border: none;
+    border-radius: 10px;
 }
 
-.contacts-method:hover {
+.contacts-method img {
+    transition: all var(--transition-speed) ease;
+    border-radius: 10px;
+}
+
+.contacts-method:hover img {
     transform: scale(1.2);
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
 }
@@ -1190,4 +1200,16 @@ footer {
     .footer-contact {
         grid-area: contact;
     }
+}
+
+/* House Fade-in */
+.fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity .6s ease-in-out, transform .6s ease-in-out ;
+}
+
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
 }

@@ -77,4 +77,24 @@ document.addEventListener('DOMContentLoaded', function () {
     sidebarShowBtn.addEventListener('click',sidebarOpen);
     sidebarHiddenBtn.addEventListener('click',sidebarRemove);
     sidebarOverlay.addEventListener('click',sidebarOpen);
+
+    // Fade-in House
+    const fadeElements = document.querySelectorAll('.fade-in');
+
+    function checkFade() {
+        fadeElements.forEach(element => {
+            const elementTop = element.getBoundingClientRect().top;
+            const elementVisible = 150;
+
+            if (elementTop < window.innerHeight - elementVisible) {
+                element.classList.add('visible');
+            }
+        });
+    }
+
+    checkFade();
+    window.addEventListener('scroll', checkFade);
+
+    // Render More House
+    
 });
