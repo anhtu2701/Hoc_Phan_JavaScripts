@@ -42,11 +42,12 @@ document.addEventListener('DOMContentLoaded', function () {
     
     // Back to top button
     const backToTopBtn = document.querySelector('.back-to-top');
+    const sideMenuContacts = document.querySelector('.side-menu-contacts');
     window.addEventListener('scroll', () => {
         if (window.pageYOffset > 300) {
-            backToTopBtn.classList.add('show');
+            sideMenuContacts.classList.add('show');
         } else {
-            backToTopBtn.classList.remove('show');
+            sideMenuContacts.classList.remove('show');
         }
     });
     
