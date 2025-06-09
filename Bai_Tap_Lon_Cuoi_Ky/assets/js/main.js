@@ -96,5 +96,28 @@ document.addEventListener('DOMContentLoaded', function () {
     window.addEventListener('scroll', checkFade);
 
     // Render More House
+    const continueBtn = document.querySelector('.continue-btn');
+    const housesContainer = document.querySelector('.house-lists');
+    const housesContinueElement = document.querySelector('.houses-continue');
+    let houseIndex = 8;
+    const itemsPerClick = 8;
+
+    function renderMoreHouses() {
+        const allHouses = housesContainer.querySelectorAll('.house-items');
+        endIndex = Math.min(houseIndex + itemsPerClick,allHouses.length );
+
+        for (let i = houseIndex; i < endIndex; i++) {
+            allHouses[i].style.display = 'block';
+            setTimeout( () => {
+                allHouses[i].classList.add('visible');
+            }, 50 * (i - houseIndex));
+        }
     
+        houseIndex = endIndex;
+    
+        if (houseIndex >= allHouses.length) {
+            housesContinueElement.style.display = 'none';
+        }
+    }
+    continueBtn.addEventListener('click', renderMoreHouses);
 });

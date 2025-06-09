@@ -234,31 +234,30 @@ header {
     cursor: pointer;
     border: none;
     overflow: hidden;
+    transition: all 0.3s ease;
 }
 
 .contact-btn::before,
 .continue-btn::before,
 .login-btn::before {
-    content: "";
+    content: '';
     position: absolute;
+    top: 50%;
+    left: 50%;
     width: 0;
     height: 0;
     border-radius: 50%;
-    background: var(--default-color);
-    top: 50%;
-    left: 50%;
     transform: translate(-50%, -50%);
     background: var(--yellow-color);
     z-index: -1;
-    border: none;
-    transition: width 0.7s ease; height: 0.7s ease;
+    transition: width 0.6s ease, height 0.6s ease;
 }
 
 .contact-btn:hover::before,
 .continue-btn:hover::before,
 .login-btn:hover::before {
-    width: 200px;
-    height: 200px;
+    width: 300px;
+    height: 300px;
 }
 
 /* Sidebar */
@@ -571,10 +570,15 @@ main {
     justify-content: center;
 }
 
-#houses-container .house-items {
+.house-lists .house-items {
     flex: 0 0 calc(25% - 25px);
     min-width: 280px;
     margin-bottom: 20px;
+    display: block;
+}
+
+.house-lists .house-items:nth-child(n+9) {
+    display: none;
 }
 
 #houses-container .house-item {
@@ -585,6 +589,7 @@ main {
     gap: 20px;
     border: none;
 }
+
 
 #houses-container .house-img {
     width: 100%;
@@ -985,6 +990,7 @@ footer {
     visibility: hidden;
     transition: all var(--transition-speed) ease;
     cursor: pointer;
+    transform: translateX(calc(100% + 30px));
 }
 
 
@@ -1021,6 +1027,7 @@ footer {
 .side-menu-contacts.show {
     opacity: 1;
     visibility: visible;
+    transform: translateX(0);
 }
 
 .back-to-top:hover {
