@@ -1,4 +1,23 @@
 document.addEventListener('DOMContentLoaded', function () {
+    // Scroll Header Effects
+    const header = document.querySelector('header');
+    let lastScrollDirection = 0;
+
+    window.addEventListener('scroll', () => {
+        const currentScrollDirection = window.pageYOffset;
+
+        if (currentScrollDirection > lastScrollDirection && currentScrollDirection > 100) {
+            header.classList.add('hide-header');
+            header.classList.remove('show-header');
+        } else {
+            header.classList.remove('hide-header');
+            header.classList.add('show-header');
+        }
+
+        lastScrollDirection = currentScrollDirection;
+    });
+
+
     // Slider Animation
     const sliderTrack = document.querySelector('.slider-track');
     const sliderItems = document.querySelectorAll('.slider-item');
