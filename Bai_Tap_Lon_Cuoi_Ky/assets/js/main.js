@@ -77,6 +77,51 @@ document.addEventListener('DOMContentLoaded', function () {
         })
     });
 
+    // Filter Search Funtionality
+    const searchForm = document.getElementById('search-filter');
+    const houseItems = document.querySelectorAll('.house-items');
+
+    searchForm.addEventListener('submit', e => {
+        e.preventDefault();
+
+        const selectedDistrict = document.getElementById('district').value;
+        const selectedPrice = document.getElementById('price').value;
+
+        houseItems.forEach(house => {
+            const houseDistrict = house.querySelector('.house-district').textContent;
+            const housePriceText = document.querySelector('.house-price').textContent;
+            const housePrice = parseFloat(housePriceText.replace(/[^0-9]/g, ''));
+
+            let showHouse = true;
+
+            if (selectedDistrict !== 'all') {
+                const districtCheck = houseDistrict.toLowerCase().includes(
+                    document.querySelector(`#district option[value="${selectedDistrict}"]`).textContent.toLowerCase()
+                );
+
+                if (!districtCheck) {
+                    showHouse = false;
+                }
+            }
+
+            if (selectedPrice !== 'all' && showHouse) {
+                const [minPrice, maxPrice] = selectedPrice.split('-').map(Number);
+                const priceCheck = (housePrice >= minPrice * 1000000) && (housePrice <= maxPrice * 1000000);
+                if (!priceCheck) {
+                showHouse = false;
+                }
+            }
+
+            if (showHouse) {
+                house.style.display = 'block';
+                house.classList.add('visible');
+            } else {
+                house.style.display = 'none';
+                house.classList.remove('visible');
+            }
+        });
+    });
+
     // Sidebar
     const sidebarShowBtn = document.getElementById('sidebarShow');
     const sidebarHiddenBtn = document.getElementById('sidebarHidden');
