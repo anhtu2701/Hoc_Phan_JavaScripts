@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         houseItems.forEach(house => {
             const houseDistrict = house.querySelector('.house-district').textContent;
-            const housePriceText = document.querySelector('.house-price').textContent;
+            const housePriceText = house.querySelector('.house-price').textContent;
             const housePrice = parseFloat(housePriceText.replace(/[^0-9]/g, ''));
 
             let showHouse = true;
@@ -159,6 +159,21 @@ document.addEventListener('DOMContentLoaded', function () {
     checkFade();
     window.addEventListener('scroll', checkFade);
 
+    // Scale element
+    const scaleElements = document.querySelectorAll('.scale-element');
+    function scaleFade() {
+        scaleElements.forEach(element => {
+            const elementTop = element.getBoundingClientRect().top;
+            const elementVisible = 20;
+
+            if (elementTop < window.innerHeight - elementVisible) {
+                element.classList.add('scale-active');
+            }
+        });
+    }
+    scaleFade();
+    window.addEventListener('scroll', scaleFade);
+    
     // Render More House
     const continueBtn = document.querySelector('.continue-btn');
     const housesContainer = document.querySelector('.house-lists');
