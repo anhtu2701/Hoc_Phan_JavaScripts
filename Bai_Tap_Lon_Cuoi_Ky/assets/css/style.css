@@ -914,6 +914,64 @@ main {
     line-height: 1.5rem;
 }
 
+/* Brand-slider */
+.brand-container {
+    width: 100%;
+    overflow: hidden;
+    padding: 40px 0;
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.brand-heading {
+    padding: 0 100px;
+}
+.brand-head-box {
+    display: flex;
+    justify-content: center;
+}
+.brand-title {
+    font-size: 2.3rem;
+    font-weight: bold;
+    width: 40%;
+}
+.brand-description {
+    font-family: 1rem;
+    text-align: justify;
+    width: 40%;
+    color: #334155;
+}
+.brand-slider-box {
+    display: flex;
+    flex-direction: column;
+}
+.brand-slider {
+    
+}
+.brand-lists {
+    
+}
+.brand-item {
+    height: 156px;
+    width: 280px;
+    min-width: 138px;
+    border: 1px solid #EDEDED;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.brand-item img {
+    height: 134px;
+    min-width: 138px;
+    width: auto;
+    object-fit: contain;
+    margin: 30px 50px;
+}
+
 /* Footer */
 footer {
     width: 100%;
