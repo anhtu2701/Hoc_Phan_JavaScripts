@@ -923,6 +923,7 @@ main {
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 100px;
 }
 .brand-heading {
     padding: 0 100px;
@@ -945,13 +946,31 @@ main {
 .brand-slider-box {
     display: flex;
     flex-direction: column;
+    width: 100%;
+    overflow: hidden;
+    gap: 50px;
 }
 .brand-slider {
-    
+    width: 400%;
 }
 .brand-lists {
-    
+    display: flex;
+    gap: 50px;
+    padding: 20px 0;
+    overflow: hidden;
 }
+
+.brand-top .brand-lists {
+    animation: scrollLeft 25s linear infinite;
+}
+.brand-bot .brand-lists {
+    animation: scrollRight 25s linear infinite;
+}
+
+.brand-lists:hover {
+    animation-play-state: paused;
+}
+
 .brand-item {
     height: 156px;
     width: 280px;
@@ -961,7 +980,13 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
-    
+    transition: box-shadow .4s ease, transform .4s ease;
+    flex-shrink: 0;
+}
+
+.brand-item:hover {
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+    transform: scale(1.1);
 }
 
 .brand-item img {
@@ -970,6 +995,30 @@ main {
     width: auto;
     object-fit: contain;
     margin: 30px 50px;
+    filter: grayscale(100%);
+    transition: filter .4s ease;
+}
+
+.brand-item img:hover {
+    filter: grayscale(0%);
+}
+
+@keyframes scrollLeft {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-500px);
+    }
+}
+
+@keyframes scrollRight {
+    0% {
+        transform: translateX(-500px);
+    }
+    100% {
+        transform: translateX(0);
+    }
 }
 
 /* Footer */
@@ -1198,6 +1247,23 @@ footer {
     .news-small-img {
         width: var(--small-news-width);
     }
+
+    .brand-head-box {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .brand-title {
+        font-size: 30px;
+        width: 100%;
+        text-align: center;
+    }
+
+    .brand-description {
+        width: 100%;
+        text-align: center;
+    }
 }
 
 @media (max-width: 768px) {
@@ -1245,6 +1311,28 @@ footer {
 
     .news-nav ul li:last-child {
         display: none;
+    }
+
+    .brand-container {
+        gap: 50px;
+    }
+    
+    .brand-slider-box {
+        gap: 20px;
+    }
+
+    .brand-lists {
+        gap: 20px;
+    }
+    .brand-item {
+        height: 94px;
+        width: 168px;
+        min-width: 84px;
+    }
+
+    .brand-item img {
+        height: 76px;
+        min-width: 83px;
     }
 }
 
