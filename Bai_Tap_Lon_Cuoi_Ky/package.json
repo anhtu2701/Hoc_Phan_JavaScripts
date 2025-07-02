@@ -1,21 +1,25 @@
 {
   "name": "bai_tap_lon_cuoi_ky",
   "version": "1.0.0",
-  "main": "server.js",
+  "main": "./src/server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "nodemon --inspect ./src/server.js",
+    "watch": "sass --watch ./src/resources/scss:./src/public/css",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon server.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "htu_coder",
   "license": "ISC",
   "description": "",
   "dependencies": {
     "express": "^5.1.0",
+    "express-handlebars": "^8.0.3",
     "mysql2": "^3.14.1"
   },
   "devDependencies": {
-    "nodemon": "^3.1.10"
+    "morgan": "^1.10.0",
+    "nodemon": "^3.1.10",
+    "sass": "^1.89.2"
   }
 }
