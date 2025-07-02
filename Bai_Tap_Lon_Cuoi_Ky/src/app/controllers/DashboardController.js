@@ -1,19 +1,25 @@
 class DashboardController {
     index(req, res) {
         res.render('dashboard', {
-            layout: false
+            layout: 'dashboard',
+            title: 'Dashboard Admin',
+            pageCss: 'dashboard.css'
         });
     }
 
     roomsManagement(req, res) {
         res.render('roomsManagement', {
-            layout: false
+            layout: 'dashboard',
+            title: 'Rooms Management',
+            pageCss: 'roomsManagement.css'
         });
     }
 
     usersManagement(req, res) {
         res.render('usersManagement', {
-            layout: false
+            layout: 'dashboard',
+            title: 'Users Management',
+            pageCss: 'usersManagement.css'
         });
     }
 }

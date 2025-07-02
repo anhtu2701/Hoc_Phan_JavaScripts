@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="/css/generalDashboard.css">
+    {{#if pageCss}}
+    <link rel="stylesheet" href="/css/{{pageCss}}">
+    {{/if}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="icon" href="https://tingtong.vn/wp-content/uploads/2024/08/cropped-logo-hoang-nguyen-1-1-1-32x32.png" sizes="32x32">
+    <link rel="icon" href="https://tingtong.vn/wp-content/uploads/2024/08/cropped-logo-hoang-nguyen-1-1-1-192x192.png" sizes="192x192">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    {{> headerDashboard}}
+
+    {{> sidebarDashboard}}
+
+    {{{body}}}
+    <script lang="javascripts" src="/js/dashboard.js"></script>
+</body>
+</html>
