@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Phòng Trọ - PhongTro Manager</title>
+    <link rel="stylesheet" href="/css/roomsManagement.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+            <div class="logo">
+                <i class="fas fa-home"></i>
+                <span>PhongTro Manager</span>
+            </div>
+            <button class="mobile-toggle" id="mobile-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <div class="header-right">
+            <div class="notifications">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">3</span>
+            </div>
+            <div class="user-info">
+                <div class="user-avatar">A</div>
+                <span class="user-name">Admin</span>
+                <button class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <nav class="sidebar-nav">
+            <ul>
+                <li class="nav-item">
+                    <a href="/dashboard" class="nav-link">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/dashboard/usersmanagement" class="nav-link">
+                        <i class="fas fa-users"></i>
+                        <span>Quản lý người dùng</span>
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a href="/dashboard/roomsmanagement" class="nav-link">
+                        <i class="fas fa-home"></i>
+                        <span>Quản lý phòng trọ</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/contracts" class="nav-link">
+                        <i class="fas fa-file-contract"></i>
+                        <span>Quản lý hợp đồng</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/payments" class="nav-link">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <span>Quản lý thanh toán</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/feedback" class="nav-link">
+                        <i class="fas fa-comments"></i>
+                        <span>Phản hồi</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/reports" class="nav-link">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Báo cáo</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/settings" class="nav-link">
+                        <i class="fas fa-cog"></i>
+                        <span>Cài đặt</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Dashboard Header -->
+        <div class="dashboard-header">
+            <h1>Quản Lý Phòng Trọ</h1>
+            <p>Quản lý thông tin và trạng thái phòng trọ</p>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls-section">
+            <div class="controls-left">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Tìm kiếm phòng...">
+                </div>
+                <select id="statusFilter" class="filter-select">
+                    <option value="">Tất cả trạng thái</option>
+                    <option value="available">Còn trống</option>
+                    <option value="occupied">Đã thuê</option>
+                    <option value="maintenance">Bảo trì</option>
+                </select>
+                <button class="btn btn-secondary" id="exportBtn">
+                    <i class="fas fa-download"></i>
+                    Xuất dữ liệu
+                </button>
+            </div>
+            <div class="controls-right">
+                <div class="view-toggle">
+                    <button class="view-btn active" id="gridViewBtn">
+                        <i class="fas fa-th"></i>
+                    </button>
+                    <button class="view-btn" id="listViewBtn">
+                        <i class="fas fa-list"></i>
+                    </button>
+                </div>
+                <button class="btn btn-primary" id="addRoomBtn">
+                    <i class="fas fa-plus"></i>
+                    Thêm phòng mới
+                </button>
+            </div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-title">Tổng phòng</div>
+                    <div class="stat-icon">
+                        <i class="fas fa-home"></i>
+                    </div>
+                </div>
+                <div class="stat-value" id="totalRoomsCount">-</div>
+                <div class="stat-change neutral">
+                    <i class="fas fa-minus"></i>
+                    Tổng số phòng
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-title">Phòng trống</div>
+                    <div class="stat-icon available">
+                        <i class="fas fa-door-open"></i>
+                    </div>
+                </div>
+                <div class="stat-value" id="availableRoomsCount">-</div>
+                <div class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i>
+                    Sẵn sàng cho thuê
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-title">Phòng đã thuê</div>
+                    <div class="stat-icon occupied">
+                        <i class="fas fa-door-closed"></i>
+                    </div>
+                </div>
+                <div class="stat-value" id="occupiedRoomsCount">-</div>
+                <div class="stat-change neutral">
+                    <i class="fas fa-users"></i>
+                    Đang có người ở
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-title">Doanh thu tháng</div>
+                    <div class="stat-icon revenue">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                </div>
+                <div class="stat-value" id="monthlyRevenue">-</div>
+                <div class="stat-change positive">
+                    <i class="fas fa-chart-line"></i>
+                    Thu nhập từ phòng
+                </div>
+            </div>
+        </div>
+
+        <!-- Rooms Section -->
+        <div class="rooms-section">
+            <!-- Grid View -->
+            <div class="rooms-grid" id="roomsGrid">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    Đang tải danh sách phòng...
+                </div>
+            </div>
+
+            <!-- Table View -->
+            <div class="table-section" id="roomsTable" style="display: none;">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Mã phòng</th>
+                            <th>Tên phòng</th>
+                            <th>Địa chỉ</th>
+                            <th>Giá thuê</th>
+                            <th>Diện tích</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="roomsTableBody">
+                        <tr>
+                            <td colspan="7">
+                                <div class="loading">
+                                    <div class="spinner"></div>
+                                    Đang tải dữ liệu...
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination" id="pagination">
+                <!-- Pagination will be generated here -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Add/Edit Room Modal -->
+    <div id="roomModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Thêm phòng mới</h3>
+                <button class="close-btn" id="closeRoomModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="roomForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="roomName">Tên phòng *</label>
+                            <input type="text" id="roomName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="roomAddress">Địa chỉ *</label>
+                            <input type="text" id="roomAddress" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="roomPrice">Giá thuê (VNĐ/tháng) *</label>
+                            <input type="number" id="roomPrice" required min="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="roomArea">Diện tích (m²) *</label>
+                            <input type="number" id="roomArea" required min="0" step="0.1">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="electricPrice">Giá điện (VNĐ/kWh)</label>
+                            <input type="number" id="electricPrice" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="waterPrice">Giá nước (VNĐ/m³)</label>
+                            <input type="number" id="waterPrice" min="0">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="internetPrice">Giá Internet (VNĐ/tháng)</label>
+                            <input type="number" id="internetPrice" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="parkingPrice">Giá gửi xe (VNĐ/tháng)</label>
+                            <input type="number" id="parkingPrice" min="0">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="roomStatus">Trạng thái</label>
+                        <select id="roomStatus">
+                            <option value="available">Còn trống</option>
+                            <option value="occupied">Đã thuê</option>
+                            <option value="maintenance">Bảo trì</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="roomDescription">Mô tả</label>
+                        <textarea id="roomDescription" rows="3" placeholder="Mô tả chi tiết về phòng..."></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancelRoomBtn">Hủy</button>
+                <button type="button" class="btn btn-primary" id="saveRoomBtn">Lưu</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Room Details Modal -->
+    <div id="roomDetailsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Chi tiết phòng</h3>
+                <button class="close-btn" id="closeDetailsModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="roomDetailsContent">
+                    <!-- Room details will be loaded here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="closeDetailsBtn">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content small">
+            <div class="modal-header">
+                <h3>Xác nhận xóa</h3>
+                <button class="close-btn" id="closeDeleteModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Bạn có chắc chắn muốn xóa phòng này không?</p>
+                <p class="warning-text">Hành động này không thể hoàn tác!</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancelDeleteBtn">Hủy</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Xóa</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 
