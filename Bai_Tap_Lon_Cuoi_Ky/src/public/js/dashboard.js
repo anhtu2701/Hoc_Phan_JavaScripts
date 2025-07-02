@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Initialize mobile toggle
+    // Toggle sidebar
     const mobileToggle = document.getElementById("mobile-toggle");
     const sidebar = document.getElementById("sidebar");
 

@@ -1,3 +1,4 @@
+@import "dashboard";
 /* Main Content */
 .main-content {
     margin-left: 260px;
@@ -141,53 +142,6 @@
     box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
 }
 
-/* Stats Grid */
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-}
-
-.stat-card {
-    background: white;
-    padding: 1.5rem;
-    border-radius: 12px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.stat-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-
-.stat-icon {
-    width: 60px;
-    height: 60px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    color: white;
-}
-
-.stat-icon.blue {
-    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-}
-.stat-icon.green {
-    background: linear-gradient(135deg, #10b981, #059669);
-}
-.stat-icon.orange {
-    background: linear-gradient(135deg, #f59e0b, #d97706);
-}
-.stat-icon.purple {
-    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-}
 
 .stat-info h3 {
     font-size: 1.875rem;

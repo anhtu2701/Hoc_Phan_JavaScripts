@@ -129,6 +129,10 @@
   background: var(--success-gradient);
 }
 
+.stat-icon.occupied {
+  background: var(--primary-gradient);
+}
+
 .stat-title {
   font-size: 0.9rem;
   color: var(--text-secondary);

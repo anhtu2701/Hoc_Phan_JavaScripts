@@ -1,150 +1,148 @@
 <!-- Main Content -->
-<main class="main-content">
-    <!-- Dashboard Header -->
-    <div class="dashboard-header">
+<main class="main-content" id="main-content">
+    <!-- Header -->
+    <div class="dashboard-header fade-in">
         <h1>Quản Lý Phòng Trọ</h1>
-        <p>Quản lý thông tin và trạng thái phòng trọ</p>
-    </div>
-
-    <!-- Controls -->
-    <div class="controls-section">
-        <div class="controls-left">
-            <div class="search-box">
-                <i class="fas fa-search"></i>
-                <input
-                    type="text"
-                    id="searchInput"
-                    placeholder="Tìm kiếm phòng..."
-                />
-            </div>
-            <select id="statusFilter" class="filter-select">
-                <option value="">Tất cả trạng thái</option>
-                <option value="available">Còn trống</option>
-                <option value="occupied">Đã thuê</option>
-                <option value="maintenance">Bảo trì</option>
-            </select>
-            <button class="btn btn-secondary" id="exportBtn">
-                <i class="fas fa-download"></i>
-                Xuất dữ liệu
-            </button>
-        </div>
-        <div class="controls-right">
-            <div class="view-toggle">
-                <button class="view-btn active" id="gridViewBtn">
-                    <i class="fas fa-th"></i>
-                </button>
-                <button class="view-btn" id="listViewBtn">
-                    <i class="fas fa-list"></i>
-                </button>
-            </div>
-            <button class="btn btn-primary" id="addRoomBtn">
-                <i class="fas fa-plus"></i>
-                Thêm phòng mới
-            </button>
-        </div>
+        <p>Quản lý thông tin, trạng thái và thao tác nhanh với các phòng trọ</p>
+        <button class="btn btn-primary" id="addRoomBtn">
+            <i class="fas fa-plus"></i>
+            Thêm phòng mới
+        </button>
     </div>
 
     <!-- Stats Grid -->
-    <div class="stats-grid">
-        <div class="stat-card">
-            <div class="stat-header">
-                <div class="stat-title">Tổng phòng</div>
-                <div class="stat-icon">
-                    <i class="fas fa-home"></i>
+    <section class="dashboard-section">
+        <div class="stats-grid fade-in">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-title">Tổng phòng</div>
+                    <div class="stat-icon rooms">
+                        <i class="fas fa-home"></i>
+                    </div>
                 </div>
+                <div class="stat-value" id="totalRoomsCount">-</div>
             </div>
-            <div class="stat-value" id="totalRoomsCount">-</div>
-            <div class="stat-change neutral">
-                <i class="fas fa-minus"></i>
-                Tổng số phòng
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-title">Phòng trống</div>
+                    <div class="stat-icon available">
+                        <i class="fas fa-door-open"></i>
+                    </div>
+                </div>
+                <div class="stat-value" id="availableRoomsCount">-</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-title">Phòng đã thuê</div>
+                    <div class="stat-icon occupied">
+                        <i class="fa-solid fa-door-closed"></i>
+                    </div>
+                </div>
+                <div class="stat-value" id="occupiedRoomsCount">-</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-title">Doanh thu tháng</div>
+                    <div class="stat-icon revenue">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                </div>
+                <div class="stat-value" id="monthlyRevenue">-</div>
             </div>
         </div>
+    </section>
 
-        <div class="stat-card">
-            <div class="stat-header">
-                <div class="stat-title">Phòng trống</div>
-                <div class="stat-icon available">
-                    <i class="fas fa-door-open"></i>
+    <!-- Controls -->
+    <section class="dashboard-section">
+        <div class="controls glass-card">
+            <div class="controls-left">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input
+                        type="text"
+                        id="searchInput"
+                        placeholder="Tìm kiếm phòng..."
+                    />
+                </div>
+                <select id="statusFilter" class="filter-select">
+                    <option value="">Tất cả trạng thái</option>
+                    <option value="available">Còn trống</option>
+                    <option value="occupied">Đã thuê</option>
+                    <option value="maintenance">Bảo trì</option>
+                </select>
+                <button class="btn btn-secondary" id="exportBtn">
+                    <i class="fas fa-download"></i>
+                    Xuất dữ liệu
+                </button>
+            </div>
+            <div class="controls-right">
+                <div class="view-toggle">
+                    <button class="view-btn active" id="gridViewBtn">
+                        <i class="fas fa-th"></i>
+                    </button>
+                    <button class="view-btn" id="listViewBtn">
+                        <i class="fas fa-list"></i>
+                    </button>
                 </div>
             </div>
-            <div class="stat-value" id="availableRoomsCount">-</div>
-            <div class="stat-change positive">
-                <i class="fas fa-arrow-up"></i>
-                Sẵn sàng cho thuê
-            </div>
         </div>
+    </section>
 
-        <div class="stat-card">
-            <div class="stat-header">
-                <div class="stat-title">Phòng đã thuê</div>
-                <div class="stat-icon occupied">
-                    <i class="fas fa-door-closed"></i>
-                </div>
-            </div>
-            <div class="stat-value" id="occupiedRoomsCount">-</div>
-            <div class="stat-change neutral">
-                <i class="fas fa-users"></i>
-                Đang có người ở
-            </div>
-        </div>
-
-        <div class="stat-card">
-            <div class="stat-header">
-                <div class="stat-title">Doanh thu tháng</div>
-                <div class="stat-icon revenue">
-                    <i class="fas fa-money-bill-wave"></i>
-                </div>
-            </div>
-            <div class="stat-value" id="monthlyRevenue">-</div>
-            <div class="stat-change positive">
-                <i class="fas fa-chart-line"></i>
-                Thu nhập từ phòng
-            </div>
-        </div>
-    </div>
-
-    <!-- Rooms Section -->
-    <div class="rooms-section">
-        <!-- Grid View -->
-        <div class="rooms-grid" id="roomsGrid">
+    <!-- Rooms Grid View -->
+    <section class="dashboard-section" id="roomsGridSection">
+        <div class="rooms-grid">
             <div class="loading">
                 <div class="spinner"></div>
                 Đang tải danh sách phòng...
             </div>
+            <!-- Các room-card sẽ được render bằng JS -->
         </div>
+    </section>
 
-        <!-- Table View -->
-        <div class="table-section" id="roomsTable" style="display: none;">
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Mã phòng</th>
-                        <th>Tên phòng</th>
-                        <th>Địa chỉ</th>
-                        <th>Giá thuê</th>
-                        <th>Diện tích</th>
-                        <th>Trạng thái</th>
-                        <th>Thao tác</th>
-                    </tr>
-                </thead>
-                <tbody id="roomsTableBody">
-                    <tr>
-                        <td colspan="7">
-                            <div class="loading">
-                                <div class="spinner"></div>
-                                Đang tải dữ liệu...
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+    <!-- Rooms Table View -->
+    <section class="dashboard-section" id="roomsTableSection" style="display: none;">
+        <div class="table-section glass-card">
+            <div class="table-header">
+                <h3 class="table-title">Danh sách phòng trọ</h3>
+                <button class="btn btn-secondary" id="refreshRoomsBtn">
+                    <i class="fas fa-sync-alt"></i>
+                    Làm mới
+                </button>
+            </div>
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Mã phòng</th>
+                            <th>Tên phòng</th>
+                            <th>Địa chỉ</th>
+                            <th>Giá thuê</th>
+                            <th>Diện tích</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="roomsTableBody">
+                        <tr>
+                            <td colspan="7">
+                                <div class="loading">
+                                    <div class="spinner"></div>
+                                    Đang tải dữ liệu...
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-
         <!-- Pagination -->
         <div class="pagination" id="pagination">
             <!-- Pagination will be generated here -->
         </div>
-    </div>
+    </section>
+
+    <!-- Modals (giữ nguyên như bạn đã có) -->
+    <!-- ... -->
 </main>
 
 <!-- Add/Edit Room Modal -->

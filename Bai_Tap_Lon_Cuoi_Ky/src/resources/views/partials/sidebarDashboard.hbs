@@ -2,19 +2,19 @@
 <aside class="sidebar" id="sidebar">
     <nav class="sidebar-nav">
         <ul>
-            <li class="nav-item active">
+            <li class="nav-item {{#if isDashboard}}active{{/if}}">
                 <a href="/dashboard" class="nav-link">
                     <i class="fas fa-tachometer-alt"></i>
                     <span>Dashboard</span>
                 </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item {{#if isUsers}}active{{/if}}">
                 <a href="/dashboard/usersmanagement" class="nav-link">
                     <i class="fas fa-users"></i>
                     <span>Quản lý người dùng</span>
                 </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item {{#if isRooms}}active{{/if}}">
                 <a href="/dashboard/roomsmanagement" class="nav-link">
                     <i class="fas fa-home"></i>
                     <span>Quản lý phòng trọ</span>

@@ -3,7 +3,8 @@ class DashboardController {
         res.render('dashboard', {
             layout: 'dashboard',
             title: 'Dashboard Admin',
-            pageCss: 'dashboard.css'
+            pageCss: 'dashboard.css',
+            isDashboard: true
         });
     }
 
@@ -11,7 +12,8 @@ class DashboardController {
         res.render('roomsManagement', {
             layout: 'dashboard',
             title: 'Rooms Management',
-            pageCss: 'roomsManagement.css'
+            pageCss: 'roomsManagement.css',
+            isRooms: true
         });
     }
 
@@ -19,7 +21,8 @@ class DashboardController {
         res.render('usersManagement', {
             layout: 'dashboard',
             title: 'Users Management',
-            pageCss: 'usersManagement.css'
+            pageCss: 'usersManagement.css',
+            isUsers: true
         });
     }
 }
