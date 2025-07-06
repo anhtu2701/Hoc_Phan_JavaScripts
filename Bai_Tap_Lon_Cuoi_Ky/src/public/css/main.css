@@ -92,6 +92,32 @@ header.show-header {
   gap: 2rem;
 }
 
+/* User Info and Logout Button */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #000072;
+  font-weight: 500;
+}
+
+.logout-btn {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+  background: #c0392b;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(231, 76, 60, 0.3);
+}
+
 /* Search box */
 .search-box {
   display: flex;

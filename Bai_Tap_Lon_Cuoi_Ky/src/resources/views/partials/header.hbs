@@ -39,7 +39,20 @@
 
         <div class="contact-btn"><a style="color: #fff;" href="https://tingtong.vn/lien-he/">Liên hệ</a></div>
 
-        <div class="login-btn"><a style="color: #fff;" href="/login">Đăng nhập</a></div>
+        {{#if user}}
+            <!-- User đã đăng nhập -->
+            <div class="user-info" style="display: flex; align-items: center; gap: 10px; color: #000072; font-weight: 500;">
+                <span>Xin chào, {{user.name}}</span>
+                <form action="/login/logout" method="POST" style="display: inline;">
+                    <button type="submit" class="logout-btn" style="background: #e74c3c; color: white; border: none; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 14px; transition: background 0.3s ease;">
+                        Đăng xuất
+                    </button>
+                </form>
+            </div>
+        {{else}}
+            <!-- User chưa đăng nhập -->
+            <div class="login-btn"><a style="color: #fff;" href="/login">Đăng nhập</a></div>
+        {{/if}}
 
         <!-- Sidebar Toggle Button -->
         <button class="sidebar-toggle" id="sidebarShow">

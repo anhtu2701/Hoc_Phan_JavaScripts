@@ -15,9 +15,21 @@
             <span class="notification-badge" id="notificationCount">5</span>
         </div>
         <div class="user-info">
-            <div class="user-avatar">A</div>
-            <span class="user-name">Admin</span>
-            <button class="logout-btn" id="logoutBtn">
+            <div class="user-avatar">
+                {{#if user.name}}
+                    {{firstChar user.name}}
+                {{else}}
+                    A
+                {{/if}}
+            </div>
+            <span class="user-name">
+                {{#if user.name}}
+                    {{user.name}}
+                {{else}}
+                    Admin
+                {{/if}}
+            </span>
+            <button class="logout-btn" id="logoutBtn" title="Đăng xuất">
                 <i class="fas fa-sign-out-alt"></i>
             </button>
         </div>
