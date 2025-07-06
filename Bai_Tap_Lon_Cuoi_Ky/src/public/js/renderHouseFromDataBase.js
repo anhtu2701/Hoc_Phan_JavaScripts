@@ -10,7 +10,7 @@ function start() {
     });
 }
 
-// Đảm bảo DOM đã được tải trước khi chạy script
+
 document.addEventListener('DOMContentLoaded', function() {
     start();
 });
@@ -92,27 +92,6 @@ function getStatusText(status) {
     return statusMap[status] || status;
 }
 
-// Hàm tìm kiếm phòng
-function searchRooms(searchTerm, filters = {}) {
-    let apiUrl = roomsAPI + '/search?q=' + encodeURIComponent(searchTerm);
-    
-    // Thêm các filter
-    if (filters.minPrice) apiUrl += '&min_price=' + filters.minPrice;
-    if (filters.maxPrice) apiUrl += '&max_price=' + filters.maxPrice;
-    if (filters.minArea) apiUrl += '&min_area=' + filters.minArea;
-    if (filters.maxArea) apiUrl += '&max_area=' + filters.maxArea;
-    if (filters.status) apiUrl += '&status=' + filters.status;
-    
-    fetch(apiUrl)
-        .then(response => response.json())
-        .then(response => {
-            if (response.success) {
-                renderRooms(response.data);
-            } else {
-                console.error('Lỗi khi tìm kiếm:', response.message);
-            }
-        })
-        .catch(error => {
-            console.error('Lỗi khi gọi API tìm kiếm:', error);
-        });
-}
+// Expose functions globally for other scripts to use
+window.renderRooms = renderRooms;
+window.start = start;

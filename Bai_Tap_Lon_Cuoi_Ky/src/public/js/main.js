@@ -1,3 +1,7 @@
+// Global variables for house rendering
+let houseIndex = 8;
+const itemsPerClick = 8;
+
 document.addEventListener('DOMContentLoaded', function () {
     // Scroll Header Effects
     const header = document.querySelector('header');
@@ -77,50 +81,67 @@ document.addEventListener('DOMContentLoaded', function () {
         })
     });
 
-    // Filter Search Funtionality
+    // Filter Search Functionality - Fixed to work with API filters
     const searchForm = document.getElementById('search-filter');
-    const houseItems = document.querySelectorAll('.house-items');
 
-    searchForm.addEventListener('submit', e => {
-        e.preventDefault();
+    if (searchForm) {
+        searchForm.addEventListener('submit', e => {
+            e.preventDefault();
 
-        const selectedDistrict = document.getElementById('district').value;
-        const selectedPrice = document.getElementById('price').value;
+            const selectedDistrict = document.getElementById('district').value;
+            const selectedPrice = document.getElementById('price').value;
 
-        houseItems.forEach(house => {
-            const houseDistrict = house.querySelector('.house-district').textContent;
-            const housePriceText = house.querySelector('.house-price').textContent;
-            const housePrice = parseFloat(housePriceText.replace(/[^0-9]/g, ''));
-
-            let showHouse = true;
-
-            if (selectedDistrict !== 'all') {
-                const districtCheck = houseDistrict.toLowerCase().includes(
-                    document.querySelector(`#district option[value="${selectedDistrict}"]`).textContent.toLowerCase()
-                );
-
-                if (!districtCheck) {
-                    showHouse = false;
-                }
-            }
-
-            if (selectedPrice !== 'all' && showHouse) {
+            // Build API URL with filters
+                let apiUrl = 'http://localhost:3000/api/rooms?status=conTrong&limit=100';
+            
+            // Add price filter 
+            if (selectedPrice !== 'all') {
                 const [minPrice, maxPrice] = selectedPrice.split('-').map(Number);
-                const priceCheck = (housePrice >= minPrice * 1000000) && (housePrice <= maxPrice * 1000000);
-                if (!priceCheck) {
-                showHouse = false;
-                }
+                apiUrl += `&min_price=${minPrice * 1000000}&max_price=${maxPrice * 1000000}`;
             }
-
-            if (showHouse) {
-                house.style.display = 'block';
-                house.classList.add('visible');
-            } else {
-                house.style.display = 'none';
-                house.classList.remove('visible');
+            
+            // Fetch filtered data from API directly
+            const housesList = document.querySelector('.house-lists');
+            if (housesList) {
+                fetch(apiUrl)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Use the rendering function from renderHouseFromDataBase.js
+                            window.renderRooms(data.data);
+                            
+                            // Reset the "Render More House" functionality for filtered results
+                            const continueBtn = document.querySelector('.continue-btn');
+                            const housesContinueElement = document.querySelector('.houses-continue');
+                            const allHouses = housesList.querySelectorAll('.house-items');
+                            
+                            // Reset house index to 8 (showing first 8, hiding the rest)
+                            houseIndex = 8;
+                            
+                            // Show/hide the "Xem thêm" button based on results
+                            if (allHouses.length > 8) {
+                                housesContinueElement.style.display = 'flex';
+                                housesContinueElement.classList.add('scale-active');
+                                
+                                // Update the text to reflect filtered results
+                                const spanElement = housesContinueElement.querySelector('span');
+                                if (spanElement) {
+                                    spanElement.textContent = `Còn ${allHouses.length - 8} phòng khác phù hợp với bộ lọc`;
+                                }
+                            } else {
+                                housesContinueElement.style.display = 'none';
+                            }
+                        } else {
+                            housesList.innerHTML = '<p>❌ Không tìm thấy phòng phù hợp với bộ lọc đã chọn.</p>';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('❌ Filter error:', error);
+                        housesList.innerHTML = '<p>❌ Lỗi kết nối. Vui lòng thử lại sau.</p>';
+                    });
             }
         });
-    });
+    }
 
     // Sidebar
     const sidebarShowBtn = document.getElementById('sidebarShow');
@@ -178,16 +199,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const continueBtn = document.querySelector('.continue-btn');
     const housesContainer = document.querySelector('.house-lists');
     const housesContinueElement = document.querySelector('.houses-continue');
-    let houseIndex = 8;
-    const itemsPerClick = 8;
 
     function renderMoreHouses() {
         const allHouses = housesContainer.querySelectorAll('.house-items');
-        endIndex = Math.min(houseIndex + itemsPerClick,allHouses.length );
+        endIndex = Math.min(houseIndex + itemsPerClick, allHouses.length);
 
         for (let i = houseIndex; i < endIndex; i++) {
             allHouses[i].style.display = 'block';
-            setTimeout( () => {
+            setTimeout(() => {
                 allHouses[i].classList.add('visible');
             }, 50 * (i - houseIndex));
         }
@@ -198,5 +217,18 @@ document.addEventListener('DOMContentLoaded', function () {
             housesContinueElement.style.display = 'none';
         }
     }
+    
+    // Reset continue button text to original when page loads
+    function resetContinueButton() {
+        const housesContinueElement = document.querySelector('.houses-continue');
+        const spanElement = housesContinueElement.querySelector('span');
+        if (spanElement) {
+            spanElement.textContent = 'Tiếp tục khám phá danh mục toà nhà';
+        }
+    }
+    
+    // Call reset when page loads
+    resetContinueButton();
+    
     continueBtn.addEventListener('click', renderMoreHouses);
 });

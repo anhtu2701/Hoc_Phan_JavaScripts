@@ -16,17 +16,8 @@ document.addEventListener("DOMContentLoaded", function () {
             // Create form and submit logout request
             const form = document.createElement('form');
             form.method = 'POST';
-            form.action = '/logout';
-            
-            // Add CSRF token if needed (you can add this later if you implement CSRF protection)
-            // const csrfToken = document.querySelector('meta[name="csrf-token"]');
-            // if (csrfToken) {
-            //     const csrfInput = document.createElement('input');
-            //     csrfInput.type = 'hidden';
-            //     csrfInput.name = '_token';
-            //     csrfInput.value = csrfToken.getAttribute('content');
-            //     form.appendChild(csrfInput);
-            // }
+            form.action = '/login/logout';
+
             
             document.body.appendChild(form);
             form.submit();

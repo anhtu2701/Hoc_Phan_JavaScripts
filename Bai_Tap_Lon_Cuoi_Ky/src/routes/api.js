@@ -5,18 +5,46 @@ const db = require('../config/db');
 // GET /api/rooms - Lấy danh sách phòng
 router.get('/rooms', async (req, res) => {
     try {
-        const { limit = 20, status = 'conTrong' } = req.query;
+        const { limit = 20, status = 'conTrong', min_price, max_price } = req.query;
         const pool = db.getPool();
         
         // Validate and parse limit
         const parsedLimit = parseInt(limit);
         const validLimit = isNaN(parsedLimit) || parsedLimit <= 0 ? 20 : Math.min(parsedLimit, 100);
         
-        // Use template literal for LIMIT to avoid prepared statement issue
-        const [rooms] = await pool.query(
-            `SELECT * FROM PHONG WHERE TrangThai = ? LIMIT ${validLimit}`,
-            [status]
-        );
+        // Build query with filters
+        let query = 'SELECT * FROM PHONG WHERE TrangThai = ?';
+        let params = [status];
+        
+        // Add price filter using BETWEEN (cleaner approach)
+        if (min_price && max_price) {
+            const minPrice = parseInt(min_price);
+            const maxPrice = parseInt(max_price);
+            if (!isNaN(minPrice) && !isNaN(maxPrice)) {
+                query += ' AND GiaThue BETWEEN ? AND ?';
+                params.push(minPrice, maxPrice);
+            }
+        } else if (min_price) {
+            const minPrice = parseInt(min_price);
+            if (!isNaN(minPrice)) {
+                query += ' AND GiaThue >= ?';
+                params.push(minPrice);
+            }
+        } else if (max_price) {
+            const maxPrice = parseInt(max_price);
+            if (!isNaN(maxPrice)) {
+                query += ' AND GiaThue <= ?';
+                params.push(maxPrice);
+            }
+        }
+        
+        // Add ORDER BY for price sorting (ascending)
+        query += ' ORDER BY GiaThue ASC';
+        
+        // Add LIMIT using template literal (NOT as parameter to avoid SQL error)
+        query += ` LIMIT ${validLimit}`;
+        
+        const [rooms] = await pool.execute(query, params);
         
         res.json({
             success: true,
