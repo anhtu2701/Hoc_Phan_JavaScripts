@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /* Main Content */
 .main-content {
   margin-left: 260px;
@@ -229,6 +230,70 @@
   font-size: 0.95rem;
 }
 
+.stat-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: var(--spacing-sm) 0;
+}
+
+/* Table Section */
+.table-section {
+  background: var(--bg-primary);
+  border-radius: 16px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+  overflow: hidden;
+}
+
+.table-header {
+  padding: var(--spacing-lg) var(--spacing-xl);
+  border-bottom: 1px solid var(--border-light);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-tertiary);
+}
+
+.table-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th,
+.data-table td {
+  padding: var(--spacing-md) var(--spacing-lg);
+  text-align: left;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.data-table th {
+  background: var(--bg-tertiary);
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.data-table td {
+  color: var(--text-primary);
+}
+
+.data-table tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.data-table tbody tr:hover {
+  background: var(--bg-tertiary);
+}
+
 /* Users Container */
 .users-container {
   background: white;
@@ -427,6 +492,7 @@
   max-height: 90vh;
   overflow-y: auto;
   animation: modalSlideIn 0.3s ease;
+  margin: 30px auto;
 }
 
 .modal-content.small {
@@ -600,6 +666,552 @@
 
 .notification.info {
   border-left: 4px solid #3b82f6;
+}
+
+/* ============================================
+   USERS MANAGEMENT STYLES
+   ============================================ */
+/* ============================================
+   TABLE SECTION STYLES
+   ============================================ */
+.table-section {
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin-bottom: 2rem;
+  transition: all 0.3s ease;
+}
+.table-section:hover {
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border-bottom: 1px solid #e2e8f0;
+}
+.table-header .table-title-group .table-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #475569;
+  margin: 0 0 0.25rem 0;
+}
+.table-header .table-title-group .table-title i {
+  color: #2563eb;
+  font-size: 1.25rem;
+}
+.table-header .table-title-group .table-subtitle {
+  color: #64748b;
+  font-size: 0.875rem;
+  font-weight: 400;
+}
+.table-header .table-actions .btn.btn-outline {
+  background: transparent;
+  border: 1px solid #e2e8f0;
+  color: #475569;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+.table-header .table-actions .btn.btn-outline:hover {
+  background: #2563eb;
+  color: #ffffff;
+  border-color: #2563eb;
+  transform: translateY(-1px);
+}
+.table-header .table-actions .btn.btn-outline i {
+  margin-right: 0.5rem;
+}
+
+/* ============================================
+   MODERN TABLE STYLES
+   ============================================ */
+.table-wrapper {
+  overflow-x: auto;
+  max-height: 70vh;
+  position: relative;
+}
+
+.table-container {
+  position: relative;
+  min-width: 100%;
+}
+
+.modern-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff;
+  font-size: 0.875rem;
+}
+.modern-table thead {
+  background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.modern-table thead th {
+  padding: 1rem 0.75rem;
+  text-align: left;
+  font-weight: 600;
+  color: #475569;
+  border-bottom: 2px solid #e2e8f0;
+  white-space: nowrap;
+  position: relative;
+}
+.modern-table thead th.checkbox-col {
+  width: 50px;
+  text-align: center;
+}
+.modern-table thead th.actions-col {
+  width: 120px;
+  text-align: center;
+}
+.modern-table thead th.sortable {
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.3s ease;
+}
+.modern-table thead th.sortable:hover {
+  background: rgba(37, 99, 235, 0.05);
+  color: #2563eb;
+}
+.modern-table thead th.sortable:hover .sort-icon {
+  opacity: 1;
+  color: #2563eb;
+}
+.modern-table thead th.sortable .th-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.modern-table thead th.sortable .th-content .sort-icon {
+  opacity: 0.3;
+  transition: all 0.3s ease;
+  font-size: 0.75rem;
+}
+.modern-table thead th.sortable.sort-asc .sort-icon::before {
+  content: "\f0de";
+}
+.modern-table thead th.sortable.sort-desc .sort-icon::before {
+  content: "\f0dd";
+}
+.modern-table tbody tr {
+  transition: all 0.3s ease;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+}
+.modern-table tbody tr:hover {
+  background: rgba(37, 99, 235, 0.02);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+.modern-table tbody tr.loading-row:hover {
+  background: transparent;
+  transform: none;
+  box-shadow: none;
+}
+.modern-table tbody tr td {
+  padding: 1rem 0.75rem;
+  vertical-align: middle;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.3);
+}
+.modern-table tbody tr td:first-child {
+  text-align: center;
+}
+.modern-table tbody tr td:last-child {
+  text-align: center;
+}
+
+/* ============================================
+   CUSTOM CHECKBOX STYLES
+   ============================================ */
+.checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.custom-checkbox {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #e2e8f0;
+  border-radius: 4px;
+  background: #ffffff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+.custom-checkbox:checked {
+  background: #2563eb;
+  border-color: #2563eb;
+}
+.custom-checkbox:checked::after {
+  content: "✓";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: bold;
+}
+.custom-checkbox:hover {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.checkbox-label {
+  display: none;
+}
+
+/* ============================================
+   BADGE STYLES
+   ============================================ */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+}
+.badge.badge-success {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+.badge.badge-warning {
+  background: rgba(245, 158, 11, 0.1);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.2);
+}
+.badge.badge-danger {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+.badge.badge-info {
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+.badge.badge-secondary {
+  background: rgba(100, 116, 139, 0.1);
+  color: #64748b;
+  border: 1px solid rgba(100, 116, 139, 0.2);
+}
+
+/* ============================================
+   ACTION BUTTONS STYLES
+   ============================================ */
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+}
+.action-buttons .btn {
+  padding: 0.375rem 0.75rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.action-buttons .btn.btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.7rem;
+}
+.action-buttons .btn.btn-sm i {
+  font-size: 0.7rem;
+}
+.action-buttons .btn.btn-primary {
+  background: #2563eb;
+  color: #ffffff;
+}
+.action-buttons .btn.btn-primary:hover {
+  background: rgb(18.5714285714, 76.1428571429, 202.4285714286);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.3);
+}
+.action-buttons .btn.btn-danger {
+  background: #ef4444;
+  color: #ffffff;
+}
+.action-buttons .btn.btn-danger:hover {
+  background: rgb(234.9802955665, 21.0197044335, 21.0197044335);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(239, 68, 68, 0.3);
+}
+.action-buttons .btn:active {
+  transform: translateY(0);
+}
+
+/* ============================================
+   LOADING STATES
+   ============================================ */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2rem;
+  color: #64748b;
+}
+.loading-state .loading-spinner {
+  display: flex;
+  gap: 0.25rem;
+  margin-bottom: 1rem;
+}
+.loading-state .loading-spinner .spinner-ring {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #2563eb;
+  animation: loading-pulse 1.4s ease-in-out infinite both;
+}
+.loading-state .loading-spinner .spinner-ring:nth-child(1) {
+  animation-delay: -0.32s;
+}
+.loading-state .loading-spinner .spinner-ring:nth-child(2) {
+  animation-delay: -0.16s;
+}
+.loading-state .loading-spinner .spinner-ring:nth-child(3) {
+  animation-delay: 0s;
+}
+.loading-state .loading-text {
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+@keyframes loading-pulse {
+  0%, 80%, 100% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+/* ============================================
+   EMPTY STATE
+   ============================================ */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2rem;
+  color: #64748b;
+}
+.empty-state i {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0.3;
+}
+.empty-state p {
+  font-size: 1rem;
+  margin: 0;
+  color: #64748b;
+}
+
+/* ============================================
+   PAGINATION STYLES
+   ============================================ */
+.pagination-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+}
+.pagination-section .pagination-info {
+  color: #64748b;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+.pagination-section .pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.pagination-section .pagination-controls .btn {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  color: #475569;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.pagination-section .pagination-controls .btn:hover:not(:disabled) {
+  background: #2563eb;
+  color: #ffffff;
+  border-color: #2563eb;
+  transform: translateY(-1px);
+}
+.pagination-section .pagination-controls .btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #f8fafc;
+}
+.pagination-section .pagination-controls .btn i {
+  font-size: 0.75rem;
+}
+.pagination-section .pagination-controls .page-info {
+  font-size: 0.875rem;
+  color: #475569;
+  font-weight: 500;
+  min-width: 100px;
+  text-align: center;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+@media (max-width: 1200px) {
+  .modern-table {
+    font-size: 0.8rem;
+  }
+  .modern-table th, .modern-table td {
+    padding: 0.75rem 0.5rem;
+  }
+}
+@media (max-width: 768px) {
+  .table-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  .table-header .table-actions {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+  }
+  .pagination-section {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+  }
+  .pagination-section .pagination-controls {
+    justify-content: center;
+  }
+  .modern-table {
+    font-size: 0.75rem;
+  }
+  .modern-table th, .modern-table td {
+    padding: 0.5rem 0.25rem;
+  }
+  .modern-table .action-buttons {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .modern-table .action-buttons .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+/* ============================================
+   HOVER EFFECTS & ANIMATIONS
+   ============================================ */
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.table-section {
+  animation: slideInUp 0.6s ease-out;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* ============================================
+   SCROLL BAR STYLING
+   ============================================ */
+.table-wrapper::-webkit-scrollbar {
+  height: 8px;
+}
+
+.table-wrapper::-webkit-scrollbar-track {
+  background: #f8fafc;
+  border-radius: 4px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+  background: #e2e8f0;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+.table-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+@media print {
+  .table-header .table-actions,
+  .action-buttons,
+  .pagination-section {
+    display: none !important;
+  }
+  .table-section {
+    box-shadow: none;
+    border: 1px solid #e2e8f0;
+  }
+  .modern-table {
+    font-size: 0.7rem;
+  }
+}
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 200px;
+  display: inline-block;
+}
+
+.date-display {
+  font-family: "Courier New", monospace;
+  font-size: 0.8rem;
+  color: #64748b;
 }
 
 /*# sourceMappingURL=usersManagement.css.map */

@@ -226,6 +226,70 @@
     font-size: 0.95rem;
 }
 
+.stat-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: var(--spacing-sm) 0;
+}
+
+/* Table Section */
+.table-section {
+    background: var(--bg-primary);
+    border-radius: 16px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-light);
+    overflow: hidden;
+}
+
+.table-header {
+    padding: var(--spacing-lg) var(--spacing-xl);
+    border-bottom: 1px solid var(--border-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-tertiary);
+}
+
+.table-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table th,
+.data-table td {
+    padding: var(--spacing-md) var(--spacing-lg);
+    text-align: left;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.data-table th {
+    background: var(--bg-tertiary);
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.data-table td {
+    color: var(--text-primary);
+}
+
+.data-table tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+.data-table tbody tr:hover {
+    background: var(--bg-tertiary);
+}
+
 /* Users Container */
 .users-container {
     background: white;
@@ -425,6 +489,7 @@
     max-height: 90vh;
     overflow-y: auto;
     animation: modalSlideIn 0.3s ease;
+    margin: 30px auto;
 }
 
 .modal-content.small {
@@ -609,4 +674,655 @@
 
 .notification.info {
     border-left: 4px solid #3b82f6;
+}
+
+/* ============================================
+   USERS MANAGEMENT STYLES
+   ============================================ */
+
+// Variables
+$primary-color: #2563eb;
+$secondary-color: #64748b;
+$success-color: #10b981;
+$warning-color: #f59e0b;
+$danger-color: #ef4444;
+$info-color: #3b82f6;
+$light-gray: #f8fafc;
+$medium-gray: #e2e8f0;
+$dark-gray: #475569;
+$white: #ffffff;
+$shadow-light: 0 1px 3px rgba(0, 0, 0, 0.1);
+$shadow-medium: 0 4px 6px rgba(0, 0, 0, 0.1);
+$shadow-heavy: 0 10px 15px rgba(0, 0, 0, 0.1);
+$border-radius: 8px;
+$transition: all 0.3s ease;
+
+/* ============================================
+   TABLE SECTION STYLES
+   ============================================ */
+
+.table-section {
+    background: $white;
+    border-radius: $border-radius;
+    box-shadow: $shadow-medium;
+    overflow: hidden;
+    margin-bottom: 2rem;
+    transition: $transition;
+
+    &:hover {
+        box-shadow: $shadow-heavy;
+    }
+}
+
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    border-bottom: 1px solid $medium-gray;
+
+    .table-title-group {
+        .table-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: $dark-gray;
+            margin: 0 0 0.25rem 0;
+
+            i {
+                color: $primary-color;
+                font-size: 1.25rem;
+            }
+        }
+
+        .table-subtitle {
+            color: $secondary-color;
+            font-size: 0.875rem;
+            font-weight: 400;
+        }
+    }
+
+    .table-actions {
+        .btn {
+            &.btn-outline {
+                background: transparent;
+                border: 1px solid $medium-gray;
+                color: $dark-gray;
+                padding: 0.5rem 1rem;
+                border-radius: 6px;
+                transition: $transition;
+
+                &:hover {
+                    background: $primary-color;
+                    color: $white;
+                    border-color: $primary-color;
+                    transform: translateY(-1px);
+                }
+
+                i {
+                    margin-right: 0.5rem;
+                }
+            }
+        }
+    }
+}
+
+/* ============================================
+   MODERN TABLE STYLES
+   ============================================ */
+
+.table-wrapper {
+    overflow-x: auto;
+    max-height: 70vh;
+    position: relative;
+}
+
+.table-container {
+    position: relative;
+    min-width: 100%;
+}
+
+.modern-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: $white;
+    font-size: 0.875rem;
+
+    thead {
+        background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+
+        th {
+            padding: 1rem 0.75rem;
+            text-align: left;
+            font-weight: 600;
+            color: $dark-gray;
+            border-bottom: 2px solid $medium-gray;
+            white-space: nowrap;
+            position: relative;
+
+            &.checkbox-col {
+                width: 50px;
+                text-align: center;
+            }
+
+            &.actions-col {
+                width: 120px;
+                text-align: center;
+            }
+
+            &.sortable {
+                cursor: pointer;
+                user-select: none;
+                transition: $transition;
+
+                &:hover {
+                    background: rgba($primary-color, 0.05);
+                    color: $primary-color;
+
+                    .sort-icon {
+                        opacity: 1;
+                        color: $primary-color;
+                    }
+                }
+
+                .th-content {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 0.5rem;
+
+                    .sort-icon {
+                        opacity: 0.3;
+                        transition: $transition;
+                        font-size: 0.75rem;
+                    }
+                }
+
+                &.sort-asc .sort-icon::before {
+                    content: "\f0de"; // fa-sort-up
+                }
+
+                &.sort-desc .sort-icon::before {
+                    content: "\f0dd"; // fa-sort-down
+                }
+            }
+        }
+    }
+
+    tbody {
+        tr {
+            transition: $transition;
+            border-bottom: 1px solid rgba($medium-gray, 0.5);
+
+            &:hover {
+                background: rgba($primary-color, 0.02);
+                transform: translateY(-1px);
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            }
+
+            &.loading-row {
+                &:hover {
+                    background: transparent;
+                    transform: none;
+                    box-shadow: none;
+                }
+            }
+
+            td {
+                padding: 1rem 0.75rem;
+                vertical-align: middle;
+                border-bottom: 1px solid rgba($medium-gray, 0.3);
+
+                &:first-child {
+                    text-align: center;
+                }
+
+                &:last-child {
+                    text-align: center;
+                }
+            }
+        }
+    }
+}
+
+/* ============================================
+   CUSTOM CHECKBOX STYLES
+   ============================================ */
+
+.checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.custom-checkbox {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid $medium-gray;
+    border-radius: 4px;
+    background: $white;
+    cursor: pointer;
+    transition: $transition;
+    position: relative;
+
+    &:checked {
+        background: $primary-color;
+        border-color: $primary-color;
+
+        &::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: $white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+    }
+
+    &:hover {
+        border-color: $primary-color;
+        box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+    }
+}
+
+.checkbox-label {
+    display: none;
+}
+
+/* ============================================
+   BADGE STYLES
+   ============================================ */
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: $transition;
+
+    &.badge-success {
+        background: rgba($success-color, 0.1);
+        color: $success-color;
+        border: 1px solid rgba($success-color, 0.2);
+    }
+
+    &.badge-warning {
+        background: rgba($warning-color, 0.1);
+        color: $warning-color;
+        border: 1px solid rgba($warning-color, 0.2);
+    }
+
+    &.badge-danger {
+        background: rgba($danger-color, 0.1);
+        color: $danger-color;
+        border: 1px solid rgba($danger-color, 0.2);
+    }
+
+    &.badge-info {
+        background: rgba($info-color, 0.1);
+        color: $info-color;
+        border: 1px solid rgba($info-color, 0.2);
+    }
+
+    &.badge-secondary {
+        background: rgba($secondary-color, 0.1);
+        color: $secondary-color;
+        border: 1px solid rgba($secondary-color, 0.2);
+    }
+}
+
+/* ============================================
+   ACTION BUTTONS STYLES
+   ============================================ */
+
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: center;
+
+    .btn {
+        padding: 0.375rem 0.75rem;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        transition: $transition;
+        font-size: 0.75rem;
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+
+        &.btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.7rem;
+
+            i {
+                font-size: 0.7rem;
+            }
+        }
+
+        &.btn-primary {
+            background: $primary-color;
+            color: $white;
+
+            &:hover {
+                background: darken($primary-color, 10%);
+                transform: translateY(-1px);
+                box-shadow: 0 2px 4px rgba($primary-color, 0.3);
+            }
+        }
+
+        &.btn-danger {
+            background: $danger-color;
+            color: $white;
+
+            &:hover {
+                background: darken($danger-color, 10%);
+                transform: translateY(-1px);
+                box-shadow: 0 2px 4px rgba($danger-color, 0.3);
+            }
+        }
+
+        &:active {
+            transform: translateY(0);
+        }
+    }
+}
+
+/* ============================================
+   LOADING STATES
+   ============================================ */
+
+.loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2rem;
+    color: $secondary-color;
+
+    .loading-spinner {
+        display: flex;
+        gap: 0.25rem;
+        margin-bottom: 1rem;
+
+        .spinner-ring {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: $primary-color;
+            animation: loading-pulse 1.4s ease-in-out infinite both;
+
+            &:nth-child(1) { animation-delay: -0.32s; }
+            &:nth-child(2) { animation-delay: -0.16s; }
+            &:nth-child(3) { animation-delay: 0s; }
+        }
+    }
+
+    .loading-text {
+        font-size: 0.875rem;
+        color: $secondary-color;
+    }
+}
+
+@keyframes loading-pulse {
+    0%, 80%, 100% {
+        transform: scale(0.8);
+        opacity: 0.5;
+    }
+    40% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* ============================================
+   EMPTY STATE
+   ============================================ */
+
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2rem;
+    color: $secondary-color;
+
+    i {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        opacity: 0.3;
+    }
+
+    p {
+        font-size: 1rem;
+        margin: 0;
+        color: $secondary-color;
+    }
+}
+
+/* ============================================
+   PAGINATION STYLES
+   ============================================ */
+
+.pagination-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    background: $light-gray;
+    border-top: 1px solid $medium-gray;
+
+    .pagination-info {
+        color: $secondary-color;
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+
+    .pagination-controls {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        .btn {
+            padding: 0.5rem 0.75rem;
+            border: 1px solid $medium-gray;
+            background: $white;
+            color: $dark-gray;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: $transition;
+
+            &:hover:not(:disabled) {
+                background: $primary-color;
+                color: $white;
+                border-color: $primary-color;
+                transform: translateY(-1px);
+            }
+
+            &:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+                background: $light-gray;
+            }
+
+            i {
+                font-size: 0.75rem;
+            }
+        }
+
+        .page-info {
+            font-size: 0.875rem;
+            color: $dark-gray;
+            font-weight: 500;
+            min-width: 100px;
+            text-align: center;
+        }
+    }
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 1200px) {
+    .modern-table {
+        font-size: 0.8rem;
+
+        th, td {
+            padding: 0.75rem 0.5rem;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .table-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+
+        .table-actions {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+        }
+    }
+
+    .pagination-section {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: center;
+
+        .pagination-controls {
+            justify-content: center;
+        }
+    }
+
+    .modern-table {
+        font-size: 0.75rem;
+
+        th, td {
+            padding: 0.5rem 0.25rem;
+        }
+
+        .action-buttons {
+            flex-direction: column;
+            gap: 0.25rem;
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    }
+}
+
+/* ============================================
+   HOVER EFFECTS & ANIMATIONS
+   ============================================ */
+
+.fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.table-section {
+    animation: slideInUp 0.6s ease-out;
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ============================================
+   SCROLL BAR STYLING
+   ============================================ */
+
+.table-wrapper::-webkit-scrollbar {
+    height: 8px;
+}
+
+.table-wrapper::-webkit-scrollbar-track {
+    background: $light-gray;
+    border-radius: 4px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+    background: $medium-gray;
+    border-radius: 4px;
+    transition: $transition;
+
+    &:hover {
+        background: $secondary-color;
+    }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+    .table-header .table-actions,
+    .action-buttons,
+    .pagination-section {
+        display: none !important;
+    }
+
+    .table-section {
+        box-shadow: none;
+        border: 1px solid $medium-gray;
+    }
+
+    .modern-table {
+        font-size: 0.7rem;
+    }
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+.text-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 200px;
+    display: inline-block;
+}
+
+.date-display {
+    font-family: 'Courier New', monospace;
+    font-size: 0.8rem;
+    color: $secondary-color;
 }

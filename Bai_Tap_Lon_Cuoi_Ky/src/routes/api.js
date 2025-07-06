@@ -6,6 +6,7 @@ const { requireAuth, requireAdmin } = require('../app/middleware/auth');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const User = require('../app/models/User');
 
 // Cấu hình multer để upload ảnh cuối cùng
 const finalStorage = multer.diskStorage({
@@ -575,24 +576,245 @@ router.post('/rooms/:id/reject', requireAuth, requireAdmin, async (req, res) => 
     }
 });
 
-// GET /api/users - Lấy danh sách người dùng (for admin)
+// [GET] Lấy thống kê người dùng
+router.get('/users/stats', requireAuth, requireAdmin, async (req, res) => {
+    try {
+        const result = await User.getStats();
+        
+        if (result.success) {
+            res.json({
+                success: true,
+                data: result.data
+            });
+        } else {
+            res.status(500).json({
+                success: false,
+                message: result.message
+            });
+        }
+    } catch (error) {
+        console.error('Error in /api/users/stats:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Lỗi server'
+        });
+    }
+});
+
+// [GET] Lấy danh sách người dùng với phân trang và bộ lọc
 router.get('/users', requireAuth, requireAdmin, async (req, res) => {
     try {
-        const pool = db.getPool();
+        const {
+            page = 1,
+            limit = 20,
+            search = '',
+            role = '',
+            status = '',
+            sortBy = 'NgayTao',
+            sortOrder = 'DESC'
+        } = req.query;
+
+        const offset = (parseInt(page) - 1) * parseInt(limit);
         
-        const [users] = await pool.execute(`
-            SELECT MaNguoiDung, HoTen, Email, VaiTro 
-            FROM NGUOIDUNG 
-            WHERE VaiTro IN ('chunha', 'nguoithue', 'admin')
-            ORDER BY HoTen ASC
-        `);
+        const options = {
+            limit: parseInt(limit),
+            offset,
+            search,
+            role,
+            status,
+            sortBy,
+            sortOrder
+        };
+
+        const result = await User.findAll(options);
         
-        res.json({
-            success: true,
-            data: users
-        });
+        if (result.success) {
+            const totalPages = Math.ceil(result.data.total / parseInt(limit));
+            
+            res.json({
+                success: true,
+                data: {
+                    users: result.data.users,
+                    pagination: {
+                        currentPage: parseInt(page),
+                        totalPages,
+                        totalItems: result.data.total,
+                        itemsPerPage: parseInt(limit)
+                    }
+                }
+            });
+        } else {
+            res.status(500).json({
+                success: false,
+                message: result.message
+            });
+        }
     } catch (error) {
-        console.error('Lỗi khi lấy danh sách người dùng:', error);
+        console.error('Error in /api/users:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Lỗi server'
+        });
+    }
+});
+
+// [GET] Lấy thông tin người dùng theo ID
+router.get('/users/:id', requireAuth, requireAdmin, async (req, res) => {
+    try {
+        const { id } = req.params;
+        
+        const result = await User.findById(id);
+        
+        if (result.success) {
+            res.json({
+                success: true,
+                data: result.data
+            });
+        } else {
+            res.status(404).json({
+                success: false,
+                message: result.message
+            });
+        }
+    } catch (error) {
+        console.error('Error in /api/users/:id:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Lỗi server'
+        });
+    }
+});
+
+// [POST] Tạo người dùng mới
+router.post('/users', requireAuth, requireAdmin, async (req, res) => {
+    try {
+        const userData = req.body;
+        
+        const result = await User.create(userData);
+        
+        if (result.success) {
+            res.status(201).json({
+                success: true,
+                data: result.data,
+                message: result.message
+            });
+        } else {
+            res.status(400).json({
+                success: false,
+                message: result.message
+            });
+        }
+    } catch (error) {
+        console.error('Error in POST /api/users:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Lỗi server'
+        });
+    }
+});
+
+// [PUT] Cập nhật người dùng (chỉ trạng thái và vai trò)
+router.put('/users/:id', requireAuth, requireAdmin, async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { TrangThai, VaiTro } = req.body;
+        
+        // Admin chỉ có thể thay đổi trạng thái và vai trò
+        const allowedUpdates = {};
+        if (TrangThai !== undefined) allowedUpdates.TrangThai = TrangThai;
+        if (VaiTro !== undefined) allowedUpdates.VaiTro = VaiTro;
+        
+        if (Object.keys(allowedUpdates).length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: 'Không có thông tin hợp lệ để cập nhật'
+            });
+        }
+        
+        const result = await User.update(id, allowedUpdates);
+        
+        if (result.success) {
+            res.json({
+                success: true,
+                message: result.message
+            });
+        } else {
+            res.status(400).json({
+                success: false,
+                message: result.message
+            });
+        }
+    } catch (error) {
+        console.error('Error in PUT /api/users/:id:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Lỗi server'
+        });
+    }
+});
+
+// [DELETE] Xóa người dùng
+router.delete('/users/:id', requireAuth, requireAdmin, async (req, res) => {
+    try {
+        const { id } = req.params;
+        
+        const result = await User.delete(id);
+        
+        if (result.success) {
+            res.json({
+                success: true,
+                message: result.message
+            });
+        } else {
+            res.status(400).json({
+                success: false,
+                message: result.message
+            });
+        }
+    } catch (error) {
+        console.error('Error in DELETE /api/users/:id:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Lỗi server'
+        });
+    }
+});
+
+// [PUT] Cập nhật trạng thái hàng loạt
+router.put('/users/bulk/status', requireAuth, requireAdmin, async (req, res) => {
+    try {
+        const { userIds, status } = req.body;
+        
+        if (!userIds || !Array.isArray(userIds) || userIds.length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: 'Danh sách người dùng không hợp lệ'
+            });
+        }
+
+        if (!status) {
+            return res.status(400).json({
+                success: false,
+                message: 'Trạng thái không được để trống'
+            });
+        }
+        
+        const result = await User.bulkUpdateStatus(userIds, status);
+        
+        if (result.success) {
+            res.json({
+                success: true,
+                data: result.data,
+                message: result.data.message
+            });
+        } else {
+            res.status(400).json({
+                success: false,
+                message: result.message
+            });
+        }
+    } catch (error) {
+        console.error('Error in PUT /api/users/bulk/status:', error);
         res.status(500).json({
             success: false,
             message: 'Lỗi server'

@@ -1,231 +1,333 @@
+
 <!-- Main Content -->
 <main class="main-content" id="main-content">
-    <!-- Dashboard Header -->
-    <div class="dashboard-header">
+    <!-- Header -->
+    <div class="dashboard-header fade-in">
         <h1>Quản Lý Người Dùng</h1>
-        <p>Quản lý thông tin và quyền hạn của người dùng</p>
-    </div>
-
-    <!-- Controls -->
-    <div class="controls">
-        <div class="controls-left">
-            <div class="search-box">
-                <i class="fas fa-search"></i>
-                <input
-                    type="text"
-                    id="searchInput"
-                    placeholder="Tìm kiếm người dùng..."
-                />
-            </div>
-            <select id="roleFilter">
-                <option value="">Tất cả vai trò</option>
-                <option value="admin">Admin</option>
-                <option value="chunha">Chủ nhà</option>
-                <option value="nguoithue">Người thuê</option>
-            </select>
-            <select id="statusFilter">
-                <option value="">Tất cả trạng thái</option>
-                <option value="hoatdong">Hoạt động</option>
-                <option value="khonghoatdong">Không hoạt động</option>
-                <option value="bikhoa">Bị khóa</option>
-            </select>
-        </div>
-        <div class="controls-right">
+        <p>Quản lý thông tin, quyền hạn và trạng thái người dùng trong hệ thống</p>
+        <div class="header-actions">
             <button class="btn btn-primary" id="addUserBtn">
-                <i class="fas fa-user-plus"></i>
-                Thêm Người Dùng
+                <i class="fas fa-plus"></i>
+                Thêm người dùng
             </button>
             <button class="btn btn-secondary" id="exportBtn">
                 <i class="fas fa-download"></i>
-                Xuất File
+                Xuất Excel
             </button>
         </div>
     </div>
 
     <!-- Stats Grid -->
-    <div class="stats-grid">
-        <div class="stat-card">
-            <div class="stat-icon blue">
-                <i class="fas fa-users"></i>
+    <section class="dashboard-section">
+        <div class="stats-grid fade-in">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-title">Tổng người dùng</div>
+                    <div class="stat-icon users">
+                        <i class="fas fa-users"></i>
+                    </div>
+                </div>
+                <div class="stat-value" data-stat="totalUsers">-</div>
             </div>
-            <div class="stat-info">
-                <h3 id="totalUsers">-</h3>
-                <p>Tổng người dùng</p>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-title">Chủ nhà</div>
+                    <div class="stat-icon owners">
+                        <i class="fas fa-home"></i>
+                    </div>
+                </div>
+                <div class="stat-value" data-stat="owners">-</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-title">Người thuê</div>
+                    <div class="stat-icon tenants">
+                        <i class="fas fa-user-friends"></i>
+                    </div>
+                </div>
+                <div class="stat-value" data-stat="tenants">-</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-title">Người dùng mới</div>
+                    <div class="stat-icon new-users">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                </div>
+                <div class="stat-value" data-stat="newUsers">-</div>
             </div>
         </div>
-        <div class="stat-card">
-            <div class="stat-icon green">
-                <i class="fas fa-home"></i>
+    </section>
+
+    <!-- Controls -->
+    <section class="dashboard-section">
+        <div class="controls">
+            <div class="controls-left">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input
+                        type="text"
+                        id="searchInput"
+                        placeholder="Tìm kiếm theo tên, email, CCCD..."
+                    />
+                </div>
+                <select id="roleFilter" class="filter-select">
+                    <option value="">Tất cả vai trò</option>
+                    <option value="admin">Quản trị viên</option>
+                    <option value="chunha">Chủ nhà</option>
+                    <option value="nguoithue">Người thuê</option>
+                </select>
+                <select id="statusFilter" class="filter-select">
+                    <option value="">Tất cả trạng thái</option>
+                    <option value="hoatdong">Hoạt động</option>
+                    <option value="khonghoatdong">Không hoạt động</option>
+                    <option value="bikhoa">Bị khóa</option>
+                </select>
             </div>
-            <div class="stat-info">
-                <h3 id="ownersCount">-</h3>
-                <p>Chủ nhà</p>
+            <div class="controls-right">
+                <div class="bulk-actions">
+                    <select id="bulkAction" class="bulk-select" disabled>
+                        <option value="">Chọn thao tác...</option>
+                        <option value="activate">Kích hoạt</option>
+                        <option value="deactivate">Vô hiệu hóa</option>
+                        <option value="block">Khóa tài khoản</option>
+                        <option value="delete">Xóa</option>
+                    </select>
+                    <button class="btn btn-secondary" id="applyBulkAction" disabled>
+                        <i class="fas fa-check"></i>
+                        Áp dụng
+                    </button>
+                </div>
             </div>
         </div>
-        <div class="stat-card">
-            <div class="stat-icon orange">
-                <i class="fas fa-user-check"></i>
-            </div>
-            <div class="stat-info">
-                <h3 id="tenantsCount">-</h3>
-                <p>Người thuê</p>
-            </div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-icon purple">
-                <i class="fas fa-user-plus"></i>
-            </div>
-            <div class="stat-info">
-                <h3 id="newUsersCount">-</h3>
-                <p>Người dùng mới</p>
-            </div>
-        </div>
-    </div>
+    </section>
 
     <!-- Users Table -->
-    <div class="users-container">
-        <div class="loading" id="loadingIndicator">
-            <i class="fas fa-spinner fa-spin"></i>
-            <span>Đang tải dữ liệu...</span>
+    <section class="dashboard-section">
+        <div class="table-section">
+            <div class="table-header">
+                <div class="table-title-group">
+                    <h3 class="table-title">
+                        <i class="fas fa-users"></i>
+                        Danh sách người dùng
+                    </h3>
+                    <span class="table-subtitle" id="tableSubtitle">Quản lý thông tin người dùng</span>
+                </div>
+                <div class="table-actions">
+                    <button class="btn btn-outline" id="refreshUsersBtn">
+                        <i class="fas fa-sync-alt"></i>
+                        Làm mới
+                    </button>
+                </div>
+            </div>
+            
+            <div class="table-wrapper">
+                <div class="table-container">
+                    <table class="modern-table">
+                        <thead>
+                            <tr>
+                                <th class="checkbox-col">
+                                    <div class="checkbox-wrapper">
+                                        <input type="checkbox" id="selectAll" class="custom-checkbox">
+                                        <label for="selectAll" class="checkbox-label"></label>
+                                    </div>
+                                </th>
+                                <th class="sortable" data-sort="CCCD">
+                                    <div class="th-content">
+                                        <span>CCCD</span>
+                                        <i class="fas fa-sort sort-icon"></i>
+                                    </div>
+                                </th>
+                                <th class="sortable" data-sort="TenDangNhap">
+                                    <div class="th-content">
+                                        <span>Tên đăng nhập</span>
+                                        <i class="fas fa-sort sort-icon"></i>
+                                    </div>
+                                </th>
+                                <th class="sortable" data-sort="HoTen">
+                                    <div class="th-content">
+                                        <span>Họ tên</span>
+                                        <i class="fas fa-sort sort-icon"></i>
+                                    </div>
+                                </th>
+                                <th class="sortable" data-sort="Email">
+                                    <div class="th-content">
+                                        <span>Email</span>
+                                        <i class="fas fa-sort sort-icon"></i>
+                                    </div>
+                                </th>
+                                <th>Số điện thoại</th>
+                                <th>Vai trò</th>
+                                <th>Trạng thái</th>
+                                <th class="sortable" data-sort="NgayTao">
+                                    <div class="th-content">
+                                        <span>Ngày tạo</span>
+                                        <i class="fas fa-sort sort-icon"></i>
+                                    </div>
+                                </th>
+                                <th class="actions-col">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <tr class="loading-row">
+                                <td colspan="10">
+                                    <div class="loading-state">
+                                        <div class="loading-spinner">
+                                            <div class="spinner-ring"></div>
+                                            <div class="spinner-ring"></div>
+                                            <div class="spinner-ring"></div>
+                                        </div>
+                                        <span class="loading-text">Đang tải dữ liệu...</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-
-        <table class="users-table" id="usersTable" style="display: none;">
-            <thead>
-                <tr>
-                    <th>CCCD</th>
-                    <th>Tên đăng nhập</th>
-                    <th>Họ tên</th>
-                    <th>Email</th>
-                    <th>Số điện thoại</th>
-                    <th>Vai trò</th>
-                    <th>Trạng thái</th>
-                    <th>Thao tác</th>
-                </tr>
-            </thead>
-            <tbody id="usersTableBody">
-                <!-- User data will be inserted here -->
-            </tbody>
-        </table>
-
+        
         <!-- Pagination -->
-        <div class="pagination" id="pagination">
-            <!-- Pagination will be inserted here -->
+        <div class="pagination-section">
+            <div class="pagination-info">
+                <span id="paginationInfo">Hiển thị 0 - 0 của 0 người dùng</span>
+            </div>
+            <div class="pagination-controls" id="pagination">
+                <!-- Pagination will be generated here -->
+            </div>
         </div>
-    </div>
+    </section>
+
 </main>
 
-<!-- Add/Edit User Modal -->
-<div class="modal" id="userModal">
+<!-- User Status Change Modal -->
+<div id="statusModal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
-            <h3 id="modalTitle">Thêm Người Dùng Mới</h3>
-            <button class="close-btn" id="closeModal">&times;</button>
+            <h3 id="statusModalTitle">Thay đổi trạng thái người dùng</h3>
+            <span class="close" id="closeStatusModal">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label>Tên người dùng:</label>
+                <input type="text" id="statusUserName" class="form-control" readonly>
+            </div>
+            <div class="form-group">
+                <label>Trạng thái hiện tại:</label>
+                <input type="text" id="currentStatus" class="form-control" readonly>
+            </div>
+            <div class="form-group">
+                <label for="newStatus">Trạng thái mới:</label>
+                <select id="newStatus" class="form-control" required>
+                    <option value="">-- Chọn trạng thái --</option>
+                    <option value="hoatdong">Hoạt động</option>
+                    <option value="khonghoatdong">Không hoạt động</option>
+                    <option value="bikhoa">Bị khóa</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="statusReason">Lý do thay đổi:</label>
+                <textarea id="statusReason" class="form-control" rows="3" placeholder="Nhập lý do thay đổi trạng thái (tùy chọn)"></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" id="cancelStatusBtn">Hủy</button>
+            <button type="button" class="btn btn-primary" id="saveStatusBtn">Lưu thay đổi</button>
+        </div>
+    </div>
+</div>
+
+<!-- User Modal -->
+<div id="userModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 id="modalTitle">Thông tin người dùng</h3>
+            <span class="close" id="closeUserModal">&times;</span>
         </div>
         <div class="modal-body">
             <form id="userForm">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="cccd">CCCD: *</label>
-                        <input
-                            type="text"
-                            id="cccd"
-                            name="cccd"
-                            required
-                            maxlength="12"
-                        />
-                    </div>
-                    <div class="form-group">
-                        <label for="username">Tên đăng nhập: *</label>
-                        <input
-                            type="text"
-                            id="username"
-                            name="username"
-                            required
-                        />
-                    </div>
+                <div class="form-group">
+                    <label for="userCCCD">CCCD:</label>
+                    <input type="text" id="userCCCD" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <label for="fullname">Họ tên: *</label>
-                    <input type="text" id="fullname" name="fullname" required />
+                    <label for="userName">Tên đăng nhập:</label>
+                    <input type="text" id="userName" class="form-control" required>
                 </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="email">Email: *</label>
-                        <input type="email" id="email" name="email" required />
-                    </div>
-                    <div class="form-group">
-                        <label for="phone">Số điện thoại: *</label>
-                        <input type="tel" id="phone" name="phone" required />
-                    </div>
+                <div class="form-group">
+                    <label for="userFullName">Họ tên:</label>
+                    <input type="text" id="userFullName" class="form-control" required>
                 </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="role">Vai trò: *</label>
-                        <select id="role" name="role" required>
-                            <option value="">Chọn vai trò</option>
-                            <option value="admin">Admin</option>
-                            <option value="chunha">Chủ nhà</option>
-                            <option value="nguoithue">Người thuê</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="status">Trạng thái:</label>
-                        <select id="status" name="status">
-                            <option value="hoatdong">Hoạt động</option>
-                            <option value="khonghoatdong">Không hoạt động</option>
-                            <option value="bikhoa">Bị khóa</option>
-                        </select>
-                    </div>
+                <div class="form-group">
+                    <label for="userEmail">Email:</label>
+                    <input type="email" id="userEmail" class="form-control" required>
                 </div>
-                <div class="form-group" id="passwordGroup">
-                    <label for="password">Mật khẩu: *</label>
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        required
-                    />
+                <div class="form-group">
+                    <label for="userPhone">Số điện thoại:</label>
+                    <input type="tel" id="userPhone" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="userPassword">Mật khẩu:</label>
+                    <input type="password" id="userPassword" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="userRole">Vai trò:</label>
+                    <select id="userRole" class="form-control" required>
+                        <option value="">-- Chọn vai trò --</option>
+                        <option value="admin">Quản trị viên</option>
+                        <option value="chunha">Chủ nhà</option>
+                        <option value="nguoithue">Người thuê</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="userStatus">Trạng thái:</label>
+                    <select id="userStatus" class="form-control" required>
+                        <option value="">-- Chọn trạng thái --</option>
+                        <option value="hoatdong">Hoạt động</option>
+                        <option value="khonghoatdong">Không hoạt động</option>
+                        <option value="bikhoa">Bị khóa</option>
+                    </select>
                 </div>
             </form>
         </div>
         <div class="modal-footer">
-            <button
-                type="button"
-                class="btn btn-secondary"
-                id="cancelBtn"
-            >Hủy</button>
-            <button
-                type="submit"
-                class="btn btn-primary"
-                id="saveUserBtn"
-            >Lưu</button>
+            <button type="button" class="btn btn-secondary" id="cancelUserBtn">Hủy</button>
+            <button type="button" class="btn btn-primary" id="saveUserBtn">Lưu</button>
         </div>
     </div>
 </div>
 
 <!-- Delete Confirmation Modal -->
-<div class="modal" id="deleteModal">
-    <div class="modal-content small">
+<div id="deleteModal" class="modal">
+    <div class="modal-content">
         <div class="modal-header">
-            <h3>Xác Nhận Xóa</h3>
+            <h3>Xác nhận xóa</h3>
             <button class="close-btn" id="closeDeleteModal">&times;</button>
         </div>
         <div class="modal-body">
-            <p>Bạn có chắc chắn muốn xóa người dùng
-                <strong id="deleteUserName"></strong>?</p>
-            <p class="warning">Thao tác này không thể hoàn tác!</p>
+            <div class="delete-warning">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p>Bạn có chắc chắn muốn xóa người dùng này?</p>
+                <p><strong>Lưu ý:</strong> Hành động này không thể hoàn tác!</p>
+            </div>
         </div>
         <div class="modal-footer">
-            <button
-                type="button"
-                class="btn btn-secondary"
-                id="cancelDeleteBtn"
-            >Hủy</button>
-            <button
-                type="button"
-                class="btn btn-danger"
-                id="confirmDeleteBtn"
-            >Xóa</button>
+            <button type="button" class="btn btn-secondary" id="cancelDeleteBtn">
+                Hủy
+            </button>
+            <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
+                Xóa
+            </button>
         </div>
     </div>
 </div>
+
+<!-- Notification -->
+<div id="notification" class="notification">
+    <div class="notification-content">
+        <i class="notification-icon"></i>
+        <span class="notification-message"></span>
+    </div>
+</div>
+
+<script src="/js/usersManagement.js"></script>
