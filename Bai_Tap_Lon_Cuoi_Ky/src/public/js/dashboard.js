@@ -44,6 +44,17 @@ document.addEventListener("DOMContentLoaded", function () {
 // Load dashboard statistics
 async function loadDashboardStats() {
     try {
+        // Check if elements exist before proceeding
+        const totalUsersEl = document.getElementById('total-users');
+        const totalRoomsEl = document.getElementById('total-rooms');
+        const activeContractsEl = document.getElementById('active-contracts');
+        const monthlyRevenueEl = document.getElementById('monthly-revenue');
+        
+        if (!totalUsersEl || !totalRoomsEl || !activeContractsEl || !monthlyRevenueEl) {
+            // Elements don't exist, skip this function (probably not on main dashboard)
+            return;
+        }
+        
         const response = await fetch('/api/dashboard/stats');
         const result = await response.json();
         
@@ -51,10 +62,10 @@ async function loadDashboardStats() {
             const data = result.data;
             
             // Update stat cards
-            document.getElementById('total-users').textContent = data.totalUsers;
-            document.getElementById('total-rooms').textContent = data.totalRooms;
-            document.getElementById('active-contracts').textContent = data.activeContracts;
-            document.getElementById('monthly-revenue').textContent = formatCurrency(data.monthlyRevenue);
+            totalUsersEl.textContent = data.totalUsers;
+            totalRoomsEl.textContent = data.totalRooms;
+            activeContractsEl.textContent = data.activeContracts;
+            monthlyRevenueEl.textContent = formatCurrency(data.monthlyRevenue);
         }
     } catch (error) {
         console.error('Lỗi khi tải thống kê dashboard:', error);
@@ -64,11 +75,17 @@ async function loadDashboardStats() {
 // Load pending rooms
 async function loadPendingRooms() {
     try {
+        // Check if element exists before proceeding
+        const tbody = document.querySelector('#pendingApprovals tbody');
+        if (!tbody) {
+            // Element doesn't exist, skip this function
+            return;
+        }
+        
         const response = await fetch('/api/dashboard/pending-rooms');
         const result = await response.json();
         
         if (result.success) {
-            const tbody = document.querySelector('#pendingApprovals tbody');
             tbody.innerHTML = '';
             
             result.data.forEach(room => {

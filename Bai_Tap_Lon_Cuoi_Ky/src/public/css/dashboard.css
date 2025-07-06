@@ -388,6 +388,8 @@
 .status-badge.available {
   background: #d1fae5;
   color: #065f46;
+  display: inline-block;
+  text-align: center;
 }
 
 .status-badge.occupied {
@@ -424,6 +426,11 @@
   transition: all 0.2s ease;
   text-decoration: none;
   border: 1px solid transparent;
+}
+
+img {
+  width: 100%;
+  object-fit: cover;
 }
 
 .btn-primary {

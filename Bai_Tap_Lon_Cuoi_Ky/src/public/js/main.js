@@ -136,7 +136,6 @@ document.addEventListener('DOMContentLoaded', function () {
                         }
                     })
                     .catch(error => {
-                        console.error('❌ Filter error:', error);
                         housesList.innerHTML = '<p>❌ Lỗi kết nối. Vui lòng thử lại sau.</p>';
                     });
             }

@@ -4,8 +4,6 @@ function start() {
     getRooms((response) => {
         if (response.success) {
             renderRooms(response.data);
-        } else {
-            console.error('Error loading rooms:', response.message);
         }
     });
 }
@@ -20,7 +18,6 @@ function getRooms(callback) {
         .then(response => response.json())
         .then(callback)
         .catch(error => {
-            console.error('Fetch error:', error);
             callback({ success: false, message: 'Không thể kết nối đến server' });
         });
 }
@@ -29,7 +26,6 @@ function renderRooms(rooms) {
     var listRooms = document.querySelector('.house-lists');
     
     if (!listRooms) {
-        console.error('Element .house-lists not found!');
         return;
     }
     

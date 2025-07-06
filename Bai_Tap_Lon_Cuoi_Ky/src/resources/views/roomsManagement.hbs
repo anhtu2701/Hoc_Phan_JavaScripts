@@ -54,7 +54,7 @@
 
     <!-- Controls -->
     <section class="dashboard-section">
-        <div class="controls glass-card">
+        <div class="controls">
             <div class="controls-left">
                 <div class="search-box">
                     <i class="fas fa-search"></i>
@@ -66,9 +66,10 @@
                 </div>
                 <select id="statusFilter" class="filter-select">
                     <option value="">Tất cả trạng thái</option>
-                    <option value="available">Còn trống</option>
-                    <option value="occupied">Đã thuê</option>
-                    <option value="maintenance">Bảo trì</option>
+                    <option value="conTrong">Còn trống</option>
+                    <option value="dangThue">Đang thuê</option>
+                    <option value="daDuyet">Đã duyệt</option>
+                    <option value="dangChoDuyet">Đang chờ duyệt</option>
                 </select>
                 <button class="btn btn-secondary" id="exportBtn">
                     <i class="fas fa-download"></i>
@@ -141,8 +142,6 @@
         </div>
     </section>
 
-    <!-- Modals (giữ nguyên như bạn đã có) -->
-    <!-- ... -->
 </main>
 
 <!-- Add/Edit Room Modal -->
@@ -203,9 +202,10 @@
                 <div class="form-group">
                     <label for="roomStatus">Trạng thái</label>
                     <select id="roomStatus">
-                        <option value="available">Còn trống</option>
-                        <option value="occupied">Đã thuê</option>
-                        <option value="maintenance">Bảo trì</option>
+                        <option value="conTrong">Còn trống</option>
+                        <option value="dangThue">Đang thuê</option>
+                        <option value="daDuyet">Đã duyệt</option>
+                        <option value="dangChoDuyet">Đang chờ duyệt</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -280,3 +280,33 @@
         </div>
     </div>
 </div>
+
+<script>
+// Additional event listeners for modal close buttons
+document.addEventListener('DOMContentLoaded', function() {
+    // Close details modal
+    document.getElementById('closeDetailsModal').addEventListener('click', () => {
+        document.getElementById('roomDetailsModal').style.display = 'none';
+        document.body.style.overflow = 'auto';
+    });
+    
+    document.getElementById('closeDetailsBtn').addEventListener('click', () => {
+        document.getElementById('roomDetailsModal').style.display = 'none';
+        document.body.style.overflow = 'auto';
+    });
+    
+    // Close delete modal
+    document.getElementById('closeDeleteModal').addEventListener('click', () => {
+        document.getElementById('deleteModal').style.display = 'none';
+        document.body.style.overflow = 'auto';
+    });
+    
+    document.getElementById('cancelDeleteBtn').addEventListener('click', () => {
+        document.getElementById('deleteModal').style.display = 'none';
+        document.body.style.overflow = 'auto';
+    });
+});
+</script>
+
+<!-- Load rooms management specific JavaScript -->
+<script src="/js/roomsManagement.js"></script>
