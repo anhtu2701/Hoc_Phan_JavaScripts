@@ -163,6 +163,42 @@ class Room {
                 tempImageUrl
             } = roomData;
 
+            // Validate required fields
+            if (!MaChuNha) {
+                return {
+                    success: false,
+                    message: 'Mã chủ nhà là bắt buộc'
+                };
+            }
+
+            if (!TieuDe || TieuDe.trim() === '') {
+                return {
+                    success: false,
+                    message: 'Tiêu đề phòng là bắt buộc'
+                };
+            }
+
+            if (!DienTich || isNaN(DienTich) || DienTich <= 0) {
+                return {
+                    success: false,
+                    message: 'Diện tích phải là số dương'
+                };
+            }
+
+            if (!GiaThue || isNaN(GiaThue) || GiaThue <= 0) {
+                return {
+                    success: false,
+                    message: 'Giá thuê phải là số dương'
+                };
+            }
+
+            if (!DiaChi || DiaChi.trim() === '') {
+                return {
+                    success: false,
+                    message: 'Địa chỉ là bắt buộc'
+                };
+            }
+
             const pool = db.getPool();
 
             // Tạo mã phòng mới

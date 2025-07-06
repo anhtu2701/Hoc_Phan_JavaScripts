@@ -159,15 +159,24 @@
                         <input type="text" id="roomName" required />
                     </div>
                     <div class="form-group">
-                        <label for="roomAddress">Địa chỉ *</label>
-                        <input type="text" id="roomAddress" required />
+                        <label for="roomOwner">Chủ nhà *</label>
+                        <select id="roomOwner" required>
+                            <option value="">Chọn chủ nhà...</option>
+                            <!-- Options will be loaded dynamically -->
+                        </select>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
+                        <label for="roomAddress">Địa chỉ *</label>
+                        <input type="text" id="roomAddress" required />
+                    </div>
+                    <div class="form-group">
                         <label for="roomPrice">Giá thuê (VNĐ/tháng) *</label>
                         <input type="number" id="roomPrice" required min="0" />
                     </div>
+                </div>
+                <div class="form-row">
                     <div class="form-group">
                         <label for="roomArea">Diện tích (m²) *</label>
                         <input
@@ -178,22 +187,22 @@
                             step="0.1"
                         />
                     </div>
-                </div>
-                <div class="form-row">
                     <div class="form-group">
                         <label for="electricPrice">Giá điện (VNĐ/kWh)</label>
                         <input type="number" id="electricPrice" min="0" />
                     </div>
+                </div>
+                <div class="form-row">
                     <div class="form-group">
                         <label for="waterPrice">Giá nước (VNĐ/m³)</label>
                         <input type="number" id="waterPrice" min="0" />
                     </div>
-                </div>
-                <div class="form-row">
                     <div class="form-group">
                         <label for="internetPrice">Giá Internet (VNĐ/tháng)</label>
                         <input type="number" id="internetPrice" min="0" />
                     </div>
+                </div>
+                <div class="form-row">
                     <div class="form-group">
                         <label for="parkingPrice">Giá gửi xe (VNĐ/tháng)</label>
                         <input type="number" id="parkingPrice" min="0" />

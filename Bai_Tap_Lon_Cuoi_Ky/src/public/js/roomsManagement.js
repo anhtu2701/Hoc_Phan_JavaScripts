@@ -384,15 +384,40 @@ class RoomsManagement {
         this.loadRooms();
     }
 
-    openAddRoomModal() {
+    async openAddRoomModal() {
         this.editingRoomId = null;
         document.getElementById('modalTitle').textContent = 'Thêm phòng mới';
         document.getElementById('roomForm').reset();
         this.removeImage();
+        
+        // Load owners for admin
+        await this.loadOwners();
+        
         this.showModal('roomModal');
         
         // Thêm button upload ảnh vào form
         this.addImageUploadButton();
+    }
+
+    async loadOwners() {
+        try {
+            const response = await fetch('/api/users');
+            const result = await response.json();
+            
+            if (result.success) {
+                const ownerSelect = document.getElementById('roomOwner');
+                ownerSelect.innerHTML = '<option value="">Chọn chủ nhà...</option>';
+                
+                result.data.forEach(user => {
+                    const option = document.createElement('option');
+                    option.value = user.MaNguoiDung;
+                    option.textContent = `${user.HoTen} (${user.VaiTro}) - ${user.Email}`;
+                    ownerSelect.appendChild(option);
+                });
+            }
+        } catch (error) {
+            console.error('Error loading owners:', error);
+        }
     }
 
     addImageUploadButton() {
@@ -440,6 +465,10 @@ class RoomsManagement {
                 document.getElementById('roomArea').value = room.DienTich;
                 document.getElementById('roomDescription').value = room.MoTa || '';
                 document.getElementById('roomStatus').value = this.mapStatusToValue(room.TrangThai);
+                
+                // Load owners and set current owner
+                await this.loadOwners();
+                document.getElementById('roomOwner').value = room.MaChuNha;
                 
                 this.addImageUploadButton();
                 this.showModal('roomModal');
@@ -499,7 +528,8 @@ class RoomsManagement {
             GiaThue: parseInt(document.getElementById('roomPrice').value),
             DienTich: parseFloat(document.getElementById('roomArea').value),
             MoTa: document.getElementById('roomDescription').value.trim(),
-            TrangThai: this.mapValueToStatus(document.getElementById('roomStatus').value)
+            TrangThai: this.mapValueToStatus(document.getElementById('roomStatus').value),
+            MaChuNha: document.getElementById('roomOwner').value
         };
 
         // Add optional fields
@@ -519,7 +549,7 @@ class RoomsManagement {
         }
 
         // Validation
-        if (!roomData.TieuDe || !roomData.DiaChi || !roomData.GiaThue || !roomData.DienTich) {
+        if (!roomData.TieuDe || !roomData.DiaChi || !roomData.GiaThue || !roomData.DienTich || !roomData.MaChuNha) {
             this.showNotification('Vui lòng điền đầy đủ thông tin bắt buộc!', 'error');
             return null;
         }

@@ -575,4 +575,29 @@ router.post('/rooms/:id/reject', requireAuth, requireAdmin, async (req, res) => 
     }
 });
 
+// GET /api/users - Lấy danh sách người dùng (for admin)
+router.get('/users', requireAuth, requireAdmin, async (req, res) => {
+    try {
+        const pool = db.getPool();
+        
+        const [users] = await pool.execute(`
+            SELECT MaNguoiDung, HoTen, Email, VaiTro 
+            FROM NGUOIDUNG 
+            WHERE VaiTro IN ('chunha', 'nguoithue', 'admin')
+            ORDER BY HoTen ASC
+        `);
+        
+        res.json({
+            success: true,
+            data: users
+        });
+    } catch (error) {
+        console.error('Lỗi khi lấy danh sách người dùng:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Lỗi server'
+        });
+    }
+});
+
 module.exports = router; 
