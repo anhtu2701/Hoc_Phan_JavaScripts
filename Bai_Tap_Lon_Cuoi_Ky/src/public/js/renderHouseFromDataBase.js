@@ -5,19 +5,22 @@ function start() {
         if (response.success) {
             renderRooms(response.data);
         } else {
-            console.error('Lỗi khi lấy dữ liệu phòng:', response.message);
+            console.error('Error loading rooms:', response.message);
         }
     });
 }
 
-start();
+// Đảm bảo DOM đã được tải trước khi chạy script
+document.addEventListener('DOMContentLoaded', function() {
+    start();
+});
 
 function getRooms(callback) {
-    fetch(roomsAPI + '?limit=20&status=congtrang')
+    fetch(roomsAPI + '?limit=20&status=conTrong')
         .then(response => response.json())
         .then(callback)
         .catch(error => {
-            console.error('Lỗi khi gọi API:', error);
+            console.error('Fetch error:', error);
             callback({ success: false, message: 'Không thể kết nối đến server' });
         });
 }
@@ -26,7 +29,7 @@ function renderRooms(rooms) {
     var listRooms = document.querySelector('.house-lists');
     
     if (!listRooms) {
-        console.error('Không tìm thấy element .house-lists');
+        console.error('Element .house-lists not found!');
         return;
     }
     
@@ -50,13 +53,23 @@ function renderRooms(rooms) {
                     <div class="house-status">Tình trạng: 
                         <span class="status-${room.TrangThai}">${getStatusText(room.TrangThai)}</span>
                     </div>
-                    <div class="house-facilities">${room.TienIch || 'Đang cập nhật'}</div>
+                    <div class="house-facilities">${room.MoTa || 'Đang cập nhật'}</div>
                 </div>
             </div>
         </li>
     `);
     
     listRooms.innerHTML = htmls.join('');
+    
+    // Thêm visible class với animation
+    setTimeout(() => {
+        const fadeElements = document.querySelectorAll('.fade-in');
+        fadeElements.forEach((element, index) => {
+            setTimeout(() => {
+                element.classList.add('visible');
+            }, index * 100);
+        });
+    }, 100);
 }
 
 // Hàm format giá tiền
@@ -71,10 +84,10 @@ function formatPrice(price) {
 // Hàm chuyển đổi trạng thái
 function getStatusText(status) {
     const statusMap = {
-        'congtrang': 'Còn trống',
-        'dadat': 'Đã đặt',
-        'baosuaa': 'Bảo sửa',
-        'tamngung': 'Tạm ngưng'
+        'conTrong': 'Còn trống',
+        'dangThue': 'Đang thuê',
+        'dangChoDuyet': 'Đang chờ duyệt',
+        'daDuyet': 'Đã duyệt'
     };
     return statusMap[status] || status;
 }
