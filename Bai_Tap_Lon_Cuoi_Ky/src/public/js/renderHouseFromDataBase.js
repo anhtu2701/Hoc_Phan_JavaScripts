@@ -2,12 +2,21 @@ var roomsAPI = "http://localhost:3000/api/rooms";
 
 function start() {
     getRooms((response) => {
+        console.log('API Response:', response);
         if (response.success) {
-            renderRooms(response.data);
+            // Handle the correct data structure from API
+            const rooms = response.data.rooms || response.data;
+            console.log('Rooms data:', rooms);
+            if (rooms && Array.isArray(rooms)) {
+                renderRooms(rooms);
+            } else {
+                console.error('Invalid rooms data structure:', response.data);
+            }
+        } else {
+            console.error('Failed to load rooms:', response.message);
         }
     });
 }
-
 
 document.addEventListener('DOMContentLoaded', function() {
     start();
@@ -18,6 +27,7 @@ function getRooms(callback) {
         .then(response => response.json())
         .then(callback)
         .catch(error => {
+            console.error('Fetch error:', error);
             callback({ success: false, message: 'Không thể kết nối đến server' });
         });
 }
