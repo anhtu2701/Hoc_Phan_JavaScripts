@@ -1,489 +1,228 @@
 const db = require('../../config/db');
-const path = require('path');
-const fs = require('fs');
+const { deleteRoomImage } = require('../../utils/roomUtils');
 
 class Room {
-    // [GET] Lấy tất cả phòng với filters và pagination
-    static async findAll(options = {}) {
-        try {
-            const {
-                limit = 20,
-                offset = 0,
-                search = '',
-                status = '',
-                minPrice = '',
-                maxPrice = '',
-                sortBy = 'MaPhong',
-                sortOrder = 'ASC'
-            } = options;
-
-            // Convert to numbers to fix SQL parameter issue
-            const numLimit = parseInt(limit) || 20;
-            const numOffset = parseInt(offset) || 0;
-
-            console.log('Room.findAll options:', options); // Debug log
-            console.log('Converted numbers:', { numLimit, numOffset }); // Debug log
-
-            const pool = db.getPool();
-            let query = `SELECT p.*, n.HoTen FROM PHONG p LEFT JOIN NGUOIDUNG n ON p.MaChuNha = n.MaNguoiDung WHERE 1=1`;
-
-            const queryParams = [];
-
-            // Thêm điều kiện tìm kiếm
-            if (search && search.trim() !== '') {
-                query += ` AND (p.TieuDe LIKE ? OR p.MoTa LIKE ? OR p.DiaChi LIKE ?)`;
-                const searchTerm = `%${search.trim()}%`;
-                queryParams.push(searchTerm, searchTerm, searchTerm);
-            }
-
-            // Thêm điều kiện trạng thái
-            if (status && status.trim() !== '') {
-                query += ` AND p.TrangThai = ?`;
-                queryParams.push(status.trim());
-            }
-
-            // Thêm điều kiện giá
-            if (minPrice !== '' && !isNaN(minPrice)) {
-                query += ` AND p.GiaThue >= ?`;
-                queryParams.push(parseFloat(minPrice));
-            }
-
-            if (maxPrice !== '' && !isNaN(maxPrice)) {
-                query += ` AND p.GiaThue <= ?`;
-                queryParams.push(parseFloat(maxPrice));
-            }
-
-            // Đếm tổng số records trước khi phân trang
-            const countQuery = `SELECT COUNT(*) as total FROM PHONG p LEFT JOIN NGUOIDUNG n ON p.MaChuNha = n.MaNguoiDung WHERE 1=1`;
-            
-            // Thêm điều kiện cho count query giống với main query
-            let countQueryWithConditions = countQuery;
-            const countParams = [];
-            
-            if (search && search.trim() !== '') {
-                countQueryWithConditions += ` AND (p.TieuDe LIKE ? OR p.MoTa LIKE ? OR p.DiaChi LIKE ?)`;
-                const searchTerm = `%${search.trim()}%`;
-                countParams.push(searchTerm, searchTerm, searchTerm);
-            }
-
-            if (status && status.trim() !== '') {
-                countQueryWithConditions += ` AND p.TrangThai = ?`;
-                countParams.push(status.trim());
-            }
-
-            if (minPrice !== '' && !isNaN(minPrice)) {
-                countQueryWithConditions += ` AND p.GiaThue >= ?`;
-                countParams.push(parseFloat(minPrice));
-            }
-
-            if (maxPrice !== '' && !isNaN(maxPrice)) {
-                countQueryWithConditions += ` AND p.GiaThue <= ?`;
-                countParams.push(parseFloat(maxPrice));
-            }
-            
-            console.log('Count query:', countQueryWithConditions); // Debug log
-            console.log('Query params for count:', countParams); // Debug log
-            
-            const [totalResult] = await pool.execute(countQueryWithConditions, countParams);
-            const total = totalResult[0].total;
-
-            // Thêm sắp xếp và phân trang với string concatenation để tránh lỗi parameter
-            query += ` ORDER BY p.${sortBy} ${sortOrder} LIMIT ${numLimit} OFFSET ${numOffset}`;
-
-            console.log('Final query:', query); // Debug log
-            console.log('Final params:', queryParams); // Debug log
-
-            const [rows] = await pool.execute(query, queryParams);
-
-            return {
-                success: true,
-                data: {
-                    rooms: rows,
-                    total,
-                    limit: numLimit,
-                    offset: numOffset
-                }
-            };
-
-        } catch (error) {
-            console.error('Lỗi khi lấy danh sách phòng:', error);
-            return {
-                success: false,
-                message: 'Lỗi khi lấy danh sách phòng',
-                error: error.message
-            };
-        }
-    }
-
-    // [GET] Lấy phòng theo ID
-    static async findById(id) {
+    // Lấy tất cả phòng 
+    static async findAll() {
         try {
             const pool = db.getPool();
             const [rows] = await pool.execute(`
-                SELECT p.*, n.HoTen 
-                FROM PHONG p 
-                LEFT JOIN NGUOIDUNG n ON p.MaChuNha = n.MaNguoiDung 
-                WHERE p.MaPhong = ?
-            `, [id]);
-
-            if (rows.length === 0) {
-                return {
-                    success: false,
-                    message: 'Không tìm thấy phòng'
-                };
-            }
+                SELECT roomID, title, description, imageURL, area, price, address, status, createdAt
+                FROM rooms 
+                ORDER BY roomID ASC
+            `);
 
             return {
                 success: true,
-                data: rows[0]
+                data: { rooms: rows }
             };
-
         } catch (error) {
-            console.error('Lỗi khi lấy thông tin phòng:', error);
-            return {
-                success: false,
-                message: 'Lỗi khi lấy thông tin phòng',
-                error: error.message
-            };
+            console.error('Lỗi khi lấy danh sách phòng:', error);
+            return { success: false, message: 'Lỗi khi lấy danh sách phòng' };
         }
     }
 
-    // [POST] Tạo phòng mới
+    // Lấy phòng theo ID
+    static async findById(id) {
+        try {
+            const pool = db.getPool();
+            const [roomRows] = await pool.execute(`
+                SELECT roomID, title, description, imageURL, area, price, address, status, createdAt
+                FROM rooms WHERE roomID = ?
+            `, [id]);
+
+            if (roomRows.length === 0) {
+                return { success: false, message: 'Không tìm thấy phòng' };
+            }
+
+            const room = roomRows[0];
+
+            return {
+                success: true,
+                data: room
+            };
+        } catch (error) {
+            console.error('Lỗi khi lấy thông tin phòng:', error);
+            return { success: false, message: 'Lỗi khi lấy thông tin phòng' };
+        }
+    }
+
+    // Tạo phòng mới
     static async create(roomData) {
         try {
-            const {
-                MaChuNha,
-                TieuDe,
-                MoTa,
-                URLAnhPhong,
-                DienTich,
-                GiaThue,
-                TrangThai = 'conTrong',
-                DiaChi,
-                tempImageUrl
-            } = roomData;
+            const { title, description, imageURL, area, price, address, status = 'available' } = roomData;
 
-            // Validate required fields
-            if (!MaChuNha) {
-                return {
-                    success: false,
-                    message: 'Mã chủ nhà là bắt buộc'
-                };
-            }
-
-            if (!TieuDe || TieuDe.trim() === '') {
-                return {
-                    success: false,
-                    message: 'Tiêu đề phòng là bắt buộc'
-                };
-            }
-
-            if (!DienTich || isNaN(DienTich) || DienTich <= 0) {
-                return {
-                    success: false,
-                    message: 'Diện tích phải là số dương'
-                };
-            }
-
-            if (!GiaThue || isNaN(GiaThue) || GiaThue <= 0) {
-                return {
-                    success: false,
-                    message: 'Giá thuê phải là số dương'
-                };
-            }
-
-            if (!DiaChi || DiaChi.trim() === '') {
-                return {
-                    success: false,
-                    message: 'Địa chỉ là bắt buộc'
-                };
+            // Validate
+            if (!title || !area || !price || !address) {
+                return { success: false, message: 'Thiếu thông tin bắt buộc' };
             }
 
             const pool = db.getPool();
 
-            // Tạo mã phòng mới
-            const [maxRoom] = await pool.execute('SELECT MaPhong FROM PHONG ORDER BY MaPhong DESC LIMIT 1');
-            let newRoomId;
-            if (maxRoom.length > 0) {
-                const lastId = parseInt(maxRoom[0].MaPhong.replace('CT', ''));
-                newRoomId = 'CT' + String(lastId + 1).padStart(4, '0');
-            } else {
-                newRoomId = 'CT0001';
-            }
-
-            // Map status từ frontend sang database
-            const statusMap = {
-                'available': 'conTrong',
-                'occupied': 'dangThue',
-                'approved': 'daDuyet',
-                'pending': 'dangChoDuyet'
-            };
-            const dbStatus = statusMap[TrangThai] || 'conTrong';
-
-            // Xử lý ảnh nếu có
-            let finalImageUrl = URLAnhPhong;
-            if (tempImageUrl) {
-                // Di chuyển ảnh từ temp sang final
-                const tempPath = path.join(__dirname, '../../public', tempImageUrl);
-                const extension = path.extname(tempImageUrl);
-                const finalFilename = newRoomId.toLowerCase() + extension;
-                const finalPath = path.join(__dirname, '../../public/img/houses', finalFilename);
-
-                if (fs.existsSync(tempPath)) {
-                    const finalDir = path.dirname(finalPath);
-                    if (!fs.existsSync(finalDir)) {
-                        fs.mkdirSync(finalDir, { recursive: true });
-                    }
-                    fs.renameSync(tempPath, finalPath);
-                    finalImageUrl = `/img/houses/${finalFilename}`;
-                }
-            }
+            // Tạo roomID mới
+            const newRoomId = await this.generateRoomId();
 
             const [result] = await pool.execute(`
-                INSERT INTO PHONG (MaPhong, MaChuNha, TieuDe, MoTa, URLAnhPhong, DienTich, GiaThue, TrangThai, DiaChi) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-            `, [newRoomId, MaChuNha, TieuDe, MoTa, finalImageUrl, DienTich, GiaThue, dbStatus, DiaChi]);
+                INSERT INTO rooms (roomID, title, description, imageURL, area, price, address, status) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            `, [newRoomId, title, description, imageURL, area, price, address, status]);
 
             return {
                 success: true,
-                data: {
-                    MaPhong: newRoomId,
-                    insertId: result.insertId
-                },
+                data: { roomID: newRoomId },
                 message: 'Tạo phòng thành công'
             };
-
         } catch (error) {
             console.error('Lỗi khi tạo phòng:', error);
-            return {
-                success: false,
-                message: 'Lỗi khi tạo phòng',
-                error: error.message
-            };
+            return { success: false, message: 'Lỗi khi tạo phòng' };
         }
     }
 
-    // [PUT] Cập nhật phòng
+    // Cập nhật phòng
     static async update(id, roomData) {
         try {
             const pool = db.getPool();
-            
-            // Lọc ra các field có thể cập nhật
-            const allowedFields = ['TieuDe', 'MoTa', 'URLAnhPhong', 'DienTich', 'GiaThue', 'TrangThai', 'DiaChi'];
-            const updateFields = [];
-            const updateValues = [];
-
-            for (const [key, value] of Object.entries(roomData)) {
-                if (allowedFields.includes(key) && value !== undefined) {
-                    if (key === 'TrangThai') {
-                        // Map status từ frontend sang database
-                        const statusMap = {
-                            'available': 'conTrong',
-                            'occupied': 'dangThue',
-                            'approved': 'daDuyet',
-                            'pending': 'dangChoDuyet'
-                        };
-                        const dbStatus = statusMap[value] || value;
-                        updateFields.push(`${key} = ?`);
-                        updateValues.push(dbStatus);
-                    } else {
-                        updateFields.push(`${key} = ?`);
-                        updateValues.push(value);
-                    }
-                }
+            const { title, description, imageURL, area, price, address, status } = roomData;
+    
+            // Validation chi tiết
+            if (!title || !area || !price || !address) {
+                return { success: false, message: 'Thiếu thông tin bắt buộc' };
             }
-
-            if (updateFields.length === 0) {
-                return {
-                    success: false,
-                    message: 'Không có dữ liệu để cập nhật'
-                };
+    
+            if (price <= 0) {
+                return { success: false, message: 'Giá phòng phải lớn hơn 0' };
             }
+    
+            if (area <= 0) {
+                return { success: false, message: 'Diện tích phải lớn hơn 0' };
+            }
+    
+            // Kiểm tra phòng có tồn tại không
+            const [existingRoom] = await pool.execute(
+                'SELECT roomID FROM rooms WHERE roomID = ?',
+                [id]
+            );
+    
+            if (existingRoom.length === 0) {
+                return { success: false, message: 'Không tìm thấy phòng để cập nhật' };
+            }
+    
+            // SQL với xử lý null
+            const updateSQL = `
+            UPDATE rooms 
+            SET title = ?, description = ?, imageURL = ?, area = ?, price = ?, address = ?, status = ?
+            WHERE roomID = ?
+        `;
 
-            updateValues.push(id);
-            const query = `UPDATE PHONG SET ${updateFields.join(', ')}, NgayCapNhat = CURRENT_TIMESTAMP WHERE MaPhong = ?`;
-
-            const [result] = await pool.execute(query, updateValues);
-
+        const [result] = await pool.execute(updateSQL, [
+            title, 
+            description || null, 
+            imageURL || null, 
+            area, 
+            price, 
+            address, 
+            status, 
+            id
+        ]);
+    
             if (result.affectedRows === 0) {
-                return {
-                    success: false,
-                    message: 'Không tìm thấy phòng để cập nhật'
-                };
+                return { success: false, message: 'Không có thay đổi nào được thực hiện' };
             }
-
-            return {
-                success: true,
-                message: 'Cập nhật phòng thành công'
-            };
-
+    
+            return { success: true, message: 'Cập nhật phòng thành công' };
         } catch (error) {
             console.error('Lỗi khi cập nhật phòng:', error);
-            return {
-                success: false,
-                message: 'Lỗi khi cập nhật phòng',
-                error: error.message
-            };
+            
+            // Xử lý lỗi cụ thể
+            if (error.code === 'ER_DUP_ENTRY') {
+                return { success: false, message: 'Thông tin phòng đã tồn tại' };
+            }
+            
+            return { success: false, message: 'Lỗi khi cập nhật phòng: ' + error.message };
         }
     }
 
-    // [DELETE] Xóa phòng (soft delete)
+    // Xóa phòng
     static async delete(id) {
         try {
             const pool = db.getPool();
 
-            // Kiểm tra xem phòng có đang được thuê không
-            const [contracts] = await pool.execute(
-                'SELECT COUNT(*) as count FROM HOPDONG WHERE MaPhong = ? AND TrangThai = "dangThue"',
+            // Lấy thông tin phòng trước khi xóa (để lấy imageURL)
+            const [roomInfo] = await pool.execute(
+                'SELECT imageURL FROM rooms WHERE roomID = ?',
                 [id]
             );
 
-            if (contracts[0].count > 0) {
-                return {
-                    success: false,
-                    message: 'Không thể xóa phòng đang được thuê'
-                };
+            if (roomInfo.length === 0) {
+                return { success: false, message: 'Không tìm thấy phòng để xóa' };
             }
 
-            const [result] = await pool.execute('DELETE FROM PHONG WHERE MaPhong = ?', [id]);
+            // Xóa ảnh trước (nếu có)
+            const imageURL = roomInfo[0].imageURL;
+            if (imageURL && imageURL !== '') {
+                const deleteImageResult = deleteRoomImage(imageURL);
+                if (!deleteImageResult.success) {
+                    console.warn('Không thể xóa ảnh:', deleteImageResult.error);
+                    // Vẫn tiếp tục xóa phòng dù ảnh xóa thất bại
+                }
+            }
+
+            // Xóa phòng khỏi database
+            const [result] = await pool.execute('DELETE FROM rooms WHERE roomID = ?', [id]);
 
             if (result.affectedRows === 0) {
-                return {
-                    success: false,
-                    message: 'Không tìm thấy phòng để xóa'
-                };
+                return { success: false, message: 'Không tìm thấy phòng để xóa' };
             }
 
             return {
                 success: true,
-                message: 'Xóa phòng thành công'
+                message: imageURL ? 'Xóa phòng và ảnh thành công' : 'Xóa phòng thành công'
             };
-
         } catch (error) {
             console.error('Lỗi khi xóa phòng:', error);
-            return {
-                success: false,
-                message: 'Lỗi khi xóa phòng',
-                error: error.message
-            };
+            return { success: false, message: 'Lỗi khi xóa phòng' };
         }
     }
 
-    // [UTILITY] Generate room ID
+    // Tạo mã phòng tự động
     static async generateRoomId() {
         try {
             const pool = db.getPool();
-            
-            // Tìm mã phòng cuối cùng
-            const [result] = await pool.execute(
-                'SELECT MaPhong FROM PHONG ORDER BY MaPhong DESC LIMIT 1'
-            );
+            const [result] = await pool.execute('SELECT roomID FROM rooms ORDER BY roomID DESC LIMIT 1');
 
             if (result.length === 0) {
                 return 'CT0001';
             }
 
-            // Extract number từ mã cuối cùng (CT0020 -> 20)
-            const lastId = result[0].MaPhong;
+            const lastId = result[0].roomID;
             const number = parseInt(lastId.substring(2)) + 1;
-            
-            // Format lại thành CT0XXX
             return `CT${number.toString().padStart(4, '0')}`;
-
         } catch (error) {
             console.error('Error generating room ID:', error);
-            // Fallback: random ID
             const random = Math.floor(Math.random() * 9999) + 1;
             return `CT${random.toString().padStart(4, '0')}`;
         }
     }
 
-    // [GET] Statistics
+    // Thống kê đơn giản
     static async getStats() {
         try {
             const pool = db.getPool();
-
             const [stats] = await pool.execute(`
                 SELECT 
                     COUNT(*) as totalRooms,
-                    SUM(CASE WHEN TrangThai = 'conTrong' THEN 1 ELSE 0 END) as availableRooms,
-                    SUM(CASE WHEN TrangThai = 'dangThue' THEN 1 ELSE 0 END) as rentedRooms,
-                    SUM(CASE WHEN TrangThai = 'daDuyet' THEN 1 ELSE 0 END) as approvedRooms,
-                    SUM(CASE WHEN TrangThai = 'dangChoDuyet' THEN 1 ELSE 0 END) as pendingRooms,
-                    AVG(GiaThue) as avgPrice,
-                    AVG(DienTich) as avgArea
-                FROM PHONG
+                    SUM(CASE WHEN status = 'available' THEN 1 ELSE 0 END) as availableRooms,
+                    SUM(CASE WHEN status = 'occupied' THEN 1 ELSE 0 END) as occupiedRooms,
+                    SUM(CASE WHEN status = 'maintenance' THEN 1 ELSE 0 END) as maintenanceRooms
+                FROM rooms
             `);
 
-            return {
-                success: true,
-                data: stats[0]
-            };
-
+            return { success: true, data: stats[0] };
         } catch (error) {
             console.error('Error in Room.getStats:', error);
-            return {
-                success: false,
-                message: 'Lỗi khi lấy thống kê'
-            };
-        }
-    }
-
-    // [POST] Bulk operations
-    static async bulkUpdate(roomIds, updateData) {
-        try {
-            const pool = db.getPool();
-
-            if (!roomIds || roomIds.length === 0) {
-                return {
-                    success: false,
-                    message: 'Danh sách phòng không được trống'
-                };
-            }
-
-            // Validate allowed bulk fields
-            const allowedFields = ['TrangThai', 'GiaThue'];
-            const updateFields = [];
-            const params = [];
-
-            for (let field of allowedFields) {
-                if (updateData[field] !== undefined) {
-                    updateFields.push(`${field} = ?`);
-                    params.push(updateData[field]);
-                }
-            }
-
-            if (updateFields.length === 0) {
-                return {
-                    success: false,
-                    message: 'Không có dữ liệu hợp lệ để cập nhật'
-                };
-            }
-
-            // Build IN clause
-            const placeholders = roomIds.map(() => '?').join(',');
-            params.push(...roomIds);
-
-            const query = `UPDATE PHONG SET ${updateFields.join(', ')} WHERE MaPhong IN (${placeholders})`;
-
-            const [result] = await pool.execute(query, params);
-
-            return {
-                success: true,
-                data: {
-                    updatedCount: result.affectedRows,
-                    message: `Cập nhật thành công ${result.affectedRows} phòng`
-                }
-            };
-
-        } catch (error) {
-            console.error('Error in Room.bulkUpdate:', error);
-            return {
-                success: false,
-                message: 'Lỗi khi cập nhật hàng loạt'
-            };
+            return { success: false, message: 'Lỗi khi lấy thống kê' };
         }
     }
 }
 
-module.exports = Room; 
+module.exports = Room;
