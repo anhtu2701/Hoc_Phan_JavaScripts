@@ -52,17 +52,31 @@
         </div>
     </section>
 
+    <!-- Charts Section -->
+    <section class="dashboard-section">
+        <h2 class="section-title">
+            <i class="fas fa-chart-line"></i>
+            Thống kê phòng trọ
+        </h2>
+        <div class="charts-grid">
+            <div class="chart-container glass-card">
+                <h3>Trạng thái phòng trọ</h3>
+                <canvas id="roomStatusChart"></canvas>
+            </div>
+            <div class="chart-container glass-card">
+                <h3>Xu hướng giá thuê</h3>
+                <canvas id="priceChart"></canvas>
+            </div>
+        </div>
+    </section>
+
     <!-- Controls -->
     <section class="dashboard-section">
         <div class="controls">
             <div class="controls-left">
                 <div class="search-box">
                     <i class="fas fa-search"></i>
-                    <input
-                        type="text"
-                        id="searchInput"
-                        placeholder="Tìm kiếm phòng..."
-                    />
+                    <input type="text" id="searchInput" placeholder="Tìm kiếm phòng..." />
                 </div>
                 <select id="statusFilter" class="filter-select">
                     <option value="">Tất cả trạng thái</option>
@@ -179,13 +193,7 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="roomArea">Diện tích (m²) *</label>
-                        <input
-                            type="number"
-                            id="roomArea"
-                            required
-                            min="0"
-                            step="0.1"
-                        />
+                        <input type="number" id="roomArea" required min="0" step="0.1" />
                     </div>
                     <div class="form-group">
                         <label for="electricPrice">Giá điện (VNĐ/kWh)</label>
@@ -219,25 +227,13 @@
                 </div>
                 <div class="form-group">
                     <label for="roomDescription">Mô tả</label>
-                    <textarea
-                        id="roomDescription"
-                        rows="3"
-                        placeholder="Mô tả chi tiết về phòng..."
-                    ></textarea>
+                    <textarea id="roomDescription" rows="3" placeholder="Mô tả chi tiết về phòng..."></textarea>
                 </div>
             </form>
         </div>
         <div class="modal-footer">
-            <button
-                type="button"
-                class="btn btn-secondary"
-                id="cancelRoomBtn"
-            >Hủy</button>
-            <button
-                type="button"
-                class="btn btn-primary"
-                id="saveRoomBtn"
-            >Lưu</button>
+            <button type="button" class="btn btn-secondary" id="cancelRoomBtn">Hủy</button>
+            <button type="button" class="btn btn-primary" id="saveRoomBtn">Lưu</button>
         </div>
     </div>
 </div>
@@ -255,11 +251,7 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button
-                type="button"
-                class="btn btn-secondary"
-                id="closeDetailsBtn"
-            >Đóng</button>
+            <button type="button" class="btn btn-secondary" id="closeDetailsBtn">Đóng</button>
         </div>
     </div>
 </div>
@@ -276,45 +268,37 @@
             <p class="warning-text">Hành động này không thể hoàn tác!</p>
         </div>
         <div class="modal-footer">
-            <button
-                type="button"
-                class="btn btn-secondary"
-                id="cancelDeleteBtn"
-            >Hủy</button>
-            <button
-                type="button"
-                class="btn btn-danger"
-                id="confirmDeleteBtn"
-            >Xóa</button>
+            <button type="button" class="btn btn-secondary" id="cancelDeleteBtn">Hủy</button>
+            <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Xóa</button>
         </div>
     </div>
 </div>
 
 <script>
-// Additional event listeners for modal close buttons
-document.addEventListener('DOMContentLoaded', function() {
-    // Close details modal
-    document.getElementById('closeDetailsModal').addEventListener('click', () => {
-        document.getElementById('roomDetailsModal').style.display = 'none';
-        document.body.style.overflow = 'auto';
+    // Additional event listeners for modal close buttons
+    document.addEventListener('DOMContentLoaded', function () {
+        // Close details modal
+        document.getElementById('closeDetailsModal').addEventListener('click', () => {
+            document.getElementById('roomDetailsModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+
+        document.getElementById('closeDetailsBtn').addEventListener('click', () => {
+            document.getElementById('roomDetailsModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+
+        // Close delete modal
+        document.getElementById('closeDeleteModal').addEventListener('click', () => {
+            document.getElementById('deleteModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+
+        document.getElementById('cancelDeleteBtn').addEventListener('click', () => {
+            document.getElementById('deleteModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
     });
-    
-    document.getElementById('closeDetailsBtn').addEventListener('click', () => {
-        document.getElementById('roomDetailsModal').style.display = 'none';
-        document.body.style.overflow = 'auto';
-    });
-    
-    // Close delete modal
-    document.getElementById('closeDeleteModal').addEventListener('click', () => {
-        document.getElementById('deleteModal').style.display = 'none';
-        document.body.style.overflow = 'auto';
-    });
-    
-    document.getElementById('cancelDeleteBtn').addEventListener('click', () => {
-        document.getElementById('deleteModal').style.display = 'none';
-        document.body.style.overflow = 'auto';
-    });
-});
 </script>
 
 <!-- Load rooms management specific JavaScript -->

@@ -31,7 +31,7 @@ async function startServer() {
         port: 3306,
         user: 'root',
         password: 'Htu0404@',
-        database: 'quan_ly_phong_tro',
+        database: 'QuanLyPhongTro',
         clearExpired: true,
         checkExpirationInterval: 900000,
         expiration: 86400000,
@@ -54,7 +54,7 @@ async function startServer() {
         saveUninitialized: false,
         cookie: {
             maxAge: 1000 * 60 * 60 * 24 * 7, // 7 ngày
-            secure: false, // true nếu dùng HTTPS
+            secure: false, 
             httpOnly: true // Bảo mật cookie
         }
     }));

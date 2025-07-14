@@ -5,10 +5,10 @@ const { requireAuth, requireAdmin } = require('../app/middleware/auth');
 
 // Tất cả routes trong dashboard đều cần authentication và admin role
 router.use(requireAuth);
-router.use(requireAdmin);
+router.use(requireAdmin);  
 
-router.get('/roomsmanagement', dashboardController.roomsManagement);
-router.get('/usersmanagement', dashboardController.usersManagement);
+router.get('/rooms-management', dashboardController.roomsManagement);
+router.get('/users-management', dashboardController.usersManagement);
 router.get('/', dashboardController.index);
 
 module.exports = router;

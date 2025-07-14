@@ -887,6 +887,32 @@ class UsersManagement {
 
         subtitle.textContent = text;
     }
+
+    async loadUserStats() {
+        try {
+            // SỬ DỤNG Dashboard API + User API
+            const [dashboardResponse, userResponse] = await Promise.all([
+                fetch('/api/dashboard/stats'),
+                fetch('/api/users/stats') 
+            ]);
+            
+            const dashboardResult = await dashboardResponse.json();
+            const userResult = await userResponse.json();
+            
+            if (dashboardResult.success && userResult.success) {
+                const dashStats = dashboardResult.data;
+                const userStats = userResult.data;
+                
+                // Update stats cards với data-stat attributes
+                document.querySelector('[data-stat="totalUsers"]').textContent = dashStats.totalUsers;
+                document.querySelector('[data-stat="owners"]').textContent = userStats.ownersCount;
+                document.querySelector('[data-stat="tenants"]').textContent = userStats.tenantsCount;
+                document.querySelector('[data-stat="newUsers"]').textContent = dashStats.newUsersThisMonth;
+            }
+        } catch (error) {
+            console.error('Error loading user stats:', error);
+        }
+    }
 }
 
 // Initialize when DOM is loaded

@@ -9,7 +9,7 @@ async function connect() {
             port: 3306,
             user: 'root',
             password: 'Htu0404@',
-            database: 'QuanLyPhongTro',
+            database: 'RentalManagement',
             waitForConnections: true,
             connectionLimit: 10,
             queueLimit: 0,

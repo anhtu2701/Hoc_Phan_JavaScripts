@@ -60,26 +60,6 @@ const tempUpload = multer({
     limits: { fileSize: 5 * 1024 * 1024 } // 5MB
 });
 
-// GET /api/rooms/stats - Lấy thống kê phòng (PHẢI ĐẶT TRƯỚC routes có :id)
-router.get('/rooms/stats', async (req, res) => {
-    try {
-        const result = await Room.getStats();
-        
-        if (!result.success) {
-            return res.status(500).json(result);
-        }
-
-        res.json(result);
-
-    } catch (error) {
-        console.error('Lỗi khi lấy thống kê phòng:', error);
-        res.status(500).json({
-            success: false,
-            message: 'Lỗi server'
-        });
-    }
-});
-
 // GET /api/rooms - Lấy danh sách phòng với filters và pagination
 router.get('/rooms', async (req, res) => {
     try {
@@ -94,8 +74,6 @@ router.get('/rooms', async (req, res) => {
             sort_order
         } = req.query;
 
-        console.log('API Rooms query params:', req.query); // Debug log
-
         const options = {
             limit: parseInt(limit) || 20,
             offset: parseInt(offset) || 0,
@@ -106,8 +84,6 @@ router.get('/rooms', async (req, res) => {
             sortBy: sort_by || 'MaPhong',
             sortOrder: sort_order || 'ASC'
         };
-
-        console.log('Processed options:', options); // Debug log
 
         const result = await Room.findAll(options);
         
@@ -349,111 +325,6 @@ router.put('/rooms/bulk', requireAuth, requireAdmin, async (req, res) => {
             success: false,
             message: 'Lỗi server'
         });
-    }
-});
-
-// GET /api/dashboard/stats - Lấy thống kê dashboard
-router.get('/dashboard/stats', async (req, res) => {
-    try {
-        const pool = db.getPool();
-        
-        // Lấy tổng số người dùng
-        const [totalUsers] = await pool.execute('SELECT COUNT(*) as count FROM NGUOIDUNG');
-        
-        // Lấy tổng số phòng
-        const [totalRooms] = await pool.execute('SELECT COUNT(*) as count FROM PHONG');
-        
-        // Lấy số hợp đồng đang hiệu lực
-        const [activeContracts] = await pool.execute('SELECT COUNT(*) as count FROM HOPDONG WHERE TrangThai = "dangThue"');
-        
-        // Lấy doanh thu tháng này
-        const [monthlyRevenue] = await pool.execute(`
-            SELECT COALESCE(SUM(SoTien), 0) as revenue 
-            FROM THANHTOAN 
-            WHERE MONTH(NgayThanhToan) = MONTH(CURRENT_DATE()) 
-            AND YEAR(NgayThanhToan) = YEAR(CURRENT_DATE())
-            AND TrangThai = 'daThanhToan'
-        `);
-        
-        res.json({
-            success: true,
-            data: {
-                totalUsers: totalUsers[0].count,
-                totalRooms: totalRooms[0].count,
-                activeContracts: activeContracts[0].count,
-                monthlyRevenue: monthlyRevenue[0].revenue
-            }
-        });
-    } catch (error) {
-        console.error('Lỗi khi lấy thống kê dashboard:', error);
-        res.status(500).json({
-            success: false,
-            message: 'Lỗi server'
-        });
-    }
-});
-
-// GET /api/dashboard/pending-rooms - Lấy danh sách phòng chờ duyệt
-router.get('/dashboard/pending-rooms', async (req, res) => {
-    try {
-        const pool = db.getPool();
-        
-        const [pendingRooms] = await pool.execute(`
-            SELECT 
-                pcd.MaPhongChoDuyet,
-                pcd.MaPhong,
-                pcd.MaChuNha,
-                pcd.TieuDe,
-                pcd.DiaChi,
-                pcd.GiaThue,
-                pcd.NgayTao,
-                nd.HoTen as TenChuNha
-            FROM PHONG_CHO_DUYET pcd
-            JOIN NGUOIDUNG nd ON pcd.MaChuNha = nd.MaNguoiDung
-            ORDER BY pcd.NgayTao DESC
-        `);
-        
-        res.json({
-            success: true,
-            data: pendingRooms
-        });
-    } catch (error) {
-        console.error('Lỗi khi lấy danh sách phòng chờ duyệt:', error);
-        res.status(500).json({
-            success: false,
-            message: 'Lỗi server'
-        });
-    }
-});
-
-// Upload ảnh tạm thời cho phòng chờ duyệt
-router.post('/rooms/temp-upload', requireAuth, tempUpload.single('roomImage'), async (req, res) => {
-    try {
-        if (!req.file) {
-            return res.status(400).json({ success: false, message: 'Không có file được upload!' });
-        }
-
-        // Trả về đường dẫn tạm thời
-        const tempImageUrl = `/uploads/temp/${req.file.filename}`;
-        
-        res.json({ 
-            success: true, 
-            message: 'Upload ảnh tạm thời thành công!',
-            tempImageUrl: tempImageUrl,
-            filename: req.file.filename
-        });
-    } catch (error) {
-        console.error('Lỗi upload ảnh tạm thời:', error);
-        
-        // Xóa file nếu có lỗi
-        if (req.file) {
-            const filePath = req.file.path;
-            if (fs.existsSync(filePath)) {
-                fs.unlinkSync(filePath);
-            }
-        }
-        
-        res.status(500).json({ success: false, message: 'Lỗi server khi upload ảnh!' });
     }
 });
 
@@ -820,6 +691,32 @@ router.put('/users/bulk/status', requireAuth, requireAdmin, async (req, res) => 
             message: 'Lỗi server'
         });
     }
+});
+
+// === DASHBOARD ENDPOINTS ===
+router.get('/dashboard/stats', requireAuth, requireAdmin, async (req, res) => {
+    const DashboardController = require('../app/controllers/DashboardController');
+    return DashboardController.getStats(req, res);
+});
+
+router.get('/dashboard/pending-rooms', requireAuth, requireAdmin, async (req, res) => {
+    const DashboardController = require('../app/controllers/DashboardController');
+    return DashboardController.getPendingRooms(req, res);
+});
+
+router.get('/dashboard/recent-contracts', requireAuth, requireAdmin, async (req, res) => {
+    const DashboardController = require('../app/controllers/DashboardController');
+    return DashboardController.getRecentContracts(req, res);
+});
+
+router.get('/dashboard/revenue-chart', requireAuth, requireAdmin, async (req, res) => {
+    const DashboardController = require('../app/controllers/DashboardController');
+    return DashboardController.getRevenueChart(req, res);
+});
+
+router.get('/dashboard/room-status-chart', requireAuth, requireAdmin, async (req, res) => {
+    const DashboardController = require('../app/controllers/DashboardController');
+    return DashboardController.getRoomStatusChart(req, res);
 });
 
 module.exports = router; 

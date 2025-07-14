@@ -4,10 +4,13 @@
     <div class="dashboard-header fade-in">
         <h1>Dashboard Admin</h1>
         <p>Tổng quan hệ thống quản lý phòng trọ</p>
-        <button class="btn btn-secondary" id="refreshDashboard">
-            <i class="fas fa-sync-alt"></i>
-            Làm mới dữ liệu
-        </button>
+        <div class="header-actions">
+            <button class="btn btn-secondary" id="refreshDashboard">
+                <i class="fas fa-sync-alt"></i>
+                Làm mới dữ liệu
+            </button>
+            <small id="lastUpdate" class="last-update-time"></small>
+        </div>
     </div>
 
     <!-- Quick Stats -->
@@ -162,10 +165,7 @@
                     <h3 class="table-title">Tổng quan hệ thống</h3>
                 </div>
                 <div style="padding: 1rem 2rem;">
-                    <div
-                        class="stats-grid"
-                        style="grid-template-columns: 1fr; gap: 1rem; margin-bottom: 0;"
-                    >
+                    <div class="stats-grid" style="grid-template-columns: 1fr; gap: 1rem; margin-bottom: 0;">
                         <div class="approval-item">
                             <div class="approval-info">
                                 <strong>Phòng trống</strong><br />

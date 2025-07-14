@@ -12,7 +12,7 @@ async function hashExistingPasswords() {
         console.log(`Tìm thấy ${users.length} user cần hash mật khẩu...`);
         
         for (const user of users) {
-            // Kiểm tra xem mật khẩu đã được hash chưa (bcrypt hash bắt đầu bằng $2b$)
+            // Kiểm tra xem mật khẩu đã được hash chưa
             if (!user.MatKhau.startsWith('$2b$')) {
                 console.log(`Đang hash mật khẩu cho user ID: ${user.MaNguoiDung}`);
                 
@@ -25,9 +25,9 @@ async function hashExistingPasswords() {
                     [hashedPassword, user.MaNguoiDung]
                 );
                 
-                console.log(`✓ Đã hash mật khẩu cho user ID: ${user.MaNguoiDung}`);
+                console.log(`Đã hash mật khẩu cho user ID: ${user.MaNguoiDung}`);
             } else {
-                console.log(`- User ID ${user.MaNguoiDung} đã có mật khẩu hash`);
+                console.log(`User ID ${user.MaNguoiDung} đã có mật khẩu hash`);
             }
         }
         

@@ -10,7 +10,7 @@ class RoomsManagement {
         this.editingRoomId = null;
         this.uploadedImageFile = null;
         this.tempImageUrl = null;
-        
+        this.autoRefreshInterval = null;
         this.init();
     }
 
@@ -19,6 +19,42 @@ class RoomsManagement {
         this.loadStats();
         this.loadRooms();
         this.setupImageUpload();
+        this.startAutoRefresh();
+    }
+
+    startAutoRefresh() {
+        // Refresh every 3 minutes for management pages
+        this.autoRefreshInterval = setInterval(() => {
+            this.loadStats();
+            this.updateLastRefreshTime();
+        }, 3 * 60 * 1000);
+    }
+
+    stopAutoRefresh() {
+        if (this.autoRefreshInterval) {
+            clearInterval(this.autoRefreshInterval);
+            this.autoRefreshInterval = null;
+        }
+    }
+
+    updateLastRefreshTime() {
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString('vi-VN');
+        
+        // Hiển thị trong header
+        let refreshIndicator = document.getElementById('refreshIndicator');
+        if (!refreshIndicator) {
+            refreshIndicator = document.createElement('small');
+            refreshIndicator.id = 'refreshIndicator';
+            refreshIndicator.className = 'refresh-indicator';
+            document.querySelector('.dashboard-header p').appendChild(refreshIndicator);
+        }
+        refreshIndicator.textContent = ` • Cập nhật lúc ${timeStr}`;
+    }
+
+    // Cleanup khi rời trang
+    destroy() {
+        this.stopAutoRefresh();
     }
 
     bindEvents() {
@@ -159,19 +195,46 @@ class RoomsManagement {
 
     async loadStats() {
         try {
-            const response = await fetch('/api/rooms/stats');
+            // ✅ SỬ DỤNG DASHBOARD API thay vì /api/rooms/stats
+            const response = await fetch('/api/dashboard/stats');
             const result = await response.json();
-
+    
             if (result.success) {
                 const stats = result.data;
+                
+                // Update existing stats cards
                 document.getElementById('totalRoomsCount').textContent = stats.totalRooms || 0;
                 document.getElementById('availableRoomsCount').textContent = stats.availableRooms || 0;
-                document.getElementById('occupiedRoomsCount').textContent = stats.rentedRooms || 0;
-                document.getElementById('monthlyRevenue').textContent = this.formatCurrency(stats.avgPrice || 0);
+                document.getElementById('occupiedRoomsCount').textContent = stats.occupiedRooms || 0;
+                document.getElementById('monthlyRevenue').textContent = this.formatCurrency(stats.monthlyRevenue || 0);
+                
+                // ✅ THÊM ANIMATION từ dashboard
+                this.animateCountUp(document.getElementById('totalRoomsCount'), stats.totalRooms);
+                this.animateCountUp(document.getElementById('availableRoomsCount'), stats.availableRooms);
+                this.animateCountUp(document.getElementById('occupiedRoomsCount'), stats.occupiedRooms);
             }
         } catch (error) {
             console.error('Error loading stats:', error);
         }
+    }
+    
+    // ✅ THÊM Animation function từ dashboard
+    animateCountUp(element, target) {
+        const start = 0;
+        const duration = 1000;
+        const startTime = performance.now();
+        
+        function update(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const current = Math.floor(progress * target);
+            element.textContent = current;
+            
+            if (progress < 1) {
+                requestAnimationFrame(update);
+            }
+        }
+        requestAnimationFrame(update);
     }
 
     async loadRooms() {
@@ -879,9 +942,50 @@ class RoomsManagement {
         };
         return icons[type] || 'info-circle';
     }
+
+    async loadRoomCharts() {
+        try {
+            // ✅ SỬ DỤNG Dashboard API
+            const response = await fetch('/api/dashboard/room-status-chart');
+            const result = await response.json();
+            
+            if (result.success) {
+                const ctx = document.getElementById('roomStatusChart').getContext('2d');
+                
+                new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Trống', 'Đã thuê', 'Chờ duyệt', 'Đã duyệt'],
+                        datasets: [{
+                            data: [
+                                result.data.available,
+                                result.data.occupied,
+                                result.data.pending,
+                                result.data.approved
+                            ],
+                            backgroundColor: ['#2ecc71', '#e74c3c', '#f39c12', '#3498db']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false
+                    }
+                });
+            }
+        } catch (error) {
+            console.error('Error loading room charts:', error);
+        }
+    }
 }
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     window.roomsManager = new RoomsManagement();
 }); 
+
+// THÊM cleanup khi rời trang
+window.addEventListener('beforeunload', () => {
+    if (window.roomsManager) {
+        window.roomsManager.destroy();
+    }
+});
