@@ -11,28 +11,30 @@ document.addEventListener("DOMContentLoaded", function () {
     const logoutBtn = document.getElementById("logoutBtn");
     
     logoutBtn?.addEventListener("click", function () {
-        // Show confirmation dialog
         if (confirm("Bạn có chắc chắn muốn đăng xuất?")) {
-            // Create form and submit logout request
             const form = document.createElement('form');
             form.method = 'POST';
             form.action = '/login/logout';
-
-            
             document.body.appendChild(form);
             form.submit();
         }
     });
 
+    // Status filter
+    const statusFilter = document.getElementById("statusFilter");
+    statusFilter?.addEventListener("change", function() {
+        loadAllViewings(this.value);
+    });
+
     // Load all dashboard data
     loadAllDashboardData();
 
-    // Auto refresh every 5 minutes (không dùng real-time)
+    // Auto refresh every 5 minutes
     setInterval(loadAllDashboardData, 5 * 60 * 1000);
 
     // Manual refresh buttons
     document.getElementById("refreshDashboard")?.addEventListener("click", loadAllDashboardData);
-    document.getElementById("refreshPending")?.addEventListener("click", loadPendingRooms);
+    document.getElementById("refreshAllViewings")?.addEventListener("click", () => loadAllViewings());
 });
 
 // Load all dashboard data
@@ -40,12 +42,10 @@ async function loadAllDashboardData() {
     try {
         await Promise.all([
             loadDashboardStats(),
-            loadPendingRooms(), 
-            loadRecentContracts(),
-            loadCharts()
+            loadAllViewings(),
+            loadRecentActivities(),
         ]);
         
-        // Update last refresh time
         updateLastRefreshTime();
         
     } catch (error) {
@@ -60,15 +60,14 @@ async function loadDashboardStats() {
         const elements = {
             totalUsers: document.getElementById('total-users'),
             totalRooms: document.getElementById('total-rooms'),
-            activeContracts: document.getElementById('active-contracts'),
-            monthlyRevenue: document.getElementById('monthly-revenue'),
-            availableRoomsCount: document.getElementById('availableRoomsCount'),
-            occupiedRoomsCount: document.getElementById('occupiedRoomsCount'),
-            occupancyRate: document.getElementById('occupancyRate'),
-            newUsersThisMonth: document.getElementById('newUsersThisMonth')
+            todayViewings: document.getElementById('today-viewings'),
+            monthlyViewings: document.getElementById('monthly-viewings'),
+            availableRooms: document.getElementById('available-rooms'),
+            occupiedRooms: document.getElementById('occupied-rooms'),
+            occupancyRate: document.getElementById('occupancy-rate')
         };
         
-        // Check if any element exists (we might not be on main dashboard)
+        // Check if any element exists
         if (!elements.totalUsers) return;
         
         const response = await fetch('/api/dashboard/stats');
@@ -80,276 +79,237 @@ async function loadDashboardStats() {
             // Update main stats
             elements.totalUsers.textContent = data.totalUsers || '0';
             elements.totalRooms.textContent = data.totalRooms || '0';
-            elements.activeContracts.textContent = data.activeContracts || '0';
-            elements.monthlyRevenue.textContent = formatCurrency(data.monthlyRevenue || 0);
+            elements.todayViewings.textContent = data.todayViewings || '0';
+            elements.monthlyViewings.textContent = data.monthlyViewings || '0';
             
-            // Update system overview
-            elements.availableRoomsCount.textContent = data.availableRooms || '0';
-            elements.occupiedRoomsCount.textContent = data.occupiedRooms || '0';
-            elements.occupancyRate.textContent = data.occupancyRate || '0';
-            elements.newUsersThisMonth.textContent = data.newUsersThisMonth || '0';
+            // Update room status
+            elements.availableRooms.textContent = data.availableRooms || '0';
+            elements.occupiedRooms.textContent = data.occupiedRooms || '0';
+            elements.occupancyRate.textContent = (data.occupancyRate || 0) + '%';
             
             // Add animation effect
             animateCountUp(elements.totalUsers, data.totalUsers);
             animateCountUp(elements.totalRooms, data.totalRooms);
-            animateCountUp(elements.activeContracts, data.activeContracts);
+            animateCountUp(elements.todayViewings, data.todayViewings);
+            animateCountUp(elements.monthlyViewings, data.monthlyViewings);
         }
     } catch (error) {
         console.error('Lỗi khi tải thống kê dashboard:', error);
     }
 }
 
-// Load pending rooms
-async function loadPendingRooms() {
+// Load all viewings thay vì today schedule
+async function loadAllViewings(statusFilter = '') {
     try {
-        const tbody = document.querySelector('#pendingApprovals tbody');
+        const tbody = document.getElementById('allViewingsBody');
         if (!tbody) return;
         
-        const response = await fetch('/api/dashboard/pending-rooms');
+        const url = statusFilter ? 
+            `/api/dashboard/all-viewings?status=${statusFilter}` : 
+            '/api/dashboard/all-viewings';
+            
+        const response = await fetch(url);
         const result = await response.json();
         
         if (result.success) {
             if (result.data.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" class="text-center">Không có phòng chờ duyệt</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="9" class="text-center">Không có lịch xem phòng nào</td></tr>';
                 return;
             }
             
-            tbody.innerHTML = result.data.map(room => `
+            tbody.innerHTML = result.data.map(viewing => `
                 <tr>
-                    <td>${room.MaPhong}</td>
-                    <td>${room.TenChuNha || 'N/A'}</td>
-                    <td>${room.TieuDe || 'N/A'}</td>
-                    <td>${room.DiaChi || 'N/A'}</td>
-                    <td>${formatCurrency(room.GiaThue)}</td>
-                    <td>${formatDate(room.NgayTao)}</td>
-                </tr>
-            `).join('');
-        }
-    } catch (error) {
-        console.error('Lỗi khi tải phòng chờ duyệt:', error);
-    }
-}
-
-// Load recent contracts
-async function loadRecentContracts() {
-    try {
-        const tbody = document.getElementById('contractsTableBody');
-        if (!tbody) return;
-        
-        const response = await fetch('/api/dashboard/recent-contracts');
-        const result = await response.json();
-        
-        if (result.success) {
-            if (result.data.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" class="text-center">Không có hợp đồng nào</td></tr>';
-                return;
-            }
-            
-            tbody.innerHTML = result.data.map(contract => `
-                <tr>
-                    <td>${contract.MaHopDong}</td>
-                    <td>${contract.MaPhong}</td>
-                    <td>${contract.TenNguoiThue || 'N/A'}</td>
-                    <td>${formatDate(contract.NgayBatDau)}</td>
+                    <td>${formatDateTime(viewing.createdAt)}</td>
+                    <td>${formatDate(viewing.viewDate)}</td>
+                    <td><strong>${viewing.timeSlot}</strong></td>
+                    <td>${viewing.userName || 'N/A'}</td>
                     <td>
-                        <span class="status-badge ${getStatusClass(contract.TrangThai)}">
-                            ${getStatusText(contract.TrangThai)}
+                        <div class="room-info">
+                            <div class="room-title">${viewing.roomTitle || 'N/A'}</div>
+                            <div class="room-id text-muted">${viewing.roomID || ''}</div>
+                        </div>
+                    </td>
+                    <td>${viewing.roomAddress || 'N/A'}</td>
+                    <td>
+                        <div class="contact-info">
+                            <div><i class="fas fa-envelope"></i> ${viewing.userEmail || 'N/A'}</div>
+                            <div><i class="fas fa-phone"></i> ${viewing.userPhone || 'N/A'}</div>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="status-badge status-${viewing.status.toLowerCase()}">
+                            ${getViewingStatusText(viewing.status)}
                         </span>
+                    </td>
+                    <td>
+                        <div class="viewing-actions">
+                            ${viewing.status === 'confirmed' ? `
+                                <button class="btn-action complete" onclick="updateViewingStatus(${viewing.viewingID}, 'completed')">
+                                    <i class="fa-check"></i> Hoàn thành
+                                </button>
+                                <button class="btn-action cancel" onclick="updateViewingStatus(${viewing.viewingID}, 'cancelled')">
+                                    <i class="fa-times"></i> Hủy lịch
+                                </button>
+                            ` : ''}
+                            ${viewing.status === 'completed' ? `
+                                <span class="status-text success">
+                                    <i class="fa-check-circle"></i> Đã hoàn thành
+                                </span>
+                            ` : ''}
+                            ${viewing.status === 'cancelled' ? `
+                                <span class="status-text cancelled">
+                                    <i class="fa-times-circle"></i> Đã hủy
+                                </span>
+                            ` : ''}
+                        </div>
                     </td>
                 </tr>
             `).join('');
         }
     } catch (error) {
-        console.error('Lỗi khi tải hợp đồng gần đây:', error);
+        console.error('Lỗi khi tải danh sách lịch xem phòng:', error);
+        const tbody = document.getElementById('allViewingsBody');
+        if (tbody) {
+            tbody.innerHTML = '<tr><td colspan="9" class="text-center text-danger">Lỗi khi tải dữ liệu</td></tr>';
+        }
     }
 }
 
-// Load charts (Chart.js)
-async function loadCharts() {
-    // Chỉ load chart nếu có element
-    if (document.getElementById('revenueChart')) {
-        await loadRevenueChart();
-    }
-    if (document.getElementById('roomStatusChart')) {
-        await loadRoomStatusChart();
-    }
-}
-
-// Revenue chart
-async function loadRevenueChart() {
+// Cập nhật Load recent activities
+async function loadRecentActivities() {
     try {
-        const response = await fetch('/api/dashboard/revenue-chart');
+        const activitiesContainer = document.getElementById('recentActivitiesList');
+        const loadingElement = document.getElementById('activitiesLoading');
+        
+        if (!activitiesContainer || !loadingElement) return;
+        
+        const response = await fetch('/api/dashboard/recent-activities');
         const result = await response.json();
         
         if (result.success) {
-            const ctx = document.getElementById('revenueChart').getContext('2d');
+            loadingElement.style.display = 'none';
+            activitiesContainer.style.display = 'block';
             
-            // Destroy existing chart if exists
-            if (window.revenueChart instanceof Chart) {
-                window.revenueChart.destroy();
+            if (result.data.length === 0) {
+                activitiesContainer.innerHTML = '<div class="text-center">Không có hoạt động gần đây</div>';
+                return;
             }
             
-            window.revenueChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: result.data.months,
-                    datasets: [{
-                        label: 'Doanh thu (VNĐ)',
-                        data: result.data.revenue,
-                        borderColor: '#3498db',
-                        backgroundColor: 'rgba(52, 152, 219, 0.1)',
-                        tension: 0.4,
-                        fill: true,
-                        pointBackgroundColor: '#3498db',
-                        pointBorderColor: '#2980b9',
-                        pointRadius: 5
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { 
-                            display: true,
-                            position: 'top'
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    return 'Doanh thu: ' + formatCurrency(context.parsed.y);
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                callback: function(value) {
-                                    return formatCurrencyShort(value);
-                                }
-                            }
-                        }
-                    }
-                }
-            });
+            activitiesContainer.innerHTML = result.data.map(activity => `
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas ${getActivityIcon(activity.status)}"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-title">${activity.activity}</div>
+                        <div class="activity-time">${formatDateTime(activity.createdAt)}</div>
+                    </div>
+                </div>
+            `).join('');
+        } else {
+            loadingElement.style.display = 'none';
+            activitiesContainer.style.display = 'block';
+            activitiesContainer.innerHTML = '<div class="text-center text-muted">Không có hoạt động gần đây</div>';
         }
     } catch (error) {
-        console.error('Lỗi tải biểu đồ doanh thu:', error);
+        console.error('Lỗi khi tải hoạt động gần đây:', error);
+        const activitiesContainer = document.getElementById('recentActivitiesList');
+        const loadingElement = document.getElementById('activitiesLoading');
+        
+        if (loadingElement) loadingElement.style.display = 'none';
+        if (activitiesContainer) {
+            activitiesContainer.style.display = 'block';
+            activitiesContainer.innerHTML = '<div class="text-center text-danger">Lỗi khi tải hoạt động</div>';
+        }
     }
 }
 
-// Room status chart  
-async function loadRoomStatusChart() {
+// Cập nhật trạng thái lịch xem
+async function updateViewingStatus(viewingID, status) {
+    const actionText = status === 'completed' ? 'đánh dấu hoàn thành' : 'hủy lịch xem';
+    
+    if (!confirm(`Bạn có chắc chắn muốn ${actionText} này không?`)) {
+        return;
+    }
+    
     try {
-        const response = await fetch('/api/dashboard/room-status-chart');
+        const response = await fetch(`/api/dashboard/viewing/${viewingID}/status`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ status })
+        });
+        
         const result = await response.json();
         
         if (result.success) {
-            const ctx = document.getElementById('roomStatusChart').getContext('2d');
+            showNotification(`${status === 'completed' ? 'Đánh dấu hoàn thành' : 'Hủy lịch xem'} thành công`, 'success');
             
-            // Destroy existing chart if exists
-            if (window.roomStatusChart instanceof Chart) {
-                window.roomStatusChart.destroy();
-            }
-            
-            window.roomStatusChart = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Phòng trống', 'Đã thuê', 'Chờ duyệt', 'Đã duyệt'],
-                    datasets: [{
-                        data: [
-                            result.data.available,
-                            result.data.occupied,
-                            result.data.pending,
-                            result.data.approved
-                        ],
-                        backgroundColor: [
-                            '#2ecc71', // Xanh lá - trống
-                            '#e74c3c', // Đỏ - đã thuê
-                            '#f39c12', // Cam - chờ duyệt  
-                            '#3498db'  // Xanh dương - đã duyệt
-                        ],
-                        borderWidth: 2,
-                        borderColor: '#fff'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { 
-                            position: 'bottom',
-                            labels: {
-                                padding: 20,
-                                usePointStyle: true
-                            }
-                        }
-                    }
-                }
-            });
+            // Reload dữ liệu
+            const statusFilter = document.getElementById('statusFilter').value;
+            loadAllViewings(statusFilter);
+            loadDashboardStats();
+            loadRecentActivities();
+        } else {
+            showNotification(result.message || 'Lỗi khi cập nhật trạng thái', 'error');
         }
     } catch (error) {
-        console.error('Lỗi tải biểu đồ trạng thái phòng:', error);
+        console.error('Lỗi khi cập nhật trạng thái lịch xem:', error);
+        showNotification('Lỗi kết nối', 'error');
     }
 }
 
-// === UTILITY FUNCTIONS ===
-
-function formatCurrency(amount) {
-    if (!amount) return '0 VNĐ';
-    return new Intl.NumberFormat('vi-VN', {
-        style: 'currency',
-        currency: 'VND'
-    }).format(amount);
-}
-
-function formatCurrencyShort(amount) {
-    if (amount >= 1000000) {
-        return (amount / 1000000).toFixed(1) + 'M';
-    }
-    if (amount >= 1000) {
-        return (amount / 1000).toFixed(1) + 'K';
-    }
-    return amount.toString();
-}
 
 function formatDate(date) {
     if (!date) return '';
     return new Date(date).toLocaleDateString('vi-VN');
 }
 
-function getStatusClass(status) {
-    const statusMap = {
-        'dangThue': 'active',
-        'choDuyet': 'pending', 
-        'daKetThuc': 'completed',
-        'biHuy': 'cancelled'
-    };
-    return statusMap[status] || 'unknown';
+function formatDateTime(date) {
+    if (!date) return '';
+    return new Date(date).toLocaleString('vi-VN');
 }
 
-function getStatusText(status) {
+function getViewingStatusText(status) {
     const statusMap = {
-        'dangThue': 'Đang thuê',
-        'choDuyet': 'Chờ duyệt',
-        'daKetThuc': 'Đã kết thúc', 
-        'biHuy': 'Bị hủy'
+        'confirmed': 'Đã xác nhận',
+        'completed': 'Hoàn thành',
+        'cancelled': 'Đã hủy'
     };
     return statusMap[status] || status;
 }
 
-// Animation effect for counting up
+function getStatusClass(status) {
+    const statusClasses = {
+        'confirmed': 'confirmed',
+        'completed': 'completed',
+        'cancelled': 'cancelled'
+    };
+    return statusClasses[status] || 'default';
+}
+
+function getActivityIcon(status) {
+    const iconMap = {
+        'confirmed': 'fa-calendar-plus',
+        'completed': 'fa-check-circle',
+        'cancelled': 'fa-times-circle'
+    };
+    return iconMap[status] || 'fa-calendar';
+}
+
 function animateCountUp(element, target) {
+    if (!element || !target) return;
+    
     const start = 0;
-    const duration = 1000; // 1 second
+    const duration = 1000;
     const startTime = performance.now();
     
     function update(currentTime) {
         const elapsed = currentTime - startTime;
         const progress = Math.min(elapsed / duration, 1);
-        
         const current = Math.floor(progress * target);
+        
         element.textContent = current;
         
         if (progress < 1) {
@@ -360,20 +320,16 @@ function animateCountUp(element, target) {
     requestAnimationFrame(update);
 }
 
-// Show notification
 function showNotification(message, type = 'info') {
-    // Simple notification - có thể dùng toast library sau
-    console.log(`[${type.toUpperCase()}] ${message}`);
+    alert(message); // Tạm thời dùng alert, sau có thể thay bằng notification library
 }
 
-// Update last refresh time
 function updateLastRefreshTime() {
-    const now = new Date();
-    const timeStr = now.toLocaleTimeString('vi-VN');
-    
-    // Có thể hiển thị thời gian refresh cuối cùng
-    const lastUpdate = document.getElementById('lastUpdate');
-    if (lastUpdate) {
-        lastUpdate.textContent = `Cập nhật lần cuối: ${timeStr}`;
+    const lastUpdateElement = document.getElementById('lastUpdate');
+    if (lastUpdateElement) {
+        lastUpdateElement.textContent = `Cập nhật lúc: ${new Date().toLocaleTimeString('vi-VN')}`;
     }
 }
+
+
+window.updateViewingStatus = updateViewingStatus;

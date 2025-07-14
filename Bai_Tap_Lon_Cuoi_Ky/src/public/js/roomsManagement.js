@@ -1,16 +1,13 @@
-// Rooms Management JavaScript
 class RoomsManagement {
     constructor() {
-        this.currentPage = 1;
-        this.pageSize = 20;
-        this.totalPages = 0;
         this.currentViewMode = 'grid';
-        this.currentFilter = '';
-        this.searchQuery = '';
         this.editingRoomId = null;
         this.uploadedImageFile = null;
         this.tempImageUrl = null;
-        this.autoRefreshInterval = null;
+        this.tempFilename = null;
+        this.currentRoomImageUrl = null;
+        this.isLoading = false;
+        this.isUploading = false;
         this.init();
     }
 
@@ -19,42 +16,6 @@ class RoomsManagement {
         this.loadStats();
         this.loadRooms();
         this.setupImageUpload();
-        this.startAutoRefresh();
-    }
-
-    startAutoRefresh() {
-        // Refresh every 3 minutes for management pages
-        this.autoRefreshInterval = setInterval(() => {
-            this.loadStats();
-            this.updateLastRefreshTime();
-        }, 3 * 60 * 1000);
-    }
-
-    stopAutoRefresh() {
-        if (this.autoRefreshInterval) {
-            clearInterval(this.autoRefreshInterval);
-            this.autoRefreshInterval = null;
-        }
-    }
-
-    updateLastRefreshTime() {
-        const now = new Date();
-        const timeStr = now.toLocaleTimeString('vi-VN');
-        
-        // Hiển thị trong header
-        let refreshIndicator = document.getElementById('refreshIndicator');
-        if (!refreshIndicator) {
-            refreshIndicator = document.createElement('small');
-            refreshIndicator.id = 'refreshIndicator';
-            refreshIndicator.className = 'refresh-indicator';
-            document.querySelector('.dashboard-header p').appendChild(refreshIndicator);
-        }
-        refreshIndicator.textContent = ` • Cập nhật lúc ${timeStr}`;
-    }
-
-    // Cleanup khi rời trang
-    destroy() {
-        this.stopAutoRefresh();
     }
 
     bindEvents() {
@@ -68,22 +29,8 @@ class RoomsManagement {
         document.getElementById('gridViewBtn').addEventListener('click', () => this.setViewMode('grid'));
         document.getElementById('listViewBtn').addEventListener('click', () => this.setViewMode('list'));
 
-        // Search and filter
-        document.getElementById('searchInput').addEventListener('input', (e) => {
-            this.searchQuery = e.target.value;
-            this.debounceSearch();
-        });
-
-        document.getElementById('statusFilter').addEventListener('change', (e) => {
-            this.currentFilter = e.target.value;
-            this.loadRooms();
-        });
-
         // Refresh button
         document.getElementById('refreshRoomsBtn').addEventListener('click', () => this.loadRooms());
-
-        // Export button
-        document.getElementById('exportBtn').addEventListener('click', () => this.exportData());
 
         // Modal close on outside click
         window.addEventListener('click', (e) => {
@@ -109,6 +56,12 @@ class RoomsManagement {
         const file = event.target.files[0];
         if (!file) return;
 
+        // Tránh upload trùng lặp
+        if (this.isUploading) {
+            this.showNotification('Đang tải ảnh, vui lòng chờ...', 'warning');
+            return;
+        }
+
         // Validate file size (5MB max)
         if (file.size > 5 * 1024 * 1024) {
             this.showNotification('File ảnh quá lớn! Vui lòng chọn file dưới 5MB.', 'error');
@@ -120,45 +73,46 @@ class RoomsManagement {
             this.showNotification('Vui lòng chọn file ảnh hợp lệ!', 'error');
             return;
         }
-
+        // upload ảnh tạm thời
         try {
-            this.showLoading('Đang upload ảnh...');
+            this.isUploading = true;
+            this.showLoading('Đang tải ảnh lên...');
             
             const formData = new FormData();
-            formData.append('roomImage', file);
-
-            const response = await fetch('/api/rooms/temp-upload', {
+            formData.append('image', file);
+    
+            const response = await fetch('/api/upload/room-image', {
                 method: 'POST',
                 body: formData
             });
-
+    
             const result = await response.json();
             this.hideLoading();
-
+    
             if (result.success) {
-                this.tempImageUrl = result.tempImageUrl;
-                this.uploadedImageFile = file;
-                this.displayUploadedImage(result.tempImageUrl);
-                this.showNotification('Upload ảnh thành công!', 'success');
+                this.tempFilename = result.data.tempFilename;
+                this.tempImageUrl = result.data.imageUrl;
+                this.displayUploadedImage(this.tempImageUrl);
+                this.showNotification(`Đã tải ảnh thành công!`, 'success');
             } else {
-                this.showNotification(result.message || 'Lỗi upload ảnh!', 'error');
+                this.showNotification('Lỗi tải ảnh: ' + result.message, 'error');
             }
         } catch (error) {
             this.hideLoading();
-            console.error('Upload error:', error);
-            this.showNotification('Lỗi kết nối khi upload ảnh!', 'error');
+            console.error('Lỗi tải ảnh:', error);
+            this.showNotification('Lỗi kết nối khi tải ảnh!', 'error');
+        } finally {
+            this.isUploading = false; 
         }
     }
 
     displayUploadedImage(imageUrl) {
-        // Tìm hoặc tạo preview container
         let previewContainer = document.getElementById('imagePreviewContainer');
         if (!previewContainer) {
             previewContainer = document.createElement('div');
             previewContainer.id = 'imagePreviewContainer';
             previewContainer.className = 'image-preview-container';
             
-            // Thêm vào form
             const form = document.getElementById('roomForm');
             const descriptionGroup = form.querySelector('#roomDescription').parentElement;
             form.insertBefore(previewContainer, descriptionGroup);
@@ -184,31 +138,38 @@ class RoomsManagement {
         document.getElementById('roomImageInput').click();
     }
 
-    removeImage() {
+    async removeImage() {
+        // Xóa ảnh tạm thời trên sever nếu có
+        if (this.tempFilename) {
+            try {
+                await fetch(`/api/upload/temp-image/${this.tempFilename}`, {
+                    method: 'DELETE'
+                });
+            } catch (error) {
+                console.error('Lỗi xóa ảnh tạm thời:', error);
+            }
+        }
+
         const previewContainer = document.getElementById('imagePreviewContainer');
         if (previewContainer) {
             previewContainer.remove();
         }
         this.tempImageUrl = null;
-        this.uploadedImageFile = null;
+        this.tempFilename = null;
     }
 
     async loadStats() {
         try {
-            // ✅ SỬ DỤNG DASHBOARD API thay vì /api/rooms/stats
             const response = await fetch('/api/dashboard/stats');
             const result = await response.json();
     
             if (result.success) {
                 const stats = result.data;
                 
-                // Update existing stats cards
                 document.getElementById('totalRoomsCount').textContent = stats.totalRooms || 0;
                 document.getElementById('availableRoomsCount').textContent = stats.availableRooms || 0;
                 document.getElementById('occupiedRoomsCount').textContent = stats.occupiedRooms || 0;
-                document.getElementById('monthlyRevenue').textContent = this.formatCurrency(stats.monthlyRevenue || 0);
                 
-                // ✅ THÊM ANIMATION từ dashboard
                 this.animateCountUp(document.getElementById('totalRoomsCount'), stats.totalRooms);
                 this.animateCountUp(document.getElementById('availableRoomsCount'), stats.availableRooms);
                 this.animateCountUp(document.getElementById('occupiedRoomsCount'), stats.occupiedRooms);
@@ -218,7 +179,6 @@ class RoomsManagement {
         }
     }
     
-    // ✅ THÊM Animation function từ dashboard
     animateCountUp(element, target) {
         const start = 0;
         const duration = 1000;
@@ -237,41 +197,28 @@ class RoomsManagement {
         requestAnimationFrame(update);
     }
 
+    // ✅ ĐƠN GIẢN: Load rooms (không pagination/filter)
     async loadRooms() {
+        if (this.isLoading) return;
+        
+        this.isLoading = true;
+        this.showLoading('Đang tải danh sách phòng...');
+
         try {
-            this.showLoading('Đang tải danh sách phòng...');
-
-            const params = new URLSearchParams({
-                limit: this.pageSize,
-                offset: (this.currentPage - 1) * this.pageSize,
-                sort_by: 'MaPhong',
-                sort_order: 'ASC'
-            });
-
-            if (this.currentFilter) {
-                params.append('status', this.currentFilter);
-            }
-
-            if (this.searchQuery) {
-                params.append('search', this.searchQuery);
-            }
-
-            const response = await fetch(`/api/rooms?${params}`);
+            const response = await fetch('/api/rooms');
             const result = await response.json();
-
-            this.hideLoading();
 
             if (result.success) {
                 this.renderRooms(result.data.rooms);
-                this.totalPages = Math.ceil(result.data.total / this.pageSize);
-                this.renderPagination();
             } else {
                 this.showNotification('Lỗi tải danh sách phòng!', 'error');
             }
         } catch (error) {
-            this.hideLoading();
             console.error('Error loading rooms:', error);
             this.showNotification('Lỗi kết nối!', 'error');
+        } finally {
+            this.isLoading = false;
+            this.hideLoading();
         }
     }
 
@@ -283,6 +230,7 @@ class RoomsManagement {
         }
     }
 
+    // Render grid 
     renderGridView(rooms) {
         const container = document.querySelector('.rooms-grid');
         
@@ -291,41 +239,44 @@ class RoomsManagement {
                 <div class="empty-state">
                     <i class="fas fa-home"></i>
                     <h3>Không có phòng nào</h3>
-                    <p>Chưa có phòng nào được tạo hoặc không tìm thấy phòng phù hợp.</p>
+                    <p>Chưa có phòng nào được tạo.</p>
                 </div>
             `;
             return;
         }
 
         container.innerHTML = rooms.map(room => `
-            <div class="room-card" data-room-id="${room.MaPhong}">
+            <div class="room-card" data-room-id="${room.roomID}">
                 <div class="room-image">
-                    <img src="${room.URLAnhPhong || './assets/img/houses/default.jpg'}" 
-                         alt="${room.TieuDe}" 
-                         onerror="this.src='./assets/img/houses/default.jpg'">
+                    <img src="${room.imageURL || '/img/houses/default.jpg'}" 
+                         alt="${room.title}" 
+                         onerror="this.src='/img/houses/default.jpg'">
                 </div>
                 <div class="room-info">
-                    <h4 class="room-title">${room.TieuDe}</h4>
+                    <div class="room-id"><span>${room.roomID}</span></div>
+                    <h4 class="room-title">${room.title}</h4>
                     <p class="room-address">
                         <i class="fas fa-map-marker-alt"></i>
-                        ${room.DiaChi}
+                        ${room.address}
                     </p>
                     <div class="room-details">
-                        <span class="room-price">${this.formatCurrency(room.GiaThue)}/tháng</span>
-                        <span class="room-area">${room.DienTich}m²</span>
+                        <span class="room-price">${this.formatCurrency(room.price)}/tháng</span>
+                        <span class="room-area">${room.area}m²</span>
+                    </div>
+                    <div class="room-status">
+                        <span class="status-badge ${this.getStatusClass(room.status)}">
+                            ${this.getStatusText(room.status)}
+                        </span>
                     </div>
                 </div>
                 <div class="room-actions">
-                    <button class="action-btn view" onclick="roomsManager.viewRoom('${room.MaPhong}')" title="Xem chi tiết">
+                    <button class="action-btn view" onclick="roomsManager.viewRoom('${room.roomID}')" title="Xem chi tiết">
                         <i class="fas fa-eye"></i>
                     </button>
-                    <button class="action-btn edit" onclick="roomsManager.editRoom('${room.MaPhong}')" title="Chỉnh sửa">
+                    <button class="action-btn edit" onclick="roomsManager.editRoom('${room.roomID}')" title="Chỉnh sửa">
                         <i class="fas fa-edit"></i>
                     </button>
-                    <button class="action-btn upload" onclick="roomsManager.uploadRoomImage('${room.MaPhong}')" title="Đổi ảnh">
-                        <i class="fas fa-camera"></i>
-                    </button>
-                    <button class="action-btn delete" onclick="roomsManager.deleteRoom('${room.MaPhong}')" title="Xóa">
+                    <button class="action-btn delete" onclick="roomsManager.deleteRoom('${room.roomID}')" title="Xóa">
                         <i class="fas fa-trash"></i>
                     </button>
                 </div>
@@ -333,6 +284,7 @@ class RoomsManagement {
         `).join('');
     }
 
+    // ✅ CẬP NHẬT: Render table với tên field database
     renderTableView(rooms) {
         const tbody = document.getElementById('roomsTableBody');
         
@@ -351,85 +303,32 @@ class RoomsManagement {
         }
 
         tbody.innerHTML = rooms.map(room => `
-            <tr data-room-id="${room.MaPhong}">
-                <td>${room.MaPhong}</td>
-                <td>${room.TieuDe}</td>
-                <td>${room.DiaChi}</td>
-                <td>${this.formatCurrency(room.GiaThue)}</td>
-                <td>${room.DienTich}m²</td>
+            <tr data-room-id="${room.roomID}">
+                <td>${room.roomID}</td>
+                <td>${room.title}</td>
+                <td>${room.address}</td>
+                <td>${this.formatCurrency(room.price)}</td>
+                <td>${room.area}m²</td>
                 <td>
-                    <span class="status-badge ${this.getStatusClass(room.TrangThai)}">
-                        ${this.getStatusText(room.TrangThai)}
+                    <span class="status-badge ${this.getStatusClass(room.status)}">
+                        ${this.getStatusText(room.status)}
                     </span>
                 </td>
                 <td>
                     <div class="action-buttons">
-                        <button class="btn btn-sm btn-info" onclick="roomsManager.viewRoom('${room.MaPhong}')" title="Xem">
+                        <button class="btn btn-sm btn-primary" onclick="roomsManager.viewRoom('${room.roomID}')" title="Xem">
                             <i class="fas fa-eye"></i>
                         </button>
-                        <button class="btn btn-sm btn-warning" onclick="roomsManager.editRoom('${room.MaPhong}')" title="Sửa">
+                        <button class="btn btn-sm btn-warning" onclick="roomsManager.editRoom('${room.roomID}')" title="Sửa">
                             <i class="fas fa-edit"></i>
                         </button>
-                        <button class="btn btn-sm btn-secondary" onclick="roomsManager.uploadRoomImage('${room.MaPhong}')" title="Ảnh">
-                            <i class="fas fa-camera"></i>
-                        </button>
-                        <button class="btn btn-sm btn-danger" onclick="roomsManager.deleteRoom('${room.MaPhong}')" title="Xóa">
+                        <button class="btn btn-sm btn-danger" onclick="roomsManager.deleteRoom('${room.roomID}')" title="Xóa">
                             <i class="fas fa-trash"></i>
                         </button>
                     </div>
                 </td>
             </tr>
         `).join('');
-    }
-
-    renderPagination() {
-        const container = document.getElementById('pagination');
-        if (this.totalPages <= 1) {
-            container.innerHTML = '';
-            return;
-        }
-
-        let paginationHTML = '<div class="pagination-buttons">';
-        
-        // Previous button
-        if (this.currentPage > 1) {
-            paginationHTML += `<button class="page-btn" onclick="roomsManager.goToPage(${this.currentPage - 1})">‹</button>`;
-        }
-
-        // Page numbers
-        const startPage = Math.max(1, this.currentPage - 2);
-        const endPage = Math.min(this.totalPages, this.currentPage + 2);
-
-        if (startPage > 1) {
-            paginationHTML += `<button class="page-btn" onclick="roomsManager.goToPage(1)">1</button>`;
-            if (startPage > 2) {
-                paginationHTML += `<span class="page-ellipsis">...</span>`;
-            }
-        }
-
-        for (let i = startPage; i <= endPage; i++) {
-            paginationHTML += `<button class="page-btn ${i === this.currentPage ? 'active' : ''}" onclick="roomsManager.goToPage(${i})">${i}</button>`;
-        }
-
-        if (endPage < this.totalPages) {
-            if (endPage < this.totalPages - 1) {
-                paginationHTML += `<span class="page-ellipsis">...</span>`;
-            }
-            paginationHTML += `<button class="page-btn" onclick="roomsManager.goToPage(${this.totalPages})">${this.totalPages}</button>`;
-        }
-
-        // Next button
-        if (this.currentPage < this.totalPages) {
-            paginationHTML += `<button class="page-btn" onclick="roomsManager.goToPage(${this.currentPage + 1})">›</button>`;
-        }
-
-        paginationHTML += '</div>';
-        container.innerHTML = paginationHTML;
-    }
-
-    goToPage(page) {
-        this.currentPage = page;
-        this.loadRooms();
     }
 
     setViewMode(mode) {
@@ -449,38 +348,13 @@ class RoomsManagement {
 
     async openAddRoomModal() {
         this.editingRoomId = null;
+        this.currentRoomImageUrl = null; 
+        this.tempImageUrl = null;
         document.getElementById('modalTitle').textContent = 'Thêm phòng mới';
         document.getElementById('roomForm').reset();
         this.removeImage();
-        
-        // Load owners for admin
-        await this.loadOwners();
-        
         this.showModal('roomModal');
-        
-        // Thêm button upload ảnh vào form
         this.addImageUploadButton();
-    }
-
-    async loadOwners() {
-        try {
-            const response = await fetch('/api/users');
-            const result = await response.json();
-            
-            if (result.success) {
-                const ownerSelect = document.getElementById('roomOwner');
-                ownerSelect.innerHTML = '<option value="">Chọn chủ nhà...</option>';
-                
-                result.data.forEach(user => {
-                    const option = document.createElement('option');
-                    option.value = user.MaNguoiDung;
-                    option.textContent = `${user.HoTen} (${user.VaiTro}) - ${user.Email}`;
-                    ownerSelect.appendChild(option);
-                });
-            }
-        } catch (error) {
-            console.error('Error loading owners:', error);
-        }
     }
 
     addImageUploadButton() {
@@ -520,21 +394,25 @@ class RoomsManagement {
             if (result.success) {
                 const room = result.data;
                 this.editingRoomId = roomId;
+                this.currentRoomImageUrl = room.imageURL;
                 
                 document.getElementById('modalTitle').textContent = 'Chỉnh sửa phòng';
-                document.getElementById('roomName').value = room.TieuDe;
-                document.getElementById('roomAddress').value = room.DiaChi;
-                document.getElementById('roomPrice').value = room.GiaThue;
-                document.getElementById('roomArea').value = room.DienTich;
-                document.getElementById('roomDescription').value = room.MoTa || '';
-                document.getElementById('roomStatus').value = this.mapStatusToValue(room.TrangThai);
+                document.getElementById('roomName').value = room.title;
+                document.getElementById('roomAddress').value = room.address;
+                document.getElementById('roomPrice').value = room.price;
+                document.getElementById('roomArea').value = room.area;
+                document.getElementById('roomDescription').value = room.description || '';
+                document.getElementById('roomStatus').value = room.status;
                 
-                // Load owners and set current owner
-                await this.loadOwners();
-                document.getElementById('roomOwner').value = room.MaChuNha;
-                
-                this.addImageUploadButton();
+                if (room.imageURL) {
+                    this.tempImageUrl = room.imageURL; // Dùng ảnh hiện tại làm temp
+                    this.displayUploadedImage(room.imageURL);
+                } else {
+                    this.addImageUploadButton();
+                }
+
                 this.showModal('roomModal');
+
             } else {
                 this.showNotification('Lỗi tải thông tin phòng!', 'error');
             }
@@ -568,6 +446,13 @@ class RoomsManagement {
 
             if (result.success) {
                 this.showNotification(`${this.editingRoomId ? 'Cập nhật' : 'Thêm'} phòng thành công!`, 'success');
+                
+
+                if (this.tempFilename && !this.editingRoomId) {
+                    this.tempFilename = null;
+                    this.tempImageUrl = null;
+                }
+                
                 this.closeRoomModal();
                 this.loadRooms();
                 this.loadStats();
@@ -582,85 +467,36 @@ class RoomsManagement {
     }
 
     getFormData() {
-        const form = document.getElementById('roomForm');
-        const formData = new FormData(form);
-        
         const roomData = {
-            TieuDe: document.getElementById('roomName').value.trim(),
-            DiaChi: document.getElementById('roomAddress').value.trim(),
-            GiaThue: parseInt(document.getElementById('roomPrice').value),
-            DienTich: parseFloat(document.getElementById('roomArea').value),
-            MoTa: document.getElementById('roomDescription').value.trim(),
-            TrangThai: this.mapValueToStatus(document.getElementById('roomStatus').value),
-            MaChuNha: document.getElementById('roomOwner').value
+            title: document.getElementById('roomName').value.trim(),
+            address: document.getElementById('roomAddress').value.trim(),
+            price: parseInt(document.getElementById('roomPrice').value),
+            area: parseFloat(document.getElementById('roomArea').value),
+            description: document.getElementById('roomDescription').value.trim(),
+            status: document.getElementById('roomStatus').value,
         };
 
-        // Add optional fields
-        const electricPrice = document.getElementById('electricPrice')?.value;
-        const waterPrice = document.getElementById('waterPrice')?.value;
-        const internetPrice = document.getElementById('internetPrice')?.value;
-        const parkingPrice = document.getElementById('parkingPrice')?.value;
-
-        if (electricPrice) roomData.GiaDien = parseInt(electricPrice);
-        if (waterPrice) roomData.GiaNuoc = parseInt(waterPrice);
-        if (internetPrice) roomData.GiaInternet = parseInt(internetPrice);
-        if (parkingPrice) roomData.GiaGuiXe = parseInt(parkingPrice);
-
-        // Add temp image URL if uploaded
-        if (this.tempImageUrl) {
-            roomData.tempImageUrl = this.tempImageUrl;
+        // Thêm thông tin ảnh
+        if (this.editingRoomId) {
+            roomData.imageURL = this.tempImageUrl && this.tempImageUrl.startsWith('/uploads/temp/') 
+                ? this.currentRoomImageUrl 
+                : (this.tempImageUrl || this.currentRoomImageUrl || '');
+            if (this.tempFilename) {
+                roomData.tempFilename = this.tempFilename;
+            }
+        } else {
+            if (this.tempFilename) {
+                roomData.tempFilename = this.tempFilename;
+            }
         }
 
         // Validation
-        if (!roomData.TieuDe || !roomData.DiaChi || !roomData.GiaThue || !roomData.DienTich || !roomData.MaChuNha) {
+        if (!roomData.title || !roomData.address || !roomData.price || !roomData.area) {
             this.showNotification('Vui lòng điền đầy đủ thông tin bắt buộc!', 'error');
             return null;
         }
 
         return roomData;
-    }
-
-    async uploadRoomImage(roomId) {
-        this.editingRoomId = roomId;
-        document.getElementById('roomImageInput').click();
-        
-        // Override the upload handler for direct room update
-        const fileInput = document.getElementById('roomImageInput');
-        const originalHandler = fileInput.onchange;
-        
-        fileInput.onchange = async (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            try {
-                this.showLoading('Đang upload ảnh...');
-                
-                const formData = new FormData();
-                formData.append('roomImage', file);
-
-                const response = await fetch(`/api/rooms/${roomId}/upload`, {
-                    method: 'POST',
-                    body: formData
-                });
-
-                const result = await response.json();
-                this.hideLoading();
-
-                if (result.success) {
-                    this.showNotification('Cập nhật ảnh thành công!', 'success');
-                    this.loadRooms();
-                } else {
-                    this.showNotification(result.message || 'Lỗi upload ảnh!', 'error');
-                }
-            } catch (error) {
-                this.hideLoading();
-                console.error('Upload error:', error);
-                this.showNotification('Lỗi kết nối!', 'error');
-            }
-            
-            // Restore original handler
-            fileInput.onchange = originalHandler;
-        };
     }
 
     async deleteRoom(roomId) {
@@ -718,40 +554,40 @@ class RoomsManagement {
         content.innerHTML = `
             <div class="room-details-grid">
                 <div class="room-image-section">
-                    <img src="${room.URLAnhPhong || './assets/img/houses/default.jpg'}" 
-                         alt="${room.TieuDe}" 
+                    <img src="${room.imageURL || '/img/houses/default.jpg'}" 
+                         alt="${room.title}" 
                          class="room-detail-image"
-                         onerror="this.src='./assets/img/houses/default.jpg'">
+                         onerror="this.src='/img/houses/default.jpg'">
                 </div>
                 <div class="room-info-section">
-                    <h4>${room.TieuDe}</h4>
+                    <h4>${room.title}</h4>
                     <div class="detail-grid">
                         <div class="detail-item">
                             <label>Mã phòng:</label>
-                            <span>${room.MaPhong}</span>
+                            <span>${room.roomID}</span>
                         </div>
                         <div class="detail-item">
                             <label>Địa chỉ:</label>
-                            <span>${room.DiaChi}</span>
+                            <span>${room.address}</span>
                         </div>
                         <div class="detail-item">
                             <label>Giá thuê:</label>
-                            <span>${this.formatCurrency(room.GiaThue)}/tháng</span>
+                            <span>${this.formatCurrency(room.price)}/tháng</span>
                         </div>
                         <div class="detail-item">
                             <label>Diện tích:</label>
-                            <span>${room.DienTich}m²</span>
+                            <span>${room.area}m²</span>
                         </div>
                         <div class="detail-item">
                             <label>Trạng thái:</label>
-                            <span class="status-badge ${this.getStatusClass(room.TrangThai)}">
-                                ${this.getStatusText(room.TrangThai)}
+                            <span class="status-badge ${this.getStatusClass(room.status)}">
+                                ${this.getStatusText(room.status)}
                             </span>
                         </div>
-                        ${room.MoTa ? `
+                        ${room.description ? `
                         <div class="detail-item full-width">
                             <label>Mô tả:</label>
-                            <span>${room.MoTa}</span>
+                            <span>${room.description}</span>
                         </div>
                         ` : ''}
                     </div>
@@ -761,92 +597,23 @@ class RoomsManagement {
         this.showModal('roomDetailsModal');
     }
 
-    async exportData() {
-        try {
-            this.showLoading('Đang xuất dữ liệu...');
-            
-            const response = await fetch('/api/rooms?limit=1000');
-            const result = await response.json();
-            
-            this.hideLoading();
-
-            if (result.success) {
-                this.downloadCSV(result.data.rooms);
-            } else {
-                this.showNotification('Lỗi xuất dữ liệu!', 'error');
-            }
-        } catch (error) {
-            this.hideLoading();
-            console.error('Error exporting data:', error);
-            this.showNotification('Lỗi kết nối!', 'error');
-        }
-    }
-
-    downloadCSV(rooms) {
-        const headers = ['Mã phòng', 'Tên phòng', 'Địa chỉ', 'Giá thuê', 'Diện tích', 'Trạng thái', 'Mô tả'];
-        const csvContent = [
-            headers.join(','),
-            ...rooms.map(room => [
-                room.MaPhong,
-                `"${room.TieuDe}"`,
-                `"${room.DiaChi}"`,
-                room.GiaThue,
-                room.DienTich,
-                this.getStatusText(room.TrangThai),
-                `"${room.MoTa || ''}"`
-            ].join(','))
-        ].join('\n');
-
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        const link = document.createElement('a');
-        const url = URL.createObjectURL(blob);
-        link.setAttribute('href', url);
-        link.setAttribute('download', `rooms_${new Date().toISOString().split('T')[0]}.csv`);
-        link.style.visibility = 'hidden';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    }
-
     // Utility methods
     getStatusClass(status) {
         const statusMap = {
-            'conTrong': 'available',
-            'dangThue': 'occupied', 
-            'daDuyet': 'approved',
-            'dangChoDuyet': 'pending'
+            'available': 'status-available',
+            'occupied': 'status-occupied', 
+            'maintenance': 'status-maintenance'
         };
-        return statusMap[status] || 'unknown';
+        return statusMap[status] || 'status-unknown';
     }
 
     getStatusText(status) {
         const statusMap = {
-            'conTrong': 'Còn trống',
-            'dangThue': 'Đang thuê',
-            'daDuyet': 'Đã duyệt',
-            'dangChoDuyet': 'Đang chờ duyệt'
+            'available': 'Còn trống',
+            'occupied': 'Đã thuê',
+            'maintenance': 'Bảo trì'
         };
         return statusMap[status] || 'Không xác định';
-    }
-
-    mapStatusToValue(status) {
-        const statusMap = {
-            'conTrong': 'available',
-            'dangThue': 'occupied',
-            'daDuyet': 'approved',
-            'dangChoDuyet': 'pending'
-        };
-        return statusMap[status] || 'available';
-    }
-
-    mapValueToStatus(value) {
-        const valueMap = {
-            'available': 'conTrong',
-            'occupied': 'dangThue',
-            'approved': 'daDuyet',
-            'pending': 'dangChoDuyet'
-        };
-        return valueMap[value] || 'conTrong';
     }
 
     formatCurrency(amount) {
@@ -856,23 +623,30 @@ class RoomsManagement {
         }).format(amount);
     }
 
-    debounceSearch() {
-        clearTimeout(this.searchTimeout);
-        this.searchTimeout = setTimeout(() => {
-            this.currentPage = 1;
-            this.loadRooms();
-        }, 500);
-    }
-
     showModal(modalId) {
         document.getElementById(modalId).style.display = 'block';
         document.body.style.overflow = 'hidden';
     }
 
-    closeRoomModal() {
+    async closeRoomModal() {
+        // Xóa ảnh tạm thời trên sever nếu có
+        if (this.tempFilename) {
+            try {
+                await fetch(`/api/upload/temp-image/${this.tempFilename}`, {
+                    method: 'DELETE'
+                });
+            } catch (error) {
+                console.error('Lỗi xóa ảnh tạm thời:', error);
+            }
+        }
+
         document.getElementById('roomModal').style.display = 'none';
         document.body.style.overflow = 'auto';
         this.removeImage();
+        this.editingRoomId = null;
+        this.currentRoomImageUrl = null; 
+        this.tempImageUrl = null;
+        this.tempFilename = null;
     }
 
     closeAllModals() {
@@ -884,7 +658,6 @@ class RoomsManagement {
     }
 
     showLoading(message = 'Đang tải...') {
-        // Create or update loading overlay
         let overlay = document.getElementById('loadingOverlay');
         if (!overlay) {
             overlay = document.createElement('div');
@@ -910,7 +683,6 @@ class RoomsManagement {
     }
 
     showNotification(message, type = 'info') {
-        // Create notification element
         const notification = document.createElement('div');
         notification.className = `notification ${type}`;
         notification.innerHTML = `
@@ -920,13 +692,8 @@ class RoomsManagement {
             </div>
         `;
 
-        // Add to page
         document.body.appendChild(notification);
-
-        // Show notification
         setTimeout(() => notification.classList.add('show'), 100);
-
-        // Auto remove
         setTimeout(() => {
             notification.classList.remove('show');
             setTimeout(() => notification.remove(), 300);
@@ -942,50 +709,9 @@ class RoomsManagement {
         };
         return icons[type] || 'info-circle';
     }
-
-    async loadRoomCharts() {
-        try {
-            // ✅ SỬ DỤNG Dashboard API
-            const response = await fetch('/api/dashboard/room-status-chart');
-            const result = await response.json();
-            
-            if (result.success) {
-                const ctx = document.getElementById('roomStatusChart').getContext('2d');
-                
-                new Chart(ctx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Trống', 'Đã thuê', 'Chờ duyệt', 'Đã duyệt'],
-                        datasets: [{
-                            data: [
-                                result.data.available,
-                                result.data.occupied,
-                                result.data.pending,
-                                result.data.approved
-                            ],
-                            backgroundColor: ['#2ecc71', '#e74c3c', '#f39c12', '#3498db']
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false
-                    }
-                });
-            }
-        } catch (error) {
-            console.error('Error loading room charts:', error);
-        }
-    }
 }
 
-// Initialize when DOM is loaded
+
 document.addEventListener('DOMContentLoaded', () => {
     window.roomsManager = new RoomsManagement();
-}); 
-
-// THÊM cleanup khi rời trang
-window.addEventListener('beforeunload', () => {
-    if (window.roomsManager) {
-        window.roomsManager.destroy();
-    }
 });
