@@ -503,6 +503,120 @@ img {
     box-shadow: var(--shadow-sm);
 }
 
+.btn-action.complete {
+    background: #28a745;
+    color: white;
+}
+
+.btn-action.complete:hover {
+    background: #218838;
+}
+
+.status-text {
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.status-text.success {
+    color: #28a745;
+}
+
+.status-text.cancelled {
+    color: #dc3545;
+}
+
+/* Feedback Management */
+.feedback-management {
+    padding: var(--spacing-xl);
+}
+
+.feedback-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-lg);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--border-light);
+}
+
+.feedback-stats-row {
+    display: flex;
+    gap: var(--spacing-xl);
+    margin-bottom: var(--spacing-lg);
+    padding: var(--spacing-md);
+    background: var(--bg-tertiary);
+    border-radius: 12px;
+}
+
+.feedback-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.feedback-stat .stat-label {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.feedback-stat .stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent-blue);
+}
+
+.feedback-table-container {
+    overflow-x: auto;
+    border-radius: 12px;
+    border: 1px solid var(--border-light);
+}
+
+.feedback-rating {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.feedback-rating .stars {
+    color: #fbbf24;
+    font-size: 1.1rem;
+}
+
+.feedback-rating .rating-text {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.feedback-comment {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+}
+
+.feedback-comment:hover {
+    white-space: normal;
+    word-wrap: break-word;
+}
+
+.user-contact {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
+.user-contact br {
+    margin-bottom: 2px;
+}
+
 /* Responsive Design */
 @media (max-width: 1024px) {
     .charts-grid {
@@ -558,6 +672,25 @@ img {
         padding: var(--spacing-sm);
         font-size: 0.85rem;
     }
+
+    .feedback-stats-row {
+        flex-direction: column;
+        gap: var(--spacing-md);
+    }
+    
+    .feedback-controls {
+        flex-direction: column;
+        gap: var(--spacing-md);
+        align-items: stretch;
+    }
+    
+    .feedback-table-container {
+        font-size: 0.85rem;
+    }
+    
+    .feedback-comment {
+        max-width: 120px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -610,5 +743,275 @@ img {
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+// table controls
+.table-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.form-select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: white;
+    font-size: 14px;
+}
+
+// room info và contact info
+.room-info {
+    .room-title {
+        font-weight: 500;
+        color: #333;
+    }
+    
+    .room-id {
+        font-size: 12px;
+        color: #666;
+    }
+}
+
+.contact-info {
+    font-size: 12px;
+    
+    div {
+        margin-bottom: 2px;
+        
+        i {
+            width: 12px;
+            color: #666;
+        }
+    }
+}
+
+// action buttons
+.action-buttons {
+    display: flex;
+    gap: 5px;
+    
+    .btn {
+        padding: 4px 8px;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+        font-size: 12px;
+        
+        &.btn-success {
+            background: #28a745;
+            color: white;
+            
+            &:hover {
+                background: #218838;
+            }
+        }
+        
+        &.btn-danger {
+            background: #dc3545;
+            color: white;
+            
+            &:hover {
+                background: #c82333;
+            }
+        }
+    }
+}
+
+/* Modern Action Buttons */
+.viewing-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.btn-action {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    min-width: 120px;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+    
+    i {
+        font-size: 14px;
+        transition: transform 0.3s ease;
+    }
+    
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        
+        i {
+            transform: scale(1.1);
+        }
+    }
+    
+    &:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+}
+
+// Complete Button - Modern Green Gradient
+.btn-action.complete {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    border: 2px solid transparent;
+    
+    &:hover {
+        background: linear-gradient(135deg, #059669, #047857);
+        box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+    }
+    
+    &:focus {
+        outline: none;
+        box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.3);
+    }
+}
+
+// Cancel Button - Modern Red Gradient  
+.btn-action.cancel {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
+    border: 2px solid transparent;
+    
+    &:hover {
+        background: linear-gradient(135deg, #dc2626, #b91c1c);
+        box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
+    }
+    
+    &:focus {
+        outline: none;
+        box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.3);
+    }
+}
+
+// Status Text - Modern Design
+.status-text {
+    font-size: 13px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 25px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    
+    i {
+        font-size: 14px;
+    }
+    
+    &.success {
+        background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+        color: #065f46;
+        border: 1px solid #10b981;
+        
+        &:hover {
+            background: linear-gradient(135deg, #a7f3d0, #6ee7b7);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+    }
+    
+    &.cancelled {
+        background: linear-gradient(135deg, #fee2e2, #fecaca);
+        color: #991b1b;
+        border: 1px solid #ef4444;
+        
+        &:hover {
+            background: linear-gradient(135deg, #fecaca, #fca5a5);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+    }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+    .viewing-actions {
+        flex-direction: column;
+        gap: 8px;
+        align-items: stretch;
+    }
+    
+    .btn-action {
+        min-width: 100%;
+        font-size: 12px;
+        padding: 8px 12px;
+    }
+    
+    .status-text {
+        font-size: 12px;
+        padding: 6px 12px;
+        text-align: center;
+    }
+}
+
+// Animation for button loading state
+.btn-action.loading {
+    pointer-events: none;
+    opacity: 0.7;
+    
+    &::after {
+        content: '';
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        border: 2px solid transparent;
+        border-top: 2px solid currentColor;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+    
+    i {
+        opacity: 0;
+    }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+// Pulse animation for status text
+.status-text {
+    animation: statusPulse 2s ease-in-out infinite;
+}
+
+@keyframes statusPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+}
+
+// Table viewing actions container
+.data-table {
+    .viewing-actions {
+        min-width: 160px;
+        justify-content: flex-start;
+    }
+    
+    td {
+        vertical-align: middle;
+        
+        &:last-child {
+            text-align: center;
+        }
     }
 }

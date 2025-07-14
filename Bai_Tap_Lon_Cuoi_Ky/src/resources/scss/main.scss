@@ -600,10 +600,6 @@ main {
     display: block;
 }
 
-.house-lists .house-items:nth-child(n+9) {
-    display: none;
-}
-
 #houses-container .house-item {
     width: 100%;
     display: flex;
@@ -1176,6 +1172,539 @@ footer {
     transform: scale(1.2);
 }
 
+/* ✅ THÊM: Floating Widget CSS */
+.floating-user-widget {
+    position: fixed;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    z-index: 1500;
+}
+
+.widget-toggle {
+    width: 55px;
+    height: 55px;
+    background: $default-color;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+}
+
+.widget-toggle:hover {
+    background: $yellow-color;
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.widget-toggle i {
+    font-size: 1.5rem;
+}
+
+.widget-content {
+    position: absolute;
+    right: 70px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    min-width: 250px;
+    display: none;
+    opacity: 0;
+    transform: translateY(-50%) translateX(20px);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.widget-content.active {
+    display: block;
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+}
+
+.widget-content::before {
+    content: '';
+    position: absolute;
+    right: -8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 8px solid white;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+}
+
+.widget-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.widget-header h4 {
+    margin: 0;
+    color: $default-color;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.close-widget {
+    font-size: 1.5rem;
+    color: #6b7280;
+    cursor: pointer;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.close-widget:hover {
+    background: #f3f4f6;
+    color: #dc2626;
+}
+
+.widget-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.widget-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 15px;
+    background: transparent;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: left;
+    font-size: 0.95rem;
+    color: #374151;
+}
+
+.widget-btn:hover {
+    background: #f8fafc;
+    color: $default-color;
+    transform: translateX(5px);
+}
+
+.widget-btn i {
+    font-size: 1.1rem;
+    width: 20px;
+    text-align: center;
+}
+
+.widget-logout {
+    border-top: 1px solid #e5e7eb;
+    margin-top: 8px;
+    padding-top: 8px;
+}
+
+.widget-logout .widget-btn {
+    color: #dc2626;
+}
+
+.widget-logout .widget-btn:hover {
+    background: #fef2f2;
+}
+
+/* User Sections */
+.user-section {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.section-container {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.section-container h3 {
+    font-size: 1.5rem;
+    color: $default-color;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Viewings Container */
+.viewings-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 20px;
+}
+
+.viewing-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.viewing-card:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.viewing-card-header {
+    padding: 15px;
+    background: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.viewing-card-header h4 {
+    margin: 0;
+    color: $default-color;
+    font-size: 1.1rem;
+}
+
+.viewing-card-body {
+    padding: 15px;
+}
+
+.viewing-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.viewing-info-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+}
+
+.viewing-status {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.status-confirmed {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.status-completed {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.status-cancelled {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+
+/* Modal Styles */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background: white;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: $default-color;
+}
+
+.close {
+    font-size: 24px;
+    cursor: pointer;
+    color: #6b7280;
+    transition: color 0.2s ease;
+}
+
+.close:hover {
+    color: #dc2626;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+/* ✅ THÊM: Room Info in Modal */
+.room-info {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+    padding: 15px;
+    background: #f8fafc;
+    border-radius: 10px;
+}
+
+.room-info img {
+    width: 80px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.room-details h4 {
+    margin: 0 0 5px 0;
+    color: $default-color;
+    font-size: 1.1rem;
+}
+
+.room-details p {
+    margin: 2px 0;
+    color: #6b7280;
+    font-size: 0.9rem;
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #374151;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border-color 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: $default-color;
+    box-shadow: 0 0 0 3px rgba(0, 0, 114, 0.1);
+}
+
+
+/* Form Actions */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.btn-cancel,
+.btn-submit {
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+}
+
+.btn-cancel {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+.btn-cancel:hover {
+    background: #e5e7eb;
+}
+
+.btn-submit {
+    background: $default-color;
+    color: white;
+}
+
+.btn-submit:hover {
+    background: darken($default-color, 10%);
+    transform: translateY(-1px);
+}
+
+/* Sidebar User Info */
+.sidebar-user-info {
+    padding: 20px 0;
+    border-bottom: 1px solid #eee;
+    text-align: center;
+}
+
+.sidebar-user-info p {
+    margin: 0 0 10px 0;
+    color: #333;
+}
+
+.sidebar-logout {
+    color: #e74c3c;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.sidebar-logout:hover {
+    color: #c0392b;
+}
+
+/* House Item Updates */
+.house-item {
+    position: relative;
+}
+
+.room-actions {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+}
+
+.btn-book-viewing {
+    flex: 1;
+    padding: 10px;
+    background: $default-color;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.btn-book-viewing:hover {
+    background: $yellow-color;
+    transform: translateY(-1px);
+}
+
+/* CSS cho nút disabled */
+.btn-book-viewing.disabled {
+    background: #ccc;
+    color: #666;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.btn-book-viewing.disabled:hover {
+    background: #ccc;
+    transform: none;
+}
+
+/* Viewing actions */
+.viewing-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.btn-action {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn-action.cancel {
+    background: #dc3545;
+    color: white;
+}
+
+.btn-action.cancel:hover {
+    background: #c82333;
+}
+
+.btn-action.review {
+    background: #ffc107;
+    color: #212529;
+}
+
+.btn-action.review:hover {
+    background: #e0a800;
+}
+
+.status-badge {
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.status-badge.confirmed {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-badge.completed {
+    background: #cce5ff;
+    color: #004085;
+}
+
+.status-badge.cancelled {
+    background: #f8d7da;
+    color: #721c24;
+}
+
 
 
 /* Responsive */
@@ -1348,6 +1877,48 @@ footer {
         height: 76px;
         min-width: 83px;
     }
+    
+    .modal-content {
+        width: 95%;
+        margin: 10px;
+    }
+    
+    .room-info {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .room-info img {
+        width: 100%;
+        height: 150px;
+    }
+    
+    .viewings-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .btn-cancel,
+    .btn-submit {
+        width: 100%;
+    }
+
+    .floating-user-widget {
+        right: 15px;
+    }
+    
+    .widget-content {
+        right: 60px;
+        min-width: 220px;
+    }
+    
+    .widget-toggle {
+        width: 50px;
+        height: 50px;
+    }
 }
 
 @media (max-width: 576px) {
@@ -1400,3 +1971,41 @@ footer {
     opacity: 1;
     transform: translateY(0);
 }
+
+/* Empty state for viewings */
+.empty-state {
+    text-align: center;
+    padding: 40px;
+    color: #6b7280;
+}
+
+/* User viewings specific styles */
+.viewing-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.viewing-date {
+    font-size: 0.9rem;
+    color: #6b7280;
+    font-weight: 500;
+}
+
+/* Status badges nếu chưa có */
+.status-confirmed {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.status-completed {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.status-cancelled {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
