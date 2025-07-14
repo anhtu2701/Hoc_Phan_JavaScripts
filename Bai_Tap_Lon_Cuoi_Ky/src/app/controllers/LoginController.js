@@ -15,7 +15,6 @@ class LoginController {
         try {
             const { username, password } = req.body;
 
-            // Validation đầu vào
             if (!username || !password) {
                 return res.render('login', { 
                     title: 'Login to TingTong', 
@@ -36,7 +35,7 @@ class LoginController {
             }
 
             // Kiểm tra trạng thái tài khoản
-            if (user.TrangThai !== 'hoatdong') {
+            if (user.status !== 'active') {
                 return res.render('login', { 
                     title: 'Login to TingTong', 
                     layout: false,
@@ -45,7 +44,7 @@ class LoginController {
             }
 
             // So sánh mật khẩu
-            const isValidPassword = await bcrypt.compare(password, user.MatKhau);
+            const isValidPassword = await bcrypt.compare(password, user.password);
             
             if (!isValidPassword) {
                 return res.render('login', { 
@@ -57,16 +56,16 @@ class LoginController {
 
             // Tạo session cho user
             req.session.user = {
-                id: user.MaNguoiDung,
-                username: user.TenDangNhap,
-                role: user.VaiTro,
-                name: user.HoTen,
-                email: user.Email,
-                phone: user.SoDienThoai
+                id: user.userID,
+                username: user.username,
+                role: user.role,
+                name: user.fullName,
+                email: user.email,
+                phone: user.phoneNumber
             };
 
             // Redirect theo role
-            if (user.VaiTro === 'admin') {
+            if (user.role === 'admin') {
                 return res.redirect('/dashboard');
             } else {
                 return res.redirect('/');
