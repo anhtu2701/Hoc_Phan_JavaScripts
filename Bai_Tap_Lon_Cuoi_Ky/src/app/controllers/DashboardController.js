@@ -66,7 +66,7 @@ class DashboardController {
     // [GET] /api/dashboard/all-viewings - Quản lý tất cả lịch xem phòng
     async getAllViewings(req, res) {
         try {
-            const { status } = req.query; // Lọc theo trạng thái
+            const { status } = req.query; 
             const result = await RoomViewing.getAllViewingsForAdmin(status);
             
             res.json(result);
