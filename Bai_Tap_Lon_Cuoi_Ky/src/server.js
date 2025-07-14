@@ -10,10 +10,10 @@ const route = require('./routes');
 const db = require('./config/db');
 const { addUserToViews } = require('./app/middleware/auth');
 const handlebarsHelpers = require('./utils/handlebars-helpers');
+const { initializeScheduledJobs } = require('./utils/scheduledJobs');
 
-// Tạo hàm khởi động server
 async function startServer() {
-    // Kết nối database trước khi start Express
+ 
     await db.connect();
 
     // Static Files
@@ -31,7 +31,7 @@ async function startServer() {
         port: 3306,
         user: 'root',
         password: 'Htu0404@',
-        database: 'QuanLyPhongTro',
+        database: 'RentalManagement',
         clearExpired: true,
         checkExpirationInterval: 900000,
         expiration: 86400000,
@@ -53,9 +53,9 @@ async function startServer() {
         resave: false,
         saveUninitialized: false,
         cookie: {
-            maxAge: 1000 * 60 * 60 * 24 * 7, // 7 ngày
+            maxAge: 1000 * 60 * 60 * 24 * 7, // 
             secure: false, 
-            httpOnly: true // Bảo mật cookie
+            httpOnly: true // 
         }
     }));
 
@@ -79,11 +79,23 @@ async function startServer() {
     // Routes init
     route(app);
 
+    // Khởi động các job định kỳ
+    initializeScheduledJobs();
+
     // Start server sau khi DB đã kết nối thành công
     app.listen(port, () => {
         console.log(`Sever is running in http://localhost:${port}`);
     });
 }
+
+// Graceful shutdown
+process.on('SIGINT', () => {
+    process.exit(0);
+});
+
+process.on('SIGTERM', () => {
+    process.exit(0);
+});
 
 // Gọi hàm startServer()
 startServer();
