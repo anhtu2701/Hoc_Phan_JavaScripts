@@ -40,33 +40,6 @@
                 </div>
                 <div class="stat-value" id="occupiedRoomsCount">-</div>
             </div>
-            <div class="stat-card">
-                <div class="stat-header">
-                    <div class="stat-title">Doanh thu tháng</div>
-                    <div class="stat-icon revenue">
-                        <i class="fas fa-money-bill-wave"></i>
-                    </div>
-                </div>
-                <div class="stat-value" id="monthlyRevenue">-</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Charts Section -->
-    <section class="dashboard-section">
-        <h2 class="section-title">
-            <i class="fas fa-chart-line"></i>
-            Thống kê phòng trọ
-        </h2>
-        <div class="charts-grid">
-            <div class="chart-container glass-card">
-                <h3>Trạng thái phòng trọ</h3>
-                <canvas id="roomStatusChart"></canvas>
-            </div>
-            <div class="chart-container glass-card">
-                <h3>Xu hướng giá thuê</h3>
-                <canvas id="priceChart"></canvas>
-            </div>
         </div>
     </section>
 
@@ -74,20 +47,9 @@
     <section class="dashboard-section">
         <div class="controls">
             <div class="controls-left">
-                <div class="search-box">
-                    <i class="fas fa-search"></i>
-                    <input type="text" id="searchInput" placeholder="Tìm kiếm phòng..." />
-                </div>
-                <select id="statusFilter" class="filter-select">
-                    <option value="">Tất cả trạng thái</option>
-                    <option value="conTrong">Còn trống</option>
-                    <option value="dangThue">Đang thuê</option>
-                    <option value="daDuyet">Đã duyệt</option>
-                    <option value="dangChoDuyet">Đang chờ duyệt</option>
-                </select>
-                <button class="btn btn-secondary" id="exportBtn">
-                    <i class="fas fa-download"></i>
-                    Xuất dữ liệu
+                <button class="btn btn-secondary" id="refreshRoomsBtn">
+                    <i class="fas fa-sync-alt"></i>
+                    Làm mới
                 </button>
             </div>
             <div class="controls-right">
@@ -119,7 +81,7 @@
         <div class="table-section glass-card">
             <div class="table-header">
                 <h3 class="table-title">Danh sách phòng trọ</h3>
-                <button class="btn btn-secondary" id="refreshRoomsBtn">
+                <button class="btn btn-secondary" id="refreshRoomsBtn2">
                     <i class="fas fa-sync-alt"></i>
                     Làm mới
                 </button>
@@ -150,10 +112,6 @@
                 </table>
             </div>
         </div>
-        <!-- Pagination -->
-        <div class="pagination" id="pagination">
-            <!-- Pagination will be generated here -->
-        </div>
     </section>
 
 </main>
@@ -167,18 +125,9 @@
         </div>
         <div class="modal-body">
             <form id="roomForm">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="roomName">Tên phòng *</label>
-                        <input type="text" id="roomName" required />
-                    </div>
-                    <div class="form-group">
-                        <label for="roomOwner">Chủ nhà *</label>
-                        <select id="roomOwner" required>
-                            <option value="">Chọn chủ nhà...</option>
-                            <!-- Options will be loaded dynamically -->
-                        </select>
-                    </div>
+                <div class="form-group">
+                    <label for="roomName">Tên phòng *</label>
+                    <input type="text" id="roomName" required />
                 </div>
                 <div class="form-row">
                     <div class="form-group">
@@ -196,34 +145,13 @@
                         <input type="number" id="roomArea" required min="0" step="0.1" />
                     </div>
                     <div class="form-group">
-                        <label for="electricPrice">Giá điện (VNĐ/kWh)</label>
-                        <input type="number" id="electricPrice" min="0" />
+                        <label for="roomStatus">Trạng thái</label>
+                        <select id="roomStatus">
+                            <option value="available">Còn trống</option>
+                            <option value="occupied">Đã thuê</option>
+                            <option value="maintenance">Bảo trì</option>
+                        </select>
                     </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="waterPrice">Giá nước (VNĐ/m³)</label>
-                        <input type="number" id="waterPrice" min="0" />
-                    </div>
-                    <div class="form-group">
-                        <label for="internetPrice">Giá Internet (VNĐ/tháng)</label>
-                        <input type="number" id="internetPrice" min="0" />
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="parkingPrice">Giá gửi xe (VNĐ/tháng)</label>
-                        <input type="number" id="parkingPrice" min="0" />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="roomStatus">Trạng thái</label>
-                    <select id="roomStatus">
-                        <option value="conTrong">Còn trống</option>
-                        <option value="dangThue">Đang thuê</option>
-                        <option value="daDuyet">Đã duyệt</option>
-                        <option value="dangChoDuyet">Đang chờ duyệt</option>
-                    </select>
                 </div>
                 <div class="form-group">
                     <label for="roomDescription">Mô tả</label>
@@ -256,24 +184,6 @@
     </div>
 </div>
 
-<!-- Delete Confirmation Modal -->
-<div id="deleteModal" class="modal">
-    <div class="modal-content small">
-        <div class="modal-header">
-            <h3>Xác nhận xóa</h3>
-            <button class="close-btn" id="closeDeleteModal">&times;</button>
-        </div>
-        <div class="modal-body">
-            <p>Bạn có chắc chắn muốn xóa phòng này không?</p>
-            <p class="warning-text">Hành động này không thể hoàn tác!</p>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" id="cancelDeleteBtn">Hủy</button>
-            <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Xóa</button>
-        </div>
-    </div>
-</div>
-
 <script>
     // Additional event listeners for modal close buttons
     document.addEventListener('DOMContentLoaded', function () {
@@ -287,16 +197,12 @@
             document.getElementById('roomDetailsModal').style.display = 'none';
             document.body.style.overflow = 'auto';
         });
-
-        // Close delete modal
-        document.getElementById('closeDeleteModal').addEventListener('click', () => {
-            document.getElementById('deleteModal').style.display = 'none';
-            document.body.style.overflow = 'auto';
-        });
-
-        document.getElementById('cancelDeleteBtn').addEventListener('click', () => {
-            document.getElementById('deleteModal').style.display = 'none';
-            document.body.style.overflow = 'auto';
+        
+        // Refresh button for table view
+        document.getElementById('refreshRoomsBtn2').addEventListener('click', () => {
+            if (window.roomsManager) {
+                window.roomsManager.loadRooms();
+            }
         });
     });
 </script>

@@ -18,6 +18,15 @@
         {{{body}}}
         {{> footer}}
     </div>
+    {{#if user}}
+    <script>
+        window.currentUser = {
+            id: {{user.id}},
+            name: '{{{user.name}}}',
+            role: '{{{user.role}}}'
+        };
+    </script>
+    {{/if}}
     <script type="text/javascript" src="/js/renderHouseFromDataBase.js"></script>
     <script type="text/javascript" src="/js/main.js"></script>
 </body>

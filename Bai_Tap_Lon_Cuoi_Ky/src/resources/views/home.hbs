@@ -1,20 +1,11 @@
 <!-- Side menu contacts -->
 <div class="side-menu-contacts">
-    <div class="contacts-method"><a href=""><img
-                src="https://tingtong.vn/wp-content/uploads/2024/08/icon_phone.png"
-                width="50"
-                height="50"
-            /></a></div>
-    <div class="contacts-method"><a href=""><img
-                src="https://tingtong.vn/wp-content/uploads/2024/08/icon_mess.png"
-                width="50"
-                height="50"
-            /></a></div>
-    <div class="contacts-method"><a href=""><img
-                src="https://tingtong.vn/wp-content/uploads/2024/08/icon_zalo.png"
-                width="50"
-                height="50"
-            /></a></div>
+    <div class="contacts-method"><a href=""><img src="https://tingtong.vn/wp-content/uploads/2024/08/icon_phone.png"
+                width="50" height="50" /></a></div>
+    <div class="contacts-method"><a href=""><img src="https://tingtong.vn/wp-content/uploads/2024/08/icon_mess.png"
+                width="50" height="50" /></a></div>
+    <div class="contacts-method"><a href=""><img src="https://tingtong.vn/wp-content/uploads/2024/08/icon_zalo.png"
+                width="50" height="50" /></a></div>
     <!-- Back to top button -->
     <div class="back-to-top">
         <i class="fa-solid fa-arrow-up"></i>
@@ -44,9 +35,16 @@
             <li class="sidebar-menu-item"><a href="#">Tuyển dụng</a></li>
         </ul>
 
-        <div class="sidebar-login">
-            <a href="./login.html">Đăng nhập</a>
+        {{#if user}}
+        <div class="sidebar-user-info">
+            <p>Xin chào, <strong>{{user.name}}</strong>!</p>
+            <a href="/logout" class="sidebar-logout">Đăng xuất</a>
         </div>
+        {{else}}
+        <div class="sidebar-login">
+            <a href="/login">Đăng nhập</a>
+        </div>
+        {{/if}}
 
         <div class="sidebar-language">
             <div class="lang-option active"><span>Tiếng Việt</span></div>
@@ -61,21 +59,9 @@
 <!-- Slider -->
 <div class="slider">
     <div class="slider-track">
-        <img
-            src="/img/banner/banner-1.png"
-            alt="Slide 1"
-            class="slider-item"
-        />
-        <img
-            src="/img/banner/banner-2.png"
-            alt="Slide 2"
-            class="slider-item"
-        />
-        <img
-            src="/img/banner/banner-3.jpg"
-            alt="Slide 3"
-            class="slider-item"
-        />
+        <img src="/img/banner/banner-1.png" alt="Slide 1" class="slider-item" />
+        <img src="/img/banner/banner-2.png" alt="Slide 2" class="slider-item" />
+        <img src="/img/banner/banner-3.jpg" alt="Slide 3" class="slider-item" />
     </div>
 
     <div class="slider-dots">
@@ -84,13 +70,29 @@
         <div class="slider-dot"></div>
     </div>
 
-    <div class="slider-btn prev-btn"><i
-            class="fa-solid fa-circle-chevron-left"
-        ></i></div>
-    <div class="slider-btn next-btn"><i
-            class="fa-solid fa-circle-chevron-right"
-        ></i></div>
+    <div class="slider-btn prev-btn"><i class="fa-solid fa-circle-chevron-left"></i></div>
+    <div class="slider-btn next-btn"><i class="fa-solid fa-circle-chevron-right"></i></div>
 </div>
+
+{{#if user}}
+<div class="floating-user-widget">
+    <div class="widget-toggle" onclick="toggleUserWidget()">
+        <i class="fa-solid fa-gear fa-spin"></i>
+    </div>
+    <div class="widget-content" id="userWidgetContent">
+        <div class="widget-header">
+            <h4>{{user.name}}</h4>
+            <span class="close-widget" onclick="toggleUserWidget()">&times;</span>
+        </div>
+        <div class="widget-actions">
+            <button class="widget-btn" onclick="handleWidgetAction('viewings')">
+                <i class="fa-calendar"></i>
+                <span>Lịch hẹn của tôi</span>
+            </button>
+        </div>
+    </div>
+</div>
+{{/if}}
 
 <!-- Main-->
 <main>
@@ -136,29 +138,91 @@
                 </select>
             </div>
 
-            <button type="submit"><i
-                    class="fa-solid fa-magnifying-glass"
-                ></i></button>
+            <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
         </form>
 
         <!-- Houses -->
         <div id="houses-container">
 
             <ul class="house-lists">
-                
+
             </ul>
 
         </div>
 
         <div class="houses-continue scale-element">
             <span>Tiếp tục khám phá danh mục toà nhà</span>
-            <div
-                class="continue-btn"
-                style="min-width: 130px; line-height: 30px;"
-            >Xem thêm</div>
+            <div class="continue-btn" style="min-width: 130px; line-height: 30px;">Xem thêm</div>
         </div>
     </div>
 </main>
+
+<!-- Section hiển thị lịch hẹn của user -->
+{{#if user}}
+<div id="my-viewings-section" class="user-section" style="display: none;">
+    <div class="section-container">
+        <h3><i class="fa-calendar"></i> Lịch hẹn xem phòng của tôi</h3>
+        <div id="viewings-list" class="viewings-container">
+            <!-- Sẽ được load bởi JavaScript -->
+        </div>
+    </div>
+</div>
+
+{{/if}}
+
+<!-- Modal đặt lịch xem phòng -->
+<div id="booking-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>📅 Đặt lịch xem phòng</h3>
+            <span class="close" onclick="closeBookingModal()">&times;</span>
+        </div>
+
+        <div class="modal-body">
+            <div class="room-info">
+                <img id="modal-room-image" src="" alt="Room Image">
+                <div class="room-details">
+                    <h4 id="modal-room-title"></h4>
+                    <p id="modal-room-address"></p>
+                    <p id="modal-room-price"></p>
+                </div>
+            </div>
+
+            <form id="booking-form">
+                <input type="hidden" id="modal-room-id" name="roomId">
+
+                <div class="form-group">
+                    <label for="view-date">Chọn ngày xem:</label>
+                    <input type="date" id="view-date" name="viewDate" required min="">
+                </div>
+
+                <div class="form-group">
+                    <label for="time-slot">Chọn khung giờ:</label>
+                    <select id="time-slot" name="timeSlot" required>
+                        <option value="">-- Chọn khung giờ --</option>
+                        <option value="08:00-09:00">08:00 - 09:00</option>
+                        <option value="09:00-10:00">09:00 - 10:00</option>
+                        <option value="10:00-11:00">10:00 - 11:00</option>
+                        <option value="13:00-14:00">13:00 - 14:00</option>
+                        <option value="14:00-15:00">14:00 - 15:00</option>
+                        <option value="15:00-16:00">15:00 - 16:00</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="note">Ghi chú (tùy chọn):</label>
+                    <textarea id="note" name="note" rows="3"
+                        placeholder="Thêm ghi chú về yêu cầu xem phòng..."></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" onclick="closeBookingModal()" class="btn-cancel">Hủy</button>
+                    <button type="submit" class="btn-submit">Đặt lịch</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <div class="news-container" id="news-container">
     <div class="news-box fade-in">
@@ -314,154 +378,60 @@
     <div class="brand-slider-box">
         <div class="brand-slider brand-top fade-in">
             <ul class="brand-lists">
-                <li class="brand-item"><img
-                        src="/img/brand-slider/brand-slider-top/Rolex_Logo.jpg"
-                        alt=""
-                    /></li>
-                <li class="brand-item"><img
-                        src="/img/brand-slider/brand-slider-top/rasch.png"
-                        alt=""
-                    /></li>
-                <li class="brand-item"><img
-                        src="/img/brand-slider/brand-slider-top/Cartier-Logo.png"
-                        alt=""
-                    /></li>
-                <li class="brand-item"><img
-                        src="/img/brand-slider/brand-slider-top/stadt-marburg-logo.jpg"
-                        alt=""
-                    /></li>
-                <li class="brand-item"><img
-                        src="/img/brand-slider/brand-slider-top/Rolex_Logo.jpg"
-                        alt=""
-                    /></li>
-                <li class="brand-item"><img
-                        src="/img/brand-slider/brand-slider-top/rasch.png"
-                        alt=""
-                    /></li>
-                <li class="brand-item"><img
-                        src="/img/brand-slider/brand-slider-top/Cartier-Logo.png"
-                        alt=""
-                    /></li>
-                <li class="brand-item"><img
-                        src="/img/brand-slider/brand-slider-top/stadt-marburg-logo.jpg"
-                        alt=""
-                    /></li>
-                <li class="brand-item"><img
-                        src="/img/brand-slider/brand-slider-top/Rolex_Logo.jpg"
-                        alt=""
-                    /></li>
-                <li class="brand-item"><img
-                        src="/img/brand-slider/brand-slider-top/rasch.png"
-                        alt=""
-                    /></li>
-                <li class="brand-item"><img
-                        src="/img/brand-slider/brand-slider-top/Cartier-Logo.png"
-                        alt=""
-                    /></li>
-                <li class="brand-item"><img
-                        src="/img/brand-slider/brand-slider-top/stadt-marburg-logo.jpg"
-                        alt=""
-                    /></li>
-                <li class="brand-item"><img
-                        src="/img/brand-slider/brand-slider-top/Rolex_Logo.jpg"
-                        alt=""
-                    /></li>
-                <li class="brand-item"><img
-                        src="/img/brand-slider/brand-slider-top/rasch.png"
-                        alt=""
-                    /></li>
-                <li class="brand-item"><img
-                        src="/img/brand-slider/brand-slider-top/Cartier-Logo.png"
-                        alt=""
-                    /></li>
-                <li class="brand-item"><img
-                        src="/img/brand-slider/brand-slider-top/stadt-marburg-logo.jpg"
-                        alt=""
-                    /></li>
+                <li class="brand-item"><img src="/img/brand-slider/brand-slider-top/Rolex_Logo.jpg" alt="" /></li>
+                <li class="brand-item"><img src="/img/brand-slider/brand-slider-top/rasch.png" alt="" /></li>
+                <li class="brand-item"><img src="/img/brand-slider/brand-slider-top/Cartier-Logo.png" alt="" /></li>
+                <li class="brand-item"><img src="/img/brand-slider/brand-slider-top/stadt-marburg-logo.jpg" alt="" />
+                </li>
+                <li class="brand-item"><img src="/img/brand-slider/brand-slider-top/Rolex_Logo.jpg" alt="" /></li>
+                <li class="brand-item"><img src="/img/brand-slider/brand-slider-top/rasch.png" alt="" /></li>
+                <li class="brand-item"><img src="/img/brand-slider/brand-slider-top/Cartier-Logo.png" alt="" /></li>
+                <li class="brand-item"><img src="/img/brand-slider/brand-slider-top/stadt-marburg-logo.jpg" alt="" />
+                </li>
+                <li class="brand-item"><img src="/img/brand-slider/brand-slider-top/Rolex_Logo.jpg" alt="" /></li>
+                <li class="brand-item"><img src="/img/brand-slider/brand-slider-top/rasch.png" alt="" /></li>
+                <li class="brand-item"><img src="/img/brand-slider/brand-slider-top/Cartier-Logo.png" alt="" /></li>
+                <li class="brand-item"><img src="/img/brand-slider/brand-slider-top/stadt-marburg-logo.jpg" alt="" />
+                </li>
+                <li class="brand-item"><img src="/img/brand-slider/brand-slider-top/Rolex_Logo.jpg" alt="" /></li>
+                <li class="brand-item"><img src="/img/brand-slider/brand-slider-top/rasch.png" alt="" /></li>
+                <li class="brand-item"><img src="/img/brand-slider/brand-slider-top/Cartier-Logo.png" alt="" /></li>
+                <li class="brand-item"><img src="/img/brand-slider/brand-slider-top/stadt-marburg-logo.jpg" alt="" />
+                </li>
             </ul>
         </div>
         <div class="brand-slider brand-bot fade-in">
             <ul class="brand-lists">
+                <li class="brand-item"><img src="/img/brand-slider/brand-slider-bot/Casadeco.jpg" alt="" /></li>
+                <li class="brand-item"><img src="/img/brand-slider/brand-slider-bot/Cartier-Logo.png" alt="" /></li>
+                <li class="brand-item"><img src="/img/brand-slider/brand-slider-bot/stadt-marburg-logo.jpg" alt="" />
+                </li>
                 <li class="brand-item"><img
-                        src="/img/brand-slider/brand-slider-bot/Casadeco.jpg"
-                        alt=""
-                    /></li>
+                        src="/img/brand-slider/brand-slider-bot/Porter-And-Stone-Curtain-Fabrics.png" alt="" /></li>
+                <li class="brand-item"><img src="/img/brand-slider/brand-slider-bot/Casadeco.jpg" alt="" /></li>
+                <li class="brand-item"><img src="/img/brand-slider/brand-slider-bot/Cartier-Logo.png" alt="" /></li>
+                <li class="brand-item"><img src="/img/brand-slider/brand-slider-bot/stadt-marburg-logo.jpg" alt="" />
+                </li>
                 <li class="brand-item"><img
-                        src="/img/brand-slider/brand-slider-bot/Cartier-Logo.png"
-                        alt=""
-                    /></li>
+                        src="/img/brand-slider/brand-slider-bot/Porter-And-Stone-Curtain-Fabrics.png" alt="" /></li>
+                <li class="brand-item"><img src="/img/brand-slider/brand-slider-bot/Casadeco.jpg" alt="" /></li>
+                <li class="brand-item"><img src="/img/brand-slider/brand-slider-bot/Cartier-Logo.png" alt="" /></li>
+                <li class="brand-item"><img src="/img/brand-slider/brand-slider-bot/stadt-marburg-logo.jpg" alt="" />
+                </li>
                 <li class="brand-item"><img
-                        src="/img/brand-slider/brand-slider-bot/stadt-marburg-logo.jpg"
-                        alt=""
-                    /></li>
+                        src="/img/brand-slider/brand-slider-bot/Porter-And-Stone-Curtain-Fabrics.png" alt="" /></li>
+                <li class="brand-item"><img src="/img/brand-slider/brand-slider-bot/Casadeco.jpg" alt="" /></li>
+                <li class="brand-item"><img src="/img/brand-slider/brand-slider-bot/Cartier-Logo.png" alt="" /></li>
+                <li class="brand-item"><img src="/img/brand-slider/brand-slider-bot/stadt-marburg-logo.jpg" alt="" />
+                </li>
                 <li class="brand-item"><img
-                        src="/img/brand-slider/brand-slider-bot/Porter-And-Stone-Curtain-Fabrics.png"
-                        alt=""
-                    /></li>
+                        src="/img/brand-slider/brand-slider-bot/Porter-And-Stone-Curtain-Fabrics.png" alt="" /></li>
+                <li class="brand-item"><img src="/img/brand-slider/brand-slider-bot/Casadeco.jpg" alt="" /></li>
+                <li class="brand-item"><img src="/img/brand-slider/brand-slider-bot/Cartier-Logo.png" alt="" /></li>
+                <li class="brand-item"><img src="/img/brand-slider/brand-slider-bot/stadt-marburg-logo.jpg" alt="" />
+                </li>
                 <li class="brand-item"><img
-                        src="/img/brand-slider/brand-slider-bot/Casadeco.jpg"
-                        alt=""
-                    /></li>
-                <li class="brand-item"><img
-                        src="/img/brand-slider/brand-slider-bot/Cartier-Logo.png"
-                        alt=""
-                    /></li>
-                <li class="brand-item"><img
-                        src="/img/brand-slider/brand-slider-bot/stadt-marburg-logo.jpg"
-                        alt=""
-                    /></li>
-                <li class="brand-item"><img
-                        src="/img/brand-slider/brand-slider-bot/Porter-And-Stone-Curtain-Fabrics.png"
-                        alt=""
-                    /></li>
-                <li class="brand-item"><img
-                        src="/img/brand-slider/brand-slider-bot/Casadeco.jpg"
-                        alt=""
-                    /></li>
-                <li class="brand-item"><img
-                        src="/img/brand-slider/brand-slider-bot/Cartier-Logo.png"
-                        alt=""
-                    /></li>
-                <li class="brand-item"><img
-                        src="/img/brand-slider/brand-slider-bot/stadt-marburg-logo.jpg"
-                        alt=""
-                    /></li>
-                <li class="brand-item"><img
-                        src="/img/brand-slider/brand-slider-bot/Porter-And-Stone-Curtain-Fabrics.png"
-                        alt=""
-                    /></li>
-                <li class="brand-item"><img
-                        src="/img/brand-slider/brand-slider-bot/Casadeco.jpg"
-                        alt=""
-                    /></li>
-                <li class="brand-item"><img
-                        src="/img/brand-slider/brand-slider-bot/Cartier-Logo.png"
-                        alt=""
-                    /></li>
-                <li class="brand-item"><img
-                        src="/img/brand-slider/brand-slider-bot/stadt-marburg-logo.jpg"
-                        alt=""
-                    /></li>
-                <li class="brand-item"><img
-                        src="/img/brand-slider/brand-slider-bot/Porter-And-Stone-Curtain-Fabrics.png"
-                        alt=""
-                    /></li>
-                <li class="brand-item"><img
-                        src="/img/brand-slider/brand-slider-bot/Casadeco.jpg"
-                        alt=""
-                    /></li>
-                <li class="brand-item"><img
-                        src="/img/brand-slider/brand-slider-bot/Cartier-Logo.png"
-                        alt=""
-                    /></li>
-                <li class="brand-item"><img
-                        src="/img/brand-slider/brand-slider-bot/stadt-marburg-logo.jpg"
-                        alt=""
-                    /></li>
-                <li class="brand-item"><img
-                        src="/img/brand-slider/brand-slider-bot/Porter-And-Stone-Curtain-Fabrics.png"
-                        alt=""
-                    /></li>
+                        src="/img/brand-slider/brand-slider-bot/Porter-And-Stone-Curtain-Fabrics.png" alt="" /></li>
             </ul>
         </div>
     </div>

@@ -3,7 +3,7 @@
     <!-- Dashboard Header -->
     <div class="dashboard-header fade-in">
         <h1>Dashboard Admin</h1>
-        <p>Tổng quan hệ thống quản lý phòng trọ</p>
+        <p>Tổng quan hệ thống quản lý lịch xem phòng trọ</p>
         <div class="header-actions">
             <button class="btn btn-secondary" id="refreshDashboard">
                 <i class="fas fa-sync-alt"></i>
@@ -23,7 +23,7 @@
                         <i class="fas fa-users"></i>
                     </div>
                 </div>
-                <div class="stat-value" id="total-users">20</div>
+                <div class="stat-value" id="total-users">-</div>
             </div>
 
             <div class="stat-card">
@@ -33,77 +33,118 @@
                         <i class="fas fa-home"></i>
                     </div>
                 </div>
-                <div class="stat-value" id="total-rooms">20</div>
+                <div class="stat-value" id="total-rooms">-</div>
             </div>
 
             <div class="stat-card">
                 <div class="stat-header">
-                    <div class="stat-title">Hợp đồng hiệu lực</div>
+                    <div class="stat-title">Lịch xem phòng hôm nay</div>
                     <div class="stat-icon contracts">
-                        <i class="fas fa-file-contract"></i>
+                        <i class="fas fa-calendar-check"></i>
                     </div>
                 </div>
-                <div class="stat-value" id="active-contracts">10</div>
+                <div class="stat-value" id="today-viewings">-</div>
             </div>
 
             <div class="stat-card">
                 <div class="stat-header">
-                    <div class="stat-title">Doanh thu tháng này</div>
+                    <div class="stat-title">Tổng lịch xem trong tháng</div>
                     <div class="stat-icon revenue">
-                        <i class="fas fa-money-bill-wave"></i>
+                        <i class="fas fa-chart-line"></i>
                     </div>
                 </div>
-                <div class="stat-value" id="monthly-revenue">10000000</div>
+                <div class="stat-value" id="monthly-viewings">-</div>
             </div>
         </div>
     </section>
 
-    <!-- Pending Approvals Section -->
+    <!-- Quản lý lịch xem phòng -->
     <section class="dashboard-section">
         <h2 class="section-title">
-            <i class="fas fa-clock"></i>
-            Phòng chờ duyệt
+            <i class="fas fa-calendar-alt"></i>
+            Quản lý lịch xem phòng
         </h2>
-        <form class="table-section pending-approvals glass-card">
+        <div class="table-section glass-card">
             <div class="table-header">
-                <h3 class="table-title">Danh sách phòng chờ duyệt</h3>
-                <button class="btn btn-secondary" id="refreshPending">
-                    <i class="fas fa-sync-alt"></i>
-                    Làm mới
-                </button>
+                <h3 class="table-title">Danh sách lịch xem phòng</h3>
+                <div class="table-controls">
+                    <select id="statusFilter" class="form-select">
+                        <option value="">Tất cả trạng thái</option>
+                        <option value="confirmed">Đã xác nhận</option>
+                        <option value="completed">Hoàn thành</option>
+                        <option value="cancelled">Đã hủy</option>
+                    </select>
+                    <button class="btn btn-secondary" id="refreshAllViewings">
+                        <i class="fas fa-sync-alt"></i>
+                        Làm mới
+                    </button>
+                </div>
             </div>
-            <table width="100%" id="pendingApprovals">
-                <thead>
-                    <tr>
-                        <th>Mã Phòng</th>
-                        <th>Mã chủ nhà</th>
-                        <th>Tiêu đề</th>
-                        <th>Địa chỉ</th>
-                        <th>Giá thuê</th>
-                        <th>Ngày tạo</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Javascrip render from databases -->
-                </tbody>
-            </table>
-        </form>
+            <div class="table-container">
+                <table class="data-table" id="allViewingsTable">
+                    <thead>
+                        <tr>
+                            <th>Ngày tạo</th>
+                            <th>Ngày xem</th>
+                            <th>Thời gian</th>
+                            <th>Người dùng</th>
+                            <th>Phòng</th>
+                            <th>Địa chỉ</th>
+                            <th>Liên hệ</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="allViewingsBody">
+                        <tr>
+                            <td colspan="9">
+                                <div class="loading">
+                                    <div class="spinner"></div>
+                                    Đang tải dữ liệu...
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </section>
 
-    <!-- Charts Section -->
+    <!-- Room Status Overview -->
     <section class="dashboard-section">
         <h2 class="section-title">
-            <i class="fas fa-chart-line"></i>
-            Biểu đồ thống kê
+            <i class="fas fa-chart-pie"></i>
+            Tình trạng phòng trọ
         </h2>
-        <div class="charts-grid">
-            <div class="chart-container glass-card">
-                <h3>Doanh thu 12 tháng gần nhất</h3>
-                <canvas id="revenueChart"></canvas>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-title">Phòng trống</div>
+                    <div class="stat-icon available">
+                        <i class="fas fa-door-open"></i>
+                    </div>
+                </div>
+                <div class="stat-value" id="available-rooms">-</div>
             </div>
-            <div class="chart-container glass-card">
-                <h3>Trạng thái phòng trọ</h3>
-                <canvas id="roomStatusChart"></canvas>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-title">Phòng đã thuê</div>
+                    <div class="stat-icon occupied">
+                        <i class="fas fa-door-closed"></i>
+                    </div>
+                </div>
+                <div class="stat-value" id="occupied-rooms">-</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-title">Tỷ lệ lấp đầy</div>
+                    <div class="stat-icon revenue">
+                        <i class="fas fa-percentage"></i>
+                    </div>
+                </div>
+                <div class="stat-value" id="occupancy-rate">-%</div>
             </div>
         </div>
     </section>
@@ -121,121 +162,6 @@
             </div>
             <div id="recentActivitiesList" style="display: none;">
                 <!-- Activities will be loaded here -->
-            </div>
-        </div>
-    </section>
-
-    <!-- Management Overview Section -->
-    <section class="dashboard-section">
-        <h2 class="section-title">
-            <i class="fas fa-tasks"></i>
-            Tổng quan quản lý
-        </h2>
-        <div class="charts-grid">
-            <!-- Current Contracts Table -->
-            <div class="table-section glass-card">
-                <div class="table-header">
-                    <h3 class="table-title">Hợp đồng hiện tại</h3>
-                    <a href="/contracts" class="btn btn-primary">
-                        <i class="fas fa-eye"></i>
-                        Xem tất cả
-                    </a>
-                </div>
-                <div class="table-container">
-                    <table class="data-table" id="contractsTable">
-                        <thead>
-                            <tr>
-                                <th>Mã HĐ</th>
-                                <th>Phòng</th>
-                                <th>Người thuê</th>
-                                <th>Ngày bắt đầu</th>
-                                <th>Trạng thái</th>
-                            </tr>
-                        </thead>
-                        <tbody id="contractsTableBody">
-                            <!-- Javascrip render from databases -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- System Overview -->
-            <div class="glass-card">
-                <div class="table-header">
-                    <h3 class="table-title">Tổng quan hệ thống</h3>
-                </div>
-                <div style="padding: 1rem 2rem;">
-                    <div class="stats-grid" style="grid-template-columns: 1fr; gap: 1rem; margin-bottom: 0;">
-                        <div class="approval-item">
-                            <div class="approval-info">
-                                <strong>Phòng trống</strong><br />
-                                <span id="availableRoomsCount">-</span>
-                                phòng có sẵn
-                            </div>
-                            <div class="status-badge available">Có sẵn</div>
-                        </div>
-                        <div class="approval-item">
-                            <div class="approval-info">
-                                <strong>Phòng đã thuê</strong><br />
-                                <span id="occupiedRoomsCount">-</span>
-                                phòng đang thuê
-                            </div>
-                            <div class="status-badge occupied">Đã thuê</div>
-                        </div>
-                        <div class="approval-item">
-                            <div class="approval-info">
-                                <strong>Tỷ lệ lấp đầy</strong><br />
-                                <span id="occupancyRate">-</span>% phòng đang sử
-                                dụng
-                            </div>
-                            <div class="status-badge active">Tỷ lệ</div>
-                        </div>
-                        <div class="approval-item">
-                            <div class="approval-info">
-                                <strong>Người dùng mới tháng này</strong><br />
-                                <span id="newUsersThisMonth">-</span>
-                                người dùng
-                            </div>
-                            <div class="status-badge pending">Mới</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Quick Actions -->
-    <section class="dashboard-section">
-        <h2 class="section-title">
-            <i class="fas fa-bolt"></i>
-            Thao tác nhanh
-        </h2>
-        <div class="quick-actions glass-card">
-            <div class="action-buttons">
-                <a href="/users" class="action-btn">
-                    <i class="fas fa-user-plus"></i>
-                    <span>Thêm người dùng mới</span>
-                </a>
-                <a href="/rooms" class="action-btn">
-                    <i class="fas fa-home"></i>
-                    <span>Thêm phòng trọ mới</span>
-                </a>
-                <a href="/contracts" class="action-btn">
-                    <i class="fas fa-file-plus"></i>
-                    <span>Tạo hợp đồng mới</span>
-                </a>
-                <a href="/payments" class="action-btn">
-                    <i class="fas fa-money-bill-wave"></i>
-                    <span>Ghi nhận thanh toán</span>
-                </a>
-                <a href="/reports" class="action-btn">
-                    <i class="fas fa-chart-bar"></i>
-                    <span>Xem báo cáo</span>
-                </a>
-                <a href="/settings" class="action-btn">
-                    <i class="fas fa-cog"></i>
-                    <span>Cài đặt hệ thống</span>
-                </a>
             </div>
         </div>
     </section>

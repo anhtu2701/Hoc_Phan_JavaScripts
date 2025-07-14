@@ -1,4 +1,3 @@
-
 <!-- Main Content -->
 <main class="main-content" id="main-content">
     <!-- Header -->
@@ -10,9 +9,9 @@
                 <i class="fas fa-plus"></i>
                 Thêm người dùng
             </button>
-            <button class="btn btn-secondary" id="exportBtn">
-                <i class="fas fa-download"></i>
-                Xuất Excel
+            <button class="btn btn-secondary" id="refreshUsersBtn">
+                <i class="fas fa-sync-alt"></i>
+                Làm mới
             </button>
         </div>
     </div>
@@ -31,21 +30,12 @@
             </div>
             <div class="stat-card">
                 <div class="stat-header">
-                    <div class="stat-title">Chủ nhà</div>
+                    <div class="stat-title">Quản trị viên</div>
                     <div class="stat-icon owners">
-                        <i class="fas fa-home"></i>
+                        <i class="fa-solid fa-user-secret"></i>
                     </div>
                 </div>
                 <div class="stat-value" data-stat="owners">-</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-header">
-                    <div class="stat-title">Người thuê</div>
-                    <div class="stat-icon tenants">
-                        <i class="fas fa-user-friends"></i>
-                    </div>
-                </div>
-                <div class="stat-value" data-stat="tenants">-</div>
             </div>
             <div class="stat-card">
                 <div class="stat-header">
@@ -59,49 +49,6 @@
         </div>
     </section>
 
-    <!-- Controls -->
-    <section class="dashboard-section">
-        <div class="controls">
-            <div class="controls-left">
-                <div class="search-box">
-                    <i class="fas fa-search"></i>
-                    <input
-                        type="text"
-                        id="searchInput"
-                        placeholder="Tìm kiếm theo tên, email, CCCD..."
-                    />
-                </div>
-                <select id="roleFilter" class="filter-select">
-                    <option value="">Tất cả vai trò</option>
-                    <option value="admin">Quản trị viên</option>
-                    <option value="chunha">Chủ nhà</option>
-                    <option value="nguoithue">Người thuê</option>
-                </select>
-                <select id="statusFilter" class="filter-select">
-                    <option value="">Tất cả trạng thái</option>
-                    <option value="hoatdong">Hoạt động</option>
-                    <option value="khonghoatdong">Không hoạt động</option>
-                    <option value="bikhoa">Bị khóa</option>
-                </select>
-            </div>
-            <div class="controls-right">
-                <div class="bulk-actions">
-                    <select id="bulkAction" class="bulk-select" disabled>
-                        <option value="">Chọn thao tác...</option>
-                        <option value="activate">Kích hoạt</option>
-                        <option value="deactivate">Vô hiệu hóa</option>
-                        <option value="block">Khóa tài khoản</option>
-                        <option value="delete">Xóa</option>
-                    </select>
-                    <button class="btn btn-secondary" id="applyBulkAction" disabled>
-                        <i class="fas fa-check"></i>
-                        Áp dụng
-                    </button>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Users Table -->
     <section class="dashboard-section">
         <div class="table-section">
@@ -111,13 +58,7 @@
                         <i class="fas fa-users"></i>
                         Danh sách người dùng
                     </h3>
-                    <span class="table-subtitle" id="tableSubtitle">Quản lý thông tin người dùng</span>
-                </div>
-                <div class="table-actions">
-                    <button class="btn btn-outline" id="refreshUsersBtn">
-                        <i class="fas fa-sync-alt"></i>
-                        Làm mới
-                    </button>
+                    <span class="table-subtitle">Quản lý thông tin người dùng</span>
                 </div>
             </div>
             
@@ -132,39 +73,14 @@
                                         <label for="selectAll" class="checkbox-label"></label>
                                     </div>
                                 </th>
-                                <th class="sortable" data-sort="CCCD">
-                                    <div class="th-content">
-                                        <span>CCCD</span>
-                                        <i class="fas fa-sort sort-icon"></i>
-                                    </div>
-                                </th>
-                                <th class="sortable" data-sort="TenDangNhap">
-                                    <div class="th-content">
-                                        <span>Tên đăng nhập</span>
-                                        <i class="fas fa-sort sort-icon"></i>
-                                    </div>
-                                </th>
-                                <th class="sortable" data-sort="HoTen">
-                                    <div class="th-content">
-                                        <span>Họ tên</span>
-                                        <i class="fas fa-sort sort-icon"></i>
-                                    </div>
-                                </th>
-                                <th class="sortable" data-sort="Email">
-                                    <div class="th-content">
-                                        <span>Email</span>
-                                        <i class="fas fa-sort sort-icon"></i>
-                                    </div>
-                                </th>
+                                <th>CCCD</th>
+                                <th>Tên đăng nhập</th>
+                                <th>Họ tên</th>
+                                <th>Email</th>
                                 <th>Số điện thoại</th>
                                 <th>Vai trò</th>
                                 <th>Trạng thái</th>
-                                <th class="sortable" data-sort="NgayTao">
-                                    <div class="th-content">
-                                        <span>Ngày tạo</span>
-                                        <i class="fas fa-sort sort-icon"></i>
-                                    </div>
-                                </th>
+                                <th>Ngày tạo</th>
                                 <th class="actions-col">Thao tác</th>
                             </tr>
                         </thead>
@@ -186,18 +102,22 @@
                 </div>
             </div>
         </div>
-        
-        <!-- Pagination -->
-        <div class="pagination-section">
-            <div class="pagination-info">
-                <span id="paginationInfo">Hiển thị 0 - 0 của 0 người dùng</span>
-            </div>
-            <div class="pagination-controls" id="pagination">
-                <!-- Pagination will be generated here -->
-            </div>
-        </div>
     </section>
 
+    <!-- Bulk Actions -->
+    <section class="dashboard-section">
+        <div class="bulk-actions">
+            <select id="bulkAction" class="bulk-select" disabled>
+                <option value="">Chọn thao tác...</option>
+                <option value="active">Kích hoạt</option>
+                <option value="inactive">Vô hiệu hóa</option>
+            </select>
+            <button class="btn btn-secondary" id="applyBulkAction" disabled>
+                <i class="fas fa-check"></i>
+                Áp dụng
+            </button>
+        </div>
+    </section>
 </main>
 
 <!-- User Status Change Modal -->
@@ -220,9 +140,8 @@
                 <label for="newStatus">Trạng thái mới:</label>
                 <select id="newStatus" class="form-control" required>
                     <option value="">-- Chọn trạng thái --</option>
-                    <option value="hoatdong">Hoạt động</option>
-                    <option value="khonghoatdong">Không hoạt động</option>
-                    <option value="bikhoa">Bị khóa</option>
+                    <option value="active">Hoạt động</option>
+                    <option value="inactive">Không hoạt động</option>
                 </select>
             </div>
             <div class="form-group">
@@ -275,17 +194,15 @@
                     <select id="userRole" class="form-control" required>
                         <option value="">-- Chọn vai trò --</option>
                         <option value="admin">Quản trị viên</option>
-                        <option value="chunha">Chủ nhà</option>
-                        <option value="nguoithue">Người thuê</option>
+                        <option value="user">Người dùng</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="userStatus">Trạng thái:</label>
                     <select id="userStatus" class="form-control" required>
                         <option value="">-- Chọn trạng thái --</option>
-                        <option value="hoatdong">Hoạt động</option>
-                        <option value="khonghoatdong">Không hoạt động</option>
-                        <option value="bikhoa">Bị khóa</option>
+                        <option value="active">Hoạt động</option>
+                        <option value="inactive">Không hoạt động</option>
                     </select>
                 </div>
             </form>
